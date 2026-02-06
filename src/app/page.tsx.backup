@@ -1,0 +1,455 @@
+'use client';
+
+import { useEffect, useState, useMemo } from 'react';
+import { getInvoices, getContracts, formatCurrency, formatPercent } from '@/lib/data';
+import { calculateForecast } from '@/lib/forecast';
+import { Invoice, Contract } from '@/types';
+
+// Paleta de colores para el gráfico de concentración
+const CONCENTRATION_COLORS = [
+  '#4f46e5', '#7c3aed', '#0891b2', '#059669', '#d97706',
+  '#dc2626', '#db2777', '#6366f1', '#14b8a6', '#f59e0b',
+];
+
+export default function Overview() {
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [contracts, setContracts] = useState<Contract[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [invoicesData, contractsData] = await Promise.all([
+          getInvoices(),
+          getContracts(),
+        ]);
+        setInvoices(invoicesData);
+        setContracts(contractsData);
+      } catch (error) {
+        console.error('Error loading data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
+  // Calcular todas las métricas ejecutivas
+  const metrics = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    const today = new Date();
+    const currentMonth = today.getMonth(); // 0-indexed
+    const currentDay = today.getDate();
+
+    // Contratos por estado
+    const activeContracts = contracts.filter(c => c.status === 'activo');
+    const pipelineContracts = contracts.filter(c => c.status === 'negociación');
+
+    // === HERO: Run-rate mensual (basado en forecast) ===
+    let runRate = 0;
+    let forecastRestanteFY = 0;
+    let facturadoYTD_forecast = 0;
+    let totalEstimadoFY = 0;
+
+    if (contracts.length > 0 && invoices.length > 0) {
+      const forecast = calculateForecast(contracts, invoices);
+      runRate = forecast.forecastM1;
+      forecastRestanteFY = forecast.forecastRestanteFY;
+      facturadoYTD_forecast = forecast.facturadoYTD;
+      totalEstimadoFY = forecast.totalEstimadoFY;
+    }
+
+    // ARR anualizado del run-rate
+    const arrAnualizado = runRate * 12;
+
+    // === Ingresos YTD (todas las facturas del año) ===
+    const ytdInvoices = invoices.filter(inv => inv.invoice_year === currentYear);
+    const ingresosYTD = ytdInvoices.reduce((sum, inv) => sum + inv.amount_net, 0);
+
+    // Ingresos recurrentes YTD
+    const recurringYTD = ytdInvoices
+      .filter(inv => inv.revenue_category === 'recurring')
+      .reduce((sum, inv) => sum + inv.amount_net, 0);
+
+    // % Recurrente
+    const porcentajeRecurrente = ingresosYTD > 0 ? (recurringYTD / ingresosYTD) * 100 : 0;
+
+    // === Comparativa vs año anterior (mismo periodo) ===
+    const previousYear = currentYear - 1;
+    // Facturas del año anterior hasta la misma fecha
+    const previousYearInvoices = invoices.filter(inv => {
+      if (inv.invoice_year !== previousYear) return false;
+      const invDate = new Date(inv.invoice_date);
+      // Comparar mes y día
+      return invDate.getMonth() < currentMonth ||
+        (invDate.getMonth() === currentMonth && invDate.getDate() <= currentDay);
+    });
+    const ingresosPreviousYTD = previousYearInvoices.reduce((sum, inv) => sum + inv.amount_net, 0);
+
+    // Calcular variación YoY (null si no hay datos del año anterior)
+    const ytdGrowthPercent = ingresosPreviousYTD > 0
+      ? ((ingresosYTD - ingresosPreviousYTD) / ingresosPreviousYTD) * 100
+      : null;
+    const hasYoYComparison = ingresosPreviousYTD > 0;
+
+    // === Clientes activos (factura en últimos 4 meses) ===
+    const fourMonthsAgo = new Date(today);
+    fourMonthsAgo.setMonth(fourMonthsAgo.getMonth() - 4);
+
+    const recentInvoices = invoices.filter(inv => {
+      const invDate = new Date(inv.invoice_date);
+      return invDate >= fourMonthsAgo;
+    });
+    const clientesActivosFactura = new Set(recentInvoices.map(inv => inv.customer_name)).size;
+
+    // Clientes recurrentes (facturas de tipo recurrente en últimos 4 meses)
+    const recentRecurringInvoices = recentInvoices.filter(inv => inv.revenue_category === 'recurring');
+    const clientesRecurrentes = new Set(recentRecurringInvoices.map(inv => inv.customer_name)).size;
+
+    // Clientes activos contractuales (con MRR > 0)
+    const clientesActivosContrato = activeContracts.filter(c => c.current_mrr > 0).length;
+
+    // === PIPELINE ===
+    const pipelineARR = pipelineContracts.reduce((sum, c) => sum + c.current_price_annual, 0);
+    const numOportunidades = pipelineContracts.length;
+
+    // === COBROS ===
+    const facturasPendientes = invoices.filter(inv => inv.status !== 'paid');
+    const importePendiente = facturasPendientes.reduce((sum, inv) => sum + inv.amount_net, 0);
+    const numPendientes = facturasPendientes.length;
+
+    // DSO (Days Sales Outstanding) - promedio de días de cobro
+    const facturasConPago = invoices.filter(
+      inv => inv.status === 'paid' && inv.days_to_pay !== null && inv.days_to_pay !== undefined
+    );
+    const dso = facturasConPago.length > 0
+      ? facturasConPago.reduce((sum, inv) => sum + (inv.days_to_pay || 0), 0) / facturasConPago.length
+      : 0;
+
+    // === ARR EN RIESGO ===
+    const ninetyDaysFromNow = new Date(today);
+    ninetyDaysFromNow.setDate(ninetyDaysFromNow.getDate() + 90);
+
+    const contractsAtRisk = activeContracts.filter(c => {
+      if (!c.end_date) return false;
+      const endDate = new Date(c.end_date);
+      return endDate <= ninetyDaysFromNow && endDate >= today;
+    });
+    const arrEnRiesgo = contractsAtRisk.reduce((sum, c) => sum + c.current_price_annual, 0);
+    const numContratosRiesgo = contractsAtRisk.length;
+
+    // === CONCENTRACIÓN POR CLIENTE ===
+    const arrTotal = activeContracts.reduce((sum, c) => sum + c.current_price_annual, 0);
+    const clientConcentration = activeContracts
+      .filter(c => c.current_price_annual > 0)
+      .map(c => ({
+        name: c.client_name,
+        arr: c.current_price_annual,
+        percentage: arrTotal > 0 ? (c.current_price_annual / arrTotal) * 100 : 0,
+      }))
+      .sort((a, b) => b.arr - a.arr);
+
+    return {
+      // Hero
+      ingresosYTD,
+      ingresosPreviousYTD,
+      ytdGrowthPercent,
+      hasYoYComparison,
+      porcentajeRecurrente,
+      runRate,
+      arrAnualizado,
+      clientesActivosFactura,
+      clientesRecurrentes,
+      clientesActivosContrato,
+      // Visibilidad FY
+      facturadoYTD_forecast,
+      forecastRestanteFY,
+      totalEstimadoFY,
+      // Pipeline
+      pipelineARR,
+      numOportunidades,
+      pipelineClients: pipelineContracts.map(c => c.client_name),
+      // Cobros
+      importePendiente,
+      numPendientes,
+      dso,
+      // Riesgo
+      arrEnRiesgo,
+      numContratosRiesgo,
+      // Concentración
+      clientConcentration,
+      arrTotal,
+      // Meta
+      currentYear,
+    };
+  }, [invoices, contracts]);
+
+  if (loading) {
+    return (
+      <div className="flex h-[60vh] items-center justify-center">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* ============================================
+          BLOQUE 1: HERO - Tres métricas principales
+          ============================================ */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {/* Ingresos YTD */}
+        <div className="rounded-xl border border-border-subtle bg-bg-surface p-5 shadow-sm">
+          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">
+            Ingresos YTD {metrics.currentYear}
+          </p>
+          <p className="mt-2 text-3xl font-bold text-text-primary">
+            {formatCurrency(metrics.ingresosYTD)}
+          </p>
+          <div className="mt-3 flex items-center gap-3">
+            {metrics.hasYoYComparison ? (
+              <>
+                <span className={`flex items-center gap-1 text-sm font-medium ${
+                  metrics.ytdGrowthPercent !== null && metrics.ytdGrowthPercent >= 0 ? 'text-success' : 'text-danger'
+                }`}>
+                  {metrics.ytdGrowthPercent !== null && metrics.ytdGrowthPercent >= 0 ? '↑' : '↓'} {formatPercent(Math.abs(metrics.ytdGrowthPercent || 0))}
+                </span>
+                <span className="text-xs text-text-dimmed">
+                  vs {formatCurrency(metrics.ingresosPreviousYTD)} en {metrics.currentYear - 1}
+                </span>
+              </>
+            ) : (
+              <span className="text-xs text-text-dimmed">
+                Sin datos comparables en {metrics.currentYear - 1}
+              </span>
+            )}
+          </div>
+          <div className="mt-2 text-xs text-text-muted">
+            {formatPercent(metrics.porcentajeRecurrente)} recurrente
+          </div>
+        </div>
+
+        {/* Próximo MRR */}
+        <div className="rounded-xl border border-accent/20 bg-accent/5 p-5 shadow-sm">
+          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">
+            Próximo MRR
+          </p>
+          <p className="mt-2 text-3xl font-bold text-accent">
+            {formatCurrency(metrics.runRate)}
+          </p>
+          <p className="mt-1 text-xs text-text-dimmed">
+            Basado en último consumo facturado
+          </p>
+          <div className="mt-3 border-t border-border-subtle pt-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-text-muted">ARR ×12</span>
+              <span className="font-mono text-sm font-semibold text-text-primary">
+                {formatCurrency(metrics.arrAnualizado)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Clientes activos */}
+        <div className="rounded-xl border border-border-subtle bg-bg-surface p-5 shadow-sm">
+          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">
+            Clientes Activos
+          </p>
+          <p className="mt-2 text-3xl font-bold text-text-primary">
+            {metrics.clientesActivosFactura}
+          </p>
+          <p className="mt-1 text-xs text-text-dimmed">
+            Con factura últimos 4 meses
+          </p>
+          <div className="mt-3 border-t border-border-subtle pt-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-text-muted">Recurrentes</span>
+              <span className="font-mono text-sm font-semibold text-text-primary">
+                {metrics.clientesRecurrentes}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================
+          BLOQUE 2: VISIBILIDAD - FY + Pipeline
+          ============================================ */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {/* Vista FY */}
+        <div className="rounded-xl border border-border-subtle bg-bg-surface p-5">
+          <div className="flex items-start justify-between">
+            <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">
+              Año en curso — FY {metrics.currentYear}
+            </p>
+            <span className="rounded bg-bg-muted px-1.5 py-0.5 text-[9px] font-medium text-text-dimmed">
+              Solo recurrente
+            </span>
+          </div>
+          <div className="mt-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-text-muted">Facturado</span>
+              <span className="font-mono text-sm font-medium text-text-secondary">
+                {formatCurrency(metrics.facturadoYTD_forecast)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-text-muted">+ Forecast restante</span>
+              <span className="font-mono text-sm font-medium text-text-secondary">
+                {formatCurrency(metrics.forecastRestanteFY)}
+              </span>
+            </div>
+            <div className="border-t border-border-subtle pt-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-text-primary">Total estimado</span>
+                <span className="font-mono text-lg font-semibold text-accent">
+                  {formatCurrency(metrics.totalEstimadoFY)}
+                </span>
+              </div>
+            </div>
+          </div>
+          <p className="mt-3 text-[10px] text-text-dimmed">
+            Excluye SetUps, PoCs y otros ingresos no recurrentes
+          </p>
+        </div>
+
+        {/* Pipeline */}
+        <div className="rounded-xl border border-accent/20 bg-accent/5 p-5">
+          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">
+            Pipeline — En negociación
+          </p>
+          <p className="mt-3 text-3xl font-bold text-accent">
+            {formatCurrency(metrics.pipelineARR)}
+          </p>
+          <p className="mt-1 text-sm text-text-muted">
+            {metrics.numOportunidades} oportunidad{metrics.numOportunidades !== 1 ? 'es' : ''}
+          </p>
+          {metrics.pipelineClients.length > 0 && (
+            <p className="mt-2 text-xs text-text-muted">
+              {metrics.pipelineClients.join(', ')}
+            </p>
+          )}
+          <p className="mt-3 text-xs text-text-dimmed">
+            ARR potencial si se cierran
+          </p>
+        </div>
+      </div>
+
+      {/* ============================================
+          BLOQUE 3: RIESGOS - Cobros + ARR en riesgo
+          ============================================ */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {/* Cobros pendientes */}
+        <div className={`rounded-xl border p-5 ${
+          metrics.importePendiente > 0
+            ? 'border-warning/30 bg-warning/5'
+            : 'border-border-subtle bg-bg-surface'
+        }`}>
+          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">
+            Cobros Pendientes
+          </p>
+          <p className={`mt-3 text-2xl font-semibold ${
+            metrics.importePendiente > 0 ? 'text-warning' : 'text-text-primary'
+          }`}>
+            {formatCurrency(metrics.importePendiente)}
+          </p>
+          <div className="mt-2 flex items-center gap-4 text-sm text-text-muted">
+            <span>{metrics.numPendientes} factura{metrics.numPendientes !== 1 ? 's' : ''}</span>
+            <span className="text-text-dimmed">·</span>
+            <span>DSO: {Math.round(metrics.dso)} días</span>
+          </div>
+        </div>
+
+        {/* ARR en riesgo */}
+        <div className={`rounded-xl border p-5 ${
+          metrics.arrEnRiesgo > 0
+            ? 'border-danger/30 bg-danger/5'
+            : 'border-border-subtle bg-bg-surface'
+        }`}>
+          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">
+            ARR en Riesgo
+          </p>
+          <p className={`mt-3 text-2xl font-semibold ${
+            metrics.arrEnRiesgo > 0 ? 'text-danger' : 'text-success'
+          }`}>
+            {metrics.arrEnRiesgo > 0 ? formatCurrency(metrics.arrEnRiesgo) : '€0'}
+          </p>
+          <p className="mt-2 text-sm text-text-muted">
+            {metrics.numContratosRiesgo > 0
+              ? `${metrics.numContratosRiesgo} contrato${metrics.numContratosRiesgo !== 1 ? 's' : ''} vence${metrics.numContratosRiesgo === 1 ? '' : 'n'} en <90 días`
+              : 'Sin contratos en riesgo próximo'
+            }
+          </p>
+        </div>
+      </div>
+
+      {/* ============================================
+          BLOQUE 4: CONCENTRACIÓN - Barra horizontal
+          ============================================ */}
+      <div className="rounded-xl border border-border-subtle bg-bg-surface p-5">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">
+              Concentración de ARR por Cliente
+            </p>
+            <p className="mt-0.5 text-xs text-text-dimmed">
+              {formatCurrency(metrics.arrTotal)} total contractual
+            </p>
+          </div>
+        </div>
+
+        {/* Barra de concentración */}
+        <div className="mt-4">
+          <div className="flex h-8 w-full overflow-hidden rounded-lg">
+            {metrics.clientConcentration.map((client, index) => (
+              <div
+                key={client.name}
+                className="relative flex items-center justify-center overflow-hidden text-[10px] font-medium text-white transition-all hover:opacity-90"
+                style={{
+                  width: `${client.percentage}%`,
+                  backgroundColor: CONCENTRATION_COLORS[index % CONCENTRATION_COLORS.length],
+                  minWidth: client.percentage > 5 ? 'auto' : '0',
+                }}
+                title={`${client.name}: ${formatCurrency(client.arr)} (${formatPercent(client.percentage)})`}
+              >
+                {client.percentage > 8 && (
+                  <span className="truncate px-1">
+                    {client.name.split(' ')[0]}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Leyenda */}
+          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+            {metrics.clientConcentration.slice(0, 6).map((client, index) => (
+              <div key={client.name} className="flex items-center gap-1.5">
+                <div
+                  className="h-2.5 w-2.5 rounded-sm"
+                  style={{ backgroundColor: CONCENTRATION_COLORS[index % CONCENTRATION_COLORS.length] }}
+                />
+                <span className="text-xs text-text-muted">
+                  {client.name.split(' ')[0]} {formatPercent(client.percentage)}
+                </span>
+              </div>
+            ))}
+            {metrics.clientConcentration.length > 6 && (
+              <span className="text-xs text-text-dimmed">
+                +{metrics.clientConcentration.length - 6} más
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Disclaimer */}
+      <div className="rounded-lg border border-border-subtle bg-bg-muted/50 px-4 py-3">
+        <p className="text-[11px] text-text-dimmed">
+          Run-rate basado en último consumo facturado por cliente. Pipeline incluye contratos en estado "negociación".
+          ARR en riesgo: contratos activos con vencimiento {'<'}90 días. DSO calculado sobre facturas cobradas.
+        </p>
+      </div>
+    </div>
+  );
+}

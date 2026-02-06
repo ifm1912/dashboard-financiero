@@ -1,0 +1,54 @@
+[
+  {
+    "event_id": "EVT-001",
+    "contract_id": "c010",
+    "client_name": "MTUA",
+    "event_date": "2025-06-01",
+    "event_type": "CANCELACIÓN",
+    "arr_delta": -49000.0,
+    "mrr_delta": -4083.3333333333335,
+    "currency": "eur",
+    "reason": "Velocidad respuesta",
+    "effective_from": "2025-06-01",
+    "notes": "Cancelación licencia"
+  },
+  {
+    "event_id": "EVT-002",
+    "contract_id": "c007",
+    "client_name": "BKT",
+    "event_date": "2025-09-01",
+    "event_type": "EXPANSION",
+    "arr_delta": 5000.0,
+    "mrr_delta": 416.6666666666667,
+    "currency": "eur",
+    "reason": "Evolutivos",
+    "effective_from": "2025-09-01",
+    "notes": "Expansion por evolutivos"
+  },
+  {
+    "event_id": "EVT-003",
+    "contract_id": "c006",
+    "client_name": "CAS",
+    "event_date": "2025-12-31",
+    "event_type": "CANCELACIÓN",
+    "arr_delta": -7200.0,
+    "mrr_delta": -600.0,
+    "currency": "eur",
+    "reason": "Falta de uso",
+    "effective_from": "2025-12-31",
+    "notes": "Cancelación licencia"
+  },
+  {
+    "event_id": "EVT-004",
+    "contract_id": "c004",
+    "client_name": "AND",
+    "event_date": "2026-01-01",
+    "event_type": "EXPANSION",
+    "arr_delta": 36000.0,
+    "mrr_delta": 3000.0,
+    "currency": "eur",
+    "reason": "Nuevos módulos",
+    "effective_from": "2026-01-01",
+    "notes": "Expansion nuevos módulos"
+  }
+]
