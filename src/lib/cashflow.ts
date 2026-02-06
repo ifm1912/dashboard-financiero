@@ -95,11 +95,14 @@ export function getExpensesByCategoryFiltered(
   // Excluir Financiación y gastos sin categoría
   let filtered = expenses.filter(e => e.category && e.category.trim() !== '' && e.category !== 'Financiación');
 
-  // Filtrar por período si se especifica
+  // Filtrar por período: últimos N meses con datos reales (no calendario)
+  // Esto evita problemas si hay huecos en los datos
   if (monthsToInclude > 0) {
-    const cutoffDate = new Date();
-    cutoffDate.setMonth(cutoffDate.getMonth() - monthsToInclude);
-    filtered = filtered.filter(e => new Date(e.expense_date) >= cutoffDate);
+    const uniqueMonths = [...new Set(
+      filtered.map(e => e.expense_date.substring(0, 7))
+    )].sort((a, b) => b.localeCompare(a));
+    const monthsToKeep = new Set(uniqueMonths.slice(0, monthsToInclude));
+    filtered = filtered.filter(e => monthsToKeep.has(e.expense_date.substring(0, 7)));
   }
 
   // Calcular totales por categoría
