@@ -238,16 +238,16 @@ export default function RevenueAnalyticsPage() {
       }
     });
 
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-    const sixMonthsAgoStr = sixMonthsAgo.toISOString().split('T')[0];
+    const fourMonthsAgo = new Date();
+    fourMonthsAgo.setMonth(fourMonthsAgo.getMonth() - 4);
+    const fourMonthsAgoStr = fourMonthsAgo.toISOString().split('T')[0];
 
     const result: CustomerData[] = [];
     customerMap.forEach((data, name) => {
       const dates = data.invoices.map(inv => inv.invoice_date).sort();
       const primera_factura = dates[0];
       const ultima_factura = dates[dates.length - 1];
-      const estado_cliente = ultima_factura >= sixMonthsAgoStr ? 'activo' : 'inactivo';
+      const estado_cliente = ultima_factura >= fourMonthsAgoStr ? 'activo' : 'inactivo';
       const porcentaje_recurrente = data.total_amount > 0
         ? (data.recurring_amount / data.total_amount) * 100
         : 0;
@@ -294,9 +294,10 @@ export default function RevenueAnalyticsPage() {
       ? (clientesConRecurrente / totalClientes) * 100
       : 0;
 
-    const topCliente = customers.reduce((top, c) =>
+    const customersExclAIE = customers.filter(c => c.customer_name !== 'AIE');
+    const topCliente = customersExclAIE.reduce((top, c) =>
       c.ingresos_totales > (top?.ingresos_totales || 0) ? c : top,
-      customers[0]
+      customersExclAIE[0]
     );
 
     return {
@@ -310,6 +311,7 @@ export default function RevenueAnalyticsPage() {
   // Top 10 customers for concentration chart
   const top10Customers = useMemo(() => {
     return [...customers]
+      .filter(c => c.customer_name !== 'AIE')
       .sort((a, b) => b.ingresos_totales - a.ingresos_totales)
       .slice(0, 10)
       .map(c => ({
@@ -645,7 +647,7 @@ export default function RevenueAnalyticsPage() {
             <KPICard
               label="Clientes Activos"
               value={String(customerKpis.clientesActivos)}
-              subtitle="Última factura < 6 meses"
+              subtitle="Última factura < 4 meses"
             />
             <KPICard
               label="% Con Recurrente"
