@@ -158,7 +158,7 @@ export default function Overview() {
     return {
       ingresosYTD, arrActual, arrGrowth, currentBalance, runway, netBurn, burnRate,
       mrrLast6Months, arrEnRiesgo, pipelineARR, pipelineContracts, churnPendiente,
-      dso, importePendiente, porcentajePendiente, collectionRate,
+      dso, importePendiente: importePendienteYTD, porcentajePendiente, collectionRate,
       clientesActivos, clientesDelta, clientConcentration, porcentajeRecurrente, arrTotal,
       currentYear,
     };
