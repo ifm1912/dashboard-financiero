@@ -43,6 +43,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Operaciones': '#64748b',
   'Impuestos': '#dc2626',
   'Financiación': '#6b7280',
+  'Legal': '#0d9488',
 };
 
 // Opciones para el selector de histórico

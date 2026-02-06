@@ -79,7 +79,7 @@ export function getExpensesByCategory(
       total,
       percentage: grandTotal !== 0 ? (total / grandTotal) * 100 : 0
     }))
-    .sort((a, b) => a.total - b.total); // Más negativo primero
+    .sort((a, b) => Math.abs(b.total) - Math.abs(a.total)); // Mayor gasto primero
 }
 
 /**
@@ -92,8 +92,8 @@ export function getExpensesByCategoryFiltered(
   expenses: Expense[],
   monthsToInclude: number = 0
 ): { category: ExpenseCategory; total: number; percentage: number }[] {
-  // Excluir Financiación
-  let filtered = expenses.filter(e => e.category !== 'Financiación');
+  // Excluir Financiación y gastos sin categoría
+  let filtered = expenses.filter(e => e.category && e.category.trim() !== '' && e.category !== 'Financiación');
 
   // Filtrar por período si se especifica
   if (monthsToInclude > 0) {

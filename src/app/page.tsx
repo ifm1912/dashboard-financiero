@@ -113,7 +113,9 @@ export default function Overview() {
     const facturasPendientes = invoices.filter(inv => inv.status !== 'paid');
     const importePendiente = facturasPendientes.reduce((sum, inv) => sum + inv.amount_net, 0);
     const totalFacturadoYTD = ytdInvoices.reduce((sum, inv) => sum + inv.amount_net, 0);
-    const porcentajePendiente = totalFacturadoYTD > 0 ? (importePendiente / totalFacturadoYTD) * 100 : 0;
+    const facturasPendientesYTD = ytdInvoices.filter(inv => inv.status !== 'paid');
+    const importePendienteYTD = facturasPendientesYTD.reduce((sum, inv) => sum + inv.amount_net, 0);
+    const porcentajePendiente = totalFacturadoYTD > 0 ? (importePendienteYTD / totalFacturadoYTD) * 100 : 0;
 
     const facturasYTD = ytdInvoices.length;
     const facturasPagadasYTD = ytdInvoices.filter(inv => inv.status === 'paid').length;
@@ -155,7 +157,7 @@ export default function Overview() {
 
     return {
       ingresosYTD, arrActual, arrGrowth, currentBalance, runway, netBurn, burnRate,
-      mrrLast6Months, arrEnRiesgo, pipelineARR, churnPendiente,
+      mrrLast6Months, arrEnRiesgo, pipelineARR, pipelineContracts, churnPendiente,
       dso, importePendiente, porcentajePendiente, collectionRate,
       clientesActivos, clientesDelta, clientConcentration, porcentajeRecurrente, arrTotal,
       currentYear,
@@ -271,6 +273,18 @@ export default function Overview() {
               <p className="text-[10px] font-medium uppercase tracking-wider text-text-dimmed">Pipeline ARR</p>
               <p className="mt-2 text-xl font-bold text-accent">{formatCurrency(metrics.pipelineARR)}</p>
               <p className="mt-1 text-[10px] text-text-dimmed">En negociación</p>
+              {metrics.pipelineContracts.length > 0 && (
+                <div className="mt-2 space-y-0.5 border-t border-accent/10 pt-2">
+                  {metrics.pipelineContracts
+                    .sort((a, b) => b.current_price_annual - a.current_price_annual)
+                    .map(c => (
+                    <div key={c.contract_id} className="flex items-center justify-between text-[10px]">
+                      <span className="text-text-muted truncate mr-2">{c.client_name}</span>
+                      <span className="font-mono text-text-primary whitespace-nowrap">{formatCurrency(c.current_price_annual)}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="rounded-xl border border-border-subtle bg-bg-surface p-4 col-span-2">
@@ -326,7 +340,7 @@ export default function Overview() {
                 </span>
               )}
             </div>
-            <p className="mt-1 text-xs text-text-muted">vs mes anterior</p>
+            <p className="mt-1 text-xs text-text-muted">Con factura en últimos 4 meses</p>
           </div>
 
           <div className="rounded-xl border border-border-subtle bg-bg-surface p-4">
