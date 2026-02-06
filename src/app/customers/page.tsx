@@ -68,10 +68,10 @@ export default function CustomersPage() {
       }
     });
 
-    // Calculate 6 months ago date
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-    const sixMonthsAgoStr = sixMonthsAgo.toISOString().split('T')[0];
+    // Calculate 4 months ago date (consistent with Overview and Revenue Analytics)
+    const fourMonthsAgo = new Date();
+    fourMonthsAgo.setMonth(fourMonthsAgo.getMonth() - 4);
+    const fourMonthsAgoStr = fourMonthsAgo.toISOString().split('T')[0];
 
     // Build customer data array
     const result: CustomerData[] = [];
@@ -79,7 +79,7 @@ export default function CustomersPage() {
       const dates = data.invoices.map(inv => inv.invoice_date).sort();
       const primera_factura = dates[0];
       const ultima_factura = dates[dates.length - 1];
-      const estado_cliente = ultima_factura >= sixMonthsAgoStr ? 'activo' : 'inactivo';
+      const estado_cliente = ultima_factura >= fourMonthsAgoStr ? 'activo' : 'inactivo';
       const porcentaje_recurrente = data.total_amount > 0
         ? (data.recurring_amount / data.total_amount) * 100
         : 0;
@@ -126,10 +126,11 @@ export default function CustomersPage() {
       ? (clientesConRecurrente / totalClientes) * 100
       : 0;
 
-    // Top cliente por ingresos
-    const topCliente = customers.reduce((top, c) =>
+    // Top cliente por ingresos (excluir AIE — es tax lease, no cliente real)
+    const customersExclAIE = customers.filter(c => c.customer_name !== 'AIE');
+    const topCliente = customersExclAIE.reduce((top, c) =>
       c.ingresos_totales > (top?.ingresos_totales || 0) ? c : top,
-      customers[0]
+      customersExclAIE[0]
     );
 
     return {
@@ -175,7 +176,7 @@ export default function CustomersPage() {
         <KPICard
           label="Clientes Activos"
           value={String(kpis.clientesActivos)}
-          subtitle="Última factura < 6 meses"
+          subtitle="Última factura < 4 meses"
         />
         <KPICard
           label="% Con Recurrente"

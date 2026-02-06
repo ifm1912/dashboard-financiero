@@ -13,7 +13,7 @@ import {
   getMRRMetrics,
 } from '@/lib/data';
 import { calculateForecast } from '@/lib/forecast';
-import { calculateBurnRate, calculateRunway, calculateAvgMonthlyInflow, calculateNetBurn } from '@/lib/cashflow';
+import { calculateCashflowMetrics } from '@/lib/cashflow';
 import { Invoice, Contract, CashBalance, Expense, BankInflow, MRRMetric } from '@/types';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -80,10 +80,10 @@ export default function Overview() {
     const arrGrowth = arrSixMonthsAgo > 0 ? ((arrActual - arrSixMonthsAgo) / arrSixMonthsAgo) * 100 : 0;
 
     const currentBalance = cashBalance?.current_balance || 0;
-    const burnRate = Math.abs(calculateBurnRate(expenses, 6));
-    const avgMonthlyInflow = calculateAvgMonthlyInflow(inflows, 6);
-    const netBurn = calculateNetBurn(burnRate, avgMonthlyInflow);
-    const runway = calculateRunway(currentBalance, netBurn);
+    const cfMetrics = cashBalance ? calculateCashflowMetrics(expenses, inflows, cashBalance, 6) : null;
+    const burnRate = cfMetrics?.burnRate || 0;
+    const netBurn = cfMetrics?.netBurn || 0;
+    const runway = cfMetrics?.runwayMonths === -1 ? Infinity : (cfMetrics?.runwayMonths || 0);
 
     // GROWTH & RISK
     const mrrLast6Months = mrrData.slice(-6).map(d => ({
