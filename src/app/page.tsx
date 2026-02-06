@@ -110,12 +110,10 @@ export default function Overview() {
       ? facturasConPago.reduce((sum, inv) => sum + (inv.days_to_pay || 0), 0) / facturasConPago.length
       : 0;
 
-    const facturasPendientes = invoices.filter(inv => inv.status !== 'paid');
-    const importePendiente = facturasPendientes.reduce((sum, inv) => sum + inv.amount_net, 0);
     const totalFacturadoYTD = ytdInvoices.reduce((sum, inv) => sum + inv.amount_net, 0);
     const facturasPendientesYTD = ytdInvoices.filter(inv => inv.status !== 'paid');
-    const importePendienteYTD = facturasPendientesYTD.reduce((sum, inv) => sum + inv.amount_net, 0);
-    const porcentajePendiente = totalFacturadoYTD > 0 ? (importePendienteYTD / totalFacturadoYTD) * 100 : 0;
+    const importePendiente = facturasPendientesYTD.reduce((sum, inv) => sum + inv.amount_net, 0);
+    const porcentajePendiente = totalFacturadoYTD > 0 ? (importePendiente / totalFacturadoYTD) * 100 : 0;
 
     const facturasYTD = ytdInvoices.length;
     const facturasPagadasYTD = ytdInvoices.filter(inv => inv.status === 'paid').length;
@@ -158,7 +156,7 @@ export default function Overview() {
     return {
       ingresosYTD, arrActual, arrGrowth, currentBalance, runway, netBurn, burnRate,
       mrrLast6Months, arrEnRiesgo, pipelineARR, pipelineContracts, churnPendiente,
-      dso, importePendiente: importePendienteYTD, porcentajePendiente, collectionRate,
+      dso, importePendiente, porcentajePendiente, collectionRate,
       clientesActivos, clientesDelta, clientConcentration, porcentajeRecurrente, arrTotal,
       currentYear,
     };
