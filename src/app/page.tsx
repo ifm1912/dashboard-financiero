@@ -288,7 +288,7 @@ export default function Overview() {
             </div>
 
             <div className="rounded-xl border border-border-subtle bg-bg-surface p-4 col-span-2">
-              <p className="text-[10px] font-medium uppercase tracking-wider text-text-dimmed">Churn Pendiente</p>
+              <p className="text-[10px] font-medium uppercase tracking-wider text-text-dimmed">Churn</p>
               <p className="mt-2 text-xl font-bold text-text-primary">{formatCurrency(metrics.churnPendiente)}</p>
               <p className="mt-1 text-[10px] text-text-dimmed">De eventos de cancelación</p>
             </div>

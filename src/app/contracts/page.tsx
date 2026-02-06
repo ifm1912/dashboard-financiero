@@ -130,15 +130,15 @@ export default function ContractsPage() {
       {/* KPIs secundarios */}
       <div className="grid grid-cols-4 gap-4">
         <div className="rounded-lg border border-border-subtle bg-bg-surface/30 p-4">
-          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">Contratos Activos</p>
+          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">Contratos Recurrentes</p>
           <p className="mt-1.5 text-xl font-semibold text-text-primary">{kpis.activeCount}</p>
         </div>
         <div className="rounded-lg border border-border-subtle bg-bg-surface/30 p-4">
-          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">Clientes</p>
+          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">Clientes Recurrentes</p>
           <p className="mt-1.5 text-xl font-semibold text-text-primary">{kpis.uniqueClients}</p>
         </div>
         <div className="rounded-lg border border-border-subtle bg-bg-surface/30 p-4">
-          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">Churn Pendiente</p>
+          <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">Churn</p>
           <p className="mt-1.5 text-xl font-semibold text-danger">{formatCurrency(kpis.churnFromEvents)}</p>
         </div>
         <div className="rounded-lg border border-border-subtle bg-bg-surface/30 p-4">
