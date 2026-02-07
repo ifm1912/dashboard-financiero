@@ -234,7 +234,7 @@ export function InvoiceModal({
       />
 
       {/* Modal */}
-      <div className="relative z-10 w-full max-w-lg rounded-xl border border-border-subtle bg-bg-base p-6 shadow-2xl">
+      <div className="relative z-10 w-full max-w-lg rounded-none sm:rounded-xl border-0 sm:border border-border-subtle bg-bg-base p-4 sm:p-6 shadow-2xl h-full sm:h-auto overflow-y-auto sm:max-h-[90vh]">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-text-primary">
@@ -408,7 +408,7 @@ export function InvoiceModal({
           )}
 
           {/* Importes */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="mb-1.5 block text-xs font-medium text-text-muted">
                 Importe Neto *
@@ -458,7 +458,7 @@ export function InvoiceModal({
           </div>
 
           {/* Estado y Fecha de pago */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="mb-1.5 block text-xs font-medium text-text-muted">
                 Estado *

@@ -57,7 +57,7 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="rounded-xl border border-border-subtle bg-bg-surface p-8 shadow-sm">
+        <div className="rounded-xl border border-border-subtle bg-bg-surface p-6 sm:p-8 shadow-sm">
           <h1 className="text-lg font-semibold text-text-primary text-center mb-6">
             Iniciar sesión
           </h1>

@@ -1,6 +1,7 @@
 export { KPICard } from './KPICard';
 export { Sidebar } from './Sidebar';
 export { Header } from './Header';
+export { DashboardLayout } from './DashboardLayout';
 export { ChartContainer } from './ChartContainer';
 export { RevenueBarChart, MRRAreaChart, RevenueLineChart, ARRByClientChart, ARRByProductChart, ExpansionByClientChart, EventImpactChart, ARRByOwnerChart } from './Charts';
 export { InvoiceModal } from './InvoiceModal';

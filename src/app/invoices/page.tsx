@@ -253,17 +253,18 @@ export default function InvoicesPage() {
         </div>
         <button
           onClick={handleCreateClick}
-          className="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent/90 transition-colors"
+          className="flex items-center gap-1 sm:gap-2 rounded-lg bg-accent px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white hover:bg-accent/90 transition-colors"
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-          Nueva factura
+          <span className="hidden sm:inline">Nueva factura</span>
+          <span className="sm:hidden">Nueva</span>
         </button>
       </div>
 
       {/* KPIs for filtered data */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3">
         <KPICard
           label="Total Filtrado"
           value={formatCurrency(kpis.totalAmount)}
@@ -280,7 +281,7 @@ export default function InvoicesPage() {
 
       {/* Filters */}
       <div className="rounded-xl border border-border-subtle bg-bg-surface/50 p-5">
-        <div className="flex flex-wrap items-end gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-end sm:gap-4">
           {/* Status Filter */}
           <div className="min-w-[120px]">
             <label className="mb-1.5 block text-[10px] font-medium text-text-dimmed uppercase tracking-wider">Estado</label>
@@ -364,7 +365,7 @@ export default function InvoicesPage() {
           <h3 className="text-sm font-medium text-text-secondary">Listado de Facturas</h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[900px]">
             <thead>
               <tr className="border-t border-border-subtle">
                 <th
@@ -481,7 +482,7 @@ export default function InvoicesPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-border-subtle px-5 py-3">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-border-subtle px-3 sm:px-5 py-3">
             <p className="text-xs text-text-dimmed">
               {((currentPage - 1) * ITEMS_PER_PAGE) + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredInvoices.length)} de {filteredInvoices.length}
             </p>

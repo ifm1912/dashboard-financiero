@@ -216,7 +216,7 @@ export default function CashflowPage() {
               ))}
             </select>
           </div>
-          <div className="h-72 w-full">
+          <div className="h-48 sm:h-56 lg:h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={cashHistoryData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                 <defs>
@@ -271,7 +271,7 @@ export default function CashflowPage() {
           title="Inflows vs Outflows"
           subtitle="Comparativa mensual"
         >
-          <div className="h-72 w-full">
+          <div className="h-48 sm:h-56 lg:h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={cashflowChartData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />
@@ -327,7 +327,7 @@ export default function CashflowPage() {
             ))}
           </select>
         </div>
-        <div className="h-64 w-full">
+        <div className="h-48 sm:h-56 lg:h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={expensesByPeriod}

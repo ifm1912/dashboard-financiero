@@ -182,7 +182,7 @@ export default function Overview() {
         <h2 className="text-xs font-semibold uppercase tracking-wider text-text-dimmed mb-4">
           Salud Financiera General
         </h2>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
           <div className="rounded-xl border border-border-subtle bg-bg-surface p-4">
             <p className="text-[10px] font-medium uppercase tracking-wider text-text-dimmed">Revenue YTD</p>
             <p className="mt-2 text-2xl font-bold text-text-primary">{formatCurrency(metrics.ingresosYTD)}</p>
@@ -299,7 +299,7 @@ export default function Overview() {
         <h2 className="text-xs font-semibold uppercase tracking-wider text-text-dimmed mb-4">
           Eficiencia Operativa
         </h2>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3">
           <div className="rounded-xl border border-border-subtle bg-bg-surface p-4">
             <p className="text-[10px] font-medium uppercase tracking-wider text-text-dimmed">DSO</p>
             <p className="mt-2 text-2xl font-bold text-text-primary">{Math.round(metrics.dso)} días</p>
@@ -357,7 +357,7 @@ export default function Overview() {
                   <div className="flex items-center gap-1.5">
                     <div className="h-2 w-2 rounded-sm flex-shrink-0"
                       style={{ backgroundColor: CONCENTRATION_COLORS[index] }} />
-                    <span className="text-text-muted truncate max-w-[120px]">
+                    <span className="text-text-muted truncate max-w-[100px] sm:max-w-[120px]">
                       {client.name.split(' ')[0]}
                     </span>
                   </div>
@@ -374,8 +374,8 @@ export default function Overview() {
       <div className="rounded-lg border border-border-subtle bg-bg-muted/50 px-4 py-3">
         <p className="text-[10px] text-text-dimmed">
           <strong>Runway:</strong> Meses hasta agotamiento de caja basado en Net Burn actual.
-          <strong className="ml-3">DSO:</strong> Promedio calculado sobre facturas cobradas.
-          <strong className="ml-3">ARR en Riesgo:</strong> Contratos expirando en &lt;90 días.
+          <strong className="ml-1 sm:ml-3">DSO:</strong> Promedio calculado sobre facturas cobradas.
+          <strong className="ml-1 sm:ml-3">ARR en Riesgo:</strong> Contratos expirando en &lt;90 días.
         </p>
       </div>
     </div>

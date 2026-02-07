@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { headers } from "next/headers";
-import { Sidebar, Header } from "@/components";
+import { DashboardLayout } from "@/components";
 import { DateRangeProvider } from "@/contexts";
 import "./globals.css";
 
@@ -38,13 +38,9 @@ export default async function RootLayout({
           children
         ) : (
           <DateRangeProvider>
-            <Sidebar />
-            <Header />
-            <main className="ml-52 pt-14 min-h-screen">
-              <div className="px-8 py-8">
-                {children}
-              </div>
-            </main>
+            <DashboardLayout>
+              {children}
+            </DashboardLayout>
           </DateRangeProvider>
         )}
       </body>

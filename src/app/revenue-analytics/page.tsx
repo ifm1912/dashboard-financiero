@@ -347,10 +347,10 @@ export default function RevenueAnalyticsPage() {
   return (
     <div className="space-y-8">
       {/* Tab Navigation */}
-      <div className="flex items-center gap-2 border-b border-border-subtle">
+      <div className="flex items-center gap-1 sm:gap-2 border-b border-border-subtle overflow-x-auto">
         <button
           onClick={() => setActiveTab('overview')}
-          className={`px-4 py-2 text-sm font-medium transition-colors relative ${
+          className={`px-3 sm:px-4 py-2 text-sm font-medium transition-colors relative whitespace-nowrap ${
             activeTab === 'overview'
               ? 'text-accent'
               : 'text-text-muted hover:text-text-secondary'
@@ -363,7 +363,7 @@ export default function RevenueAnalyticsPage() {
         </button>
         <button
           onClick={() => setActiveTab('customers')}
-          className={`px-4 py-2 text-sm font-medium transition-colors relative ${
+          className={`px-3 sm:px-4 py-2 text-sm font-medium transition-colors relative whitespace-nowrap ${
             activeTab === 'customers'
               ? 'text-accent'
               : 'text-text-muted hover:text-text-secondary'
@@ -376,7 +376,7 @@ export default function RevenueAnalyticsPage() {
         </button>
         <button
           onClick={() => setActiveTab('breakdown')}
-          className={`px-4 py-2 text-sm font-medium transition-colors relative ${
+          className={`px-3 sm:px-4 py-2 text-sm font-medium transition-colors relative whitespace-nowrap ${
             activeTab === 'breakdown'
               ? 'text-accent'
               : 'text-text-muted hover:text-text-secondary'
@@ -400,7 +400,7 @@ export default function RevenueAnalyticsPage() {
           </div>
 
           {/* Main KPIs */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
             <KPICard
               label="Total Revenue"
               value={formatCurrency(devengoKpis.totalDevengado)}
@@ -457,7 +457,7 @@ export default function RevenueAnalyticsPage() {
 
           {/* Secondary KPIs based on mode */}
           {viewMode === 'devengo' && (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3">
               <KPICard
                 label="Total Devengado"
                 value={formatCurrency(devengoKpis.totalDevengado)}
@@ -477,7 +477,7 @@ export default function RevenueAnalyticsPage() {
           )}
 
           {viewMode === 'cobros' && (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3">
               <KPICard
                 label="Total Cobrado"
                 value={formatCurrency(cobrosKpis.totalCobrado)}
@@ -503,7 +503,7 @@ export default function RevenueAnalyticsPage() {
               <p className="mt-0.5 text-xs text-text-dimmed">Monthly Recurring Revenue histórico</p>
             </div>
 
-            <div className="h-80 w-full">
+            <div className="h-56 sm:h-64 lg:h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={mrrChartData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                   <defs>
@@ -556,7 +556,7 @@ export default function RevenueAnalyticsPage() {
               </p>
             </div>
 
-            <div className="h-80 w-full">
+            <div className="h-56 sm:h-64 lg:h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={monthlyData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />
@@ -593,7 +593,7 @@ export default function RevenueAnalyticsPage() {
               <p className="mt-0.5 text-xs text-text-dimmed">Evolución mensual del cash gap</p>
             </div>
 
-            <div className="h-80 w-full">
+            <div className="h-56 sm:h-64 lg:h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={monthlyData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />
@@ -639,7 +639,7 @@ export default function RevenueAnalyticsPage() {
       {activeTab === 'customers' && (
         <div className="space-y-8">
           {/* Customer KPIs */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
             <KPICard
               label="Total Clientes"
               value={String(customerKpis.totalClientes)}
@@ -667,7 +667,7 @@ export default function RevenueAnalyticsPage() {
               <p className="mt-0.5 text-xs text-text-dimmed">Concentración de ingresos</p>
             </div>
 
-            <div className="h-80 w-full">
+            <div className="h-56 sm:h-64 lg:h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={top10Customers} layout="vertical" margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} horizontal={false} />
@@ -701,7 +701,7 @@ export default function RevenueAnalyticsPage() {
               <h3 className="text-sm font-medium text-text-secondary">Listado de Clientes</h3>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full min-w-[800px]">
                 <thead>
                   <tr className="border-t border-border-subtle">
                     <th

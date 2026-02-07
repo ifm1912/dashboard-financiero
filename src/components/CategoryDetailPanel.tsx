@@ -112,7 +112,7 @@ export function CategoryDetailPanel({
       />
 
       {/* Panel */}
-      <div className="relative w-full max-w-md bg-white shadow-2xl overflow-y-auto">
+      <div className="relative w-full max-w-full sm:max-w-md bg-white shadow-2xl overflow-y-auto">
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-border-subtle p-4">
           <div className="flex items-start justify-between">

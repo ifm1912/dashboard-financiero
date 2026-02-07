@@ -156,10 +156,10 @@ export default function ContractsForecastPage() {
   return (
     <div className="space-y-8">
       {/* Tab Navigation */}
-      <div className="flex items-center gap-2 border-b border-border-subtle">
+      <div className="flex items-center gap-1 sm:gap-2 border-b border-border-subtle overflow-x-auto">
         <button
           onClick={() => setActiveTab('portfolio')}
-          className={`px-4 py-2 text-sm font-medium transition-colors relative ${
+          className={`px-3 sm:px-4 py-2 text-sm font-medium transition-colors relative whitespace-nowrap ${
             activeTab === 'portfolio'
               ? 'text-accent'
               : 'text-text-muted hover:text-text-secondary'
@@ -172,7 +172,7 @@ export default function ContractsForecastPage() {
         </button>
         <button
           onClick={() => setActiveTab('expansion')}
-          className={`px-4 py-2 text-sm font-medium transition-colors relative ${
+          className={`px-3 sm:px-4 py-2 text-sm font-medium transition-colors relative whitespace-nowrap ${
             activeTab === 'expansion'
               ? 'text-accent'
               : 'text-text-muted hover:text-text-secondary'
@@ -185,7 +185,7 @@ export default function ContractsForecastPage() {
         </button>
         <button
           onClick={() => setActiveTab('forecast')}
-          className={`px-4 py-2 text-sm font-medium transition-colors relative ${
+          className={`px-3 sm:px-4 py-2 text-sm font-medium transition-colors relative whitespace-nowrap ${
             activeTab === 'forecast'
               ? 'text-accent'
               : 'text-text-muted hover:text-text-secondary'
@@ -198,7 +198,7 @@ export default function ContractsForecastPage() {
         </button>
         <button
           onClick={() => setActiveTab('owners')}
-          className={`px-4 py-2 text-sm font-medium transition-colors relative ${
+          className={`px-3 sm:px-4 py-2 text-sm font-medium transition-colors relative whitespace-nowrap ${
             activeTab === 'owners'
               ? 'text-accent'
               : 'text-text-muted hover:text-text-secondary'
@@ -215,7 +215,7 @@ export default function ContractsForecastPage() {
       {activeTab === 'portfolio' && (
         <div className="space-y-8">
           {/* Main KPIs */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3">
             <KPICard
               label="ARR Contractual Base"
               value={formatCurrency(contractKpis.arrBase)}
@@ -234,7 +234,7 @@ export default function ContractsForecastPage() {
           </div>
 
           {/* Secondary KPIs */}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             <div className="rounded-lg border border-border-subtle bg-bg-surface/30 p-4">
               <p className="text-[11px] font-medium uppercase tracking-wider text-text-dimmed">Contratos Recurrentes</p>
               <p className="mt-1.5 text-xl font-semibold text-text-primary">{contractKpis.activeCount}</p>
@@ -305,7 +305,7 @@ export default function ContractsForecastPage() {
       {activeTab === 'expansion' && (
         <div className="space-y-8">
           {/* KPIs */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3">
             <KPICard
               label="Total Expansión"
               value={formatCurrency(contractKpis.expansion)}
@@ -385,7 +385,7 @@ export default function ContractsForecastPage() {
               </div>
 
               {/* Forecast KPIs */}
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
                 <KPICard
                   label="Forecast M+1"
                   value={formatCurrency(forecast.forecastM1)}
@@ -420,7 +420,7 @@ export default function ContractsForecastPage() {
                   title="Forecast por Horizonte"
                   subtitle="Proyección acumulada"
                 >
-                  <div className="h-72 w-full">
+                  <div className="h-48 sm:h-56 lg:h-72 w-full">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={horizonChartData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />
@@ -463,7 +463,7 @@ export default function ContractsForecastPage() {
                   title={`Vista FY${forecast.fiscalYear}`}
                   subtitle="Facturado vs Forecast"
                 >
-                  <div className="h-72 w-full">
+                  <div className="h-48 sm:h-56 lg:h-72 w-full">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
                         data={fyChartData}
@@ -505,7 +505,7 @@ export default function ContractsForecastPage() {
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
-                  <div className="mt-4 flex items-center justify-center gap-6 text-sm">
+                  <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-xs sm:text-sm">
                     <div className="flex items-center gap-2">
                       <div className="h-3 w-3 rounded" style={{ backgroundColor: CHART_COLORS.secondary }} />
                       <span className="text-text-muted">Facturado YTD: {formatCurrency(forecast.facturadoYTD)}</span>
@@ -527,7 +527,7 @@ export default function ContractsForecastPage() {
                   </p>
                 </div>
                 <div className="overflow-x-auto">
-                  <table className="w-full">
+                  <table className="w-full min-w-[900px]">
                     <thead>
                       <tr className="border-t border-border-subtle">
                         <th className="px-5 py-3 text-left text-[10px] font-medium text-text-dimmed uppercase tracking-wider">
@@ -659,7 +659,7 @@ export default function ContractsForecastPage() {
       {activeTab === 'owners' && (
         <div className="space-y-8">
           {/* KPIs */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3">
             <KPICard
               label="Total ARR"
               value={formatCurrency(contractKpis.arrActual)}

@@ -65,7 +65,7 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
 
 export function RevenueBarChart({ data }: RevenueChartProps) {
   return (
-    <div className="h-80 w-full">
+    <div className="h-56 sm:h-64 lg:h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
           <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />
@@ -117,7 +117,7 @@ export function MRRAreaChart({ data }: MRRChartProps) {
   }));
 
   return (
-    <div className="h-80 w-full">
+    <div className="h-56 sm:h-64 lg:h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={formattedData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
           <defs>
@@ -159,7 +159,7 @@ export function MRRAreaChart({ data }: MRRChartProps) {
 
 export function RevenueLineChart({ data }: RevenueChartProps) {
   return (
-    <div className="h-80 w-full">
+    <div className="h-56 sm:h-64 lg:h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
           <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />
@@ -271,7 +271,7 @@ export function ARRByClientChart({ contracts }: ContractChartProps) {
     .slice(0, 10);
 
   return (
-    <div className="h-80 w-full">
+    <div className="h-56 sm:h-64 lg:h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} layout="vertical" margin={{ top: 8, right: 8, left: 80, bottom: 0 }}>
           <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} horizontal={false} />
@@ -321,7 +321,7 @@ export function ARRByProductChart({ contracts }: ContractChartProps) {
     .sort((a, b) => b.value - a.value);
 
   return (
-    <div className="h-80 w-full">
+    <div className="h-56 sm:h-64 lg:h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -383,14 +383,14 @@ export function ExpansionByClientChart({ contracts }: ContractChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex h-80 items-center justify-center text-text-muted">
+      <div className="flex h-56 sm:h-64 lg:h-80 items-center justify-center text-text-muted">
         Sin expansiones registradas
       </div>
     );
   }
 
   return (
-    <div className="h-80 w-full">
+    <div className="h-56 sm:h-64 lg:h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
           <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />
@@ -466,14 +466,14 @@ export function EventImpactChart({ events }: EventChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex h-80 items-center justify-center text-text-muted">
+      <div className="flex h-56 sm:h-64 lg:h-80 items-center justify-center text-text-muted">
         Sin eventos registrados
       </div>
     );
   }
 
   return (
-    <div className="h-80 w-full">
+    <div className="h-56 sm:h-64 lg:h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
           <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />
@@ -540,7 +540,7 @@ export function ARRByOwnerChart({ contracts }: ContractChartProps) {
     .sort((a, b) => b.arr - a.arr);
 
   return (
-    <div className="h-64 w-full">
+    <div className="h-48 sm:h-56 lg:h-64 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
           <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />

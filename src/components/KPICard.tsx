@@ -14,14 +14,14 @@ export function KPICard({ label, value, trend, subtitle }: KPICardProps) {
   const isPositive = trend ? trend.value >= 0 : true;
 
   return (
-    <div className="group rounded-xl border border-border-subtle bg-bg-surface/50 p-5 transition-all duration-200 hover:bg-bg-surface hover:border-border-default">
+    <div className="group rounded-xl border border-border-subtle bg-bg-surface/50 p-3 sm:p-4 md:p-5 transition-all duration-200 hover:bg-bg-surface hover:border-border-default">
       {/* Label - pequeño y muted */}
       <p className="text-xs font-medium uppercase tracking-wider text-text-muted">
         {label}
       </p>
 
       {/* Value - grande y bold */}
-      <p className="mt-3 text-3xl font-bold tracking-tight text-text-primary">
+      <p className="mt-3 text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-text-primary">
         {value}
       </p>
 
