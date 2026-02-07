@@ -145,36 +145,6 @@ export default function RevenueAnalyticsPage() {
     return { totalCobrado, numFacturasCobradas, cashGap, diasMediosCobro };
   }, [filteredByCobro, filteredByDevengo]);
 
-  // MRR KPIs
-  const mrrKpis = useMemo(() => {
-    if (filteredMRR.length === 0) {
-      return { currentMRR: 0, currentARR: 0, deltaMRR: 0, deltaPercent: 0 };
-    }
-
-    const current = filteredMRR[filteredMRR.length - 1];
-    const previous = filteredMRR.length > 1 ? filteredMRR[filteredMRR.length - 2] : null;
-    const deltaMRR = previous ? current.mrr_approx - previous.mrr_approx : 0;
-    const deltaPercent = previous && previous.mrr_approx > 0
-      ? ((current.mrr_approx - previous.mrr_approx) / previous.mrr_approx) * 100
-      : 0;
-
-    return {
-      currentMRR: current.mrr_approx,
-      currentARR: current.arr_approx,
-      deltaMRR,
-      deltaPercent,
-    };
-  }, [filteredMRR]);
-
-  // Recurring percentage
-  const recurringPercent = useMemo(() => {
-    const totalRevenue = filteredByDevengo.reduce((sum, inv) => sum + inv.amount_net, 0);
-    const recurringRevenue = filteredByDevengo
-      .filter(inv => inv.is_recurring || inv.revenue_category === 'recurring')
-      .reduce((sum, inv) => sum + inv.amount_net, 0);
-    return totalRevenue > 0 ? (recurringRevenue / totalRevenue) * 100 : 0;
-  }, [filteredByDevengo]);
-
   // Monthly data
   const monthlyData = useMemo(() => {
     const monthMap = new Map<string, { devengado: number; cobrado: number }>();
@@ -397,33 +367,6 @@ export default function RevenueAnalyticsPage() {
             <p className="text-[11px] text-text-dimmed">
               MRR aproximado basado en fecha de emisión. Solo facturas con revenue_category = recurring.
             </p>
-          </div>
-
-          {/* Main KPIs */}
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-            <KPICard
-              label="Total Revenue"
-              value={formatCurrency(devengoKpis.totalDevengado)}
-              subtitle="Facturación emitida"
-            />
-            <KPICard
-              label="% Recurring"
-              value={formatPercent(recurringPercent)}
-              subtitle="Del total de ingresos"
-            />
-            <KPICard
-              label="MRR Actual"
-              value={formatCurrency(mrrKpis.currentMRR)}
-              subtitle="Último mes del período"
-            />
-            <KPICard
-              label="ARR Actual"
-              value={formatCurrency(mrrKpis.currentARR)}
-              trend={{
-                value: mrrKpis.deltaPercent,
-                label: 'vs mes anterior'
-              }}
-            />
           </div>
 
           {/* Mode Toggle */}
