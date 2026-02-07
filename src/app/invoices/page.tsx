@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { KPICard, InvoiceModal } from '@/components';
 import { formatCurrency, formatPercent, filterInvoicesByDevengo } from '@/lib/data';
+import { exportInvoicesToExcel } from '@/lib/export-excel';
 import { Invoice } from '@/types';
 import { useDateRange } from '@/contexts';
 
@@ -209,6 +210,11 @@ export default function InvoicesPage() {
     setCurrentPage(1);
   }, [statusFilter, categoryFilter, customerFilter, dateFrom, dateTo]);
 
+  const handleExportExcel = useCallback(() => {
+    if (filteredInvoices.length === 0) return;
+    exportInvoicesToExcel(filteredInvoices);
+  }, [filteredInvoices]);
+
   const handleSort = (field: SortField) => {
     if (sortField === field) {
       setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
@@ -245,22 +251,35 @@ export default function InvoicesPage() {
 
   return (
     <div className="space-y-8">
-      {/* Header con botón Nueva factura */}
+      {/* Header con botones */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold text-text-primary">Facturas</h1>
           <p className="text-sm text-text-muted">Gestión y seguimiento de facturación</p>
         </div>
-        <button
-          onClick={handleCreateClick}
-          className="flex items-center gap-1 sm:gap-2 rounded-lg bg-accent px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white hover:bg-accent/90 transition-colors"
-        >
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          <span className="hidden sm:inline">Nueva factura</span>
-          <span className="sm:hidden">Nueva</span>
-        </button>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            onClick={handleExportExcel}
+            disabled={filteredInvoices.length === 0}
+            className="flex items-center gap-1 sm:gap-2 rounded-lg border border-border-subtle px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-text-secondary hover:bg-bg-hover hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span className="hidden sm:inline">Exportar Excel</span>
+            <span className="sm:hidden">Excel</span>
+          </button>
+          <button
+            onClick={handleCreateClick}
+            className="flex items-center gap-1 sm:gap-2 rounded-lg bg-accent px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white hover:bg-accent/90 transition-colors"
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            <span className="hidden sm:inline">Nueva factura</span>
+            <span className="sm:hidden">Nueva</span>
+          </button>
+        </div>
       </div>
 
       {/* KPIs for filtered data */}
