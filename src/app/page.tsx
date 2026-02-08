@@ -14,6 +14,7 @@ import {
 } from '@/lib/data';
 import { calculateForecast } from '@/lib/forecast';
 import { calculateCashflowMetrics } from '@/lib/cashflow';
+import { generateExecutiveReport } from '@/lib/report-pdf';
 import { Invoice, Contract, CashBalance, Expense, BankInflow, MRRMetric } from '@/types';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -36,6 +37,7 @@ export default function Overview() {
   const [inflows, setInflows] = useState<BankInflow[]>([]);
   const [mrrData, setMrrData] = useState<MRRMetric[]>([]);
   const [loading, setLoading] = useState(true);
+  const [generatingPDF, setGeneratingPDF] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -162,6 +164,17 @@ export default function Overview() {
     };
   }, [invoices, contracts, cashBalance, expenses, inflows, mrrData]);
 
+  const handleGeneratePDF = async () => {
+    setGeneratingPDF(true);
+    try {
+      await generateExecutiveReport();
+    } catch (error) {
+      console.error('Error generating PDF report:', error);
+    } finally {
+      setGeneratingPDF(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex h-[60vh] items-center justify-center">
@@ -172,9 +185,26 @@ export default function Overview() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-text-primary">Executive Dashboard</h1>
-        <p className="text-sm text-text-muted mt-1">Vista consolidada de métricas críticas</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-text-primary">Executive Dashboard</h1>
+          <p className="text-sm text-text-muted mt-1">Vista consolidada de métricas críticas</p>
+        </div>
+        <button
+          onClick={handleGeneratePDF}
+          disabled={generatingPDF || loading}
+          className="flex items-center gap-1 sm:gap-2 rounded-lg border border-border-subtle px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-text-secondary hover:bg-bg-hover hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        >
+          {generatingPDF ? (
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+          ) : (
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          )}
+          <span className="hidden sm:inline">Informe PDF</span>
+          <span className="sm:hidden">PDF</span>
+        </button>
       </div>
 
       {/* SECCIÓN 1: SALUD FINANCIERA GENERAL */}
