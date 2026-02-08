@@ -1,0 +1,140 @@
+{
+  "clients": {
+    "ABNC": {
+      "fiscal_name": "ABANCA Corporación Bancaria, S.A.",
+      "nif": "A70302039",
+      "address": "Calle Claudino Pita 2",
+      "postal_code": "15300",
+      "city": "Betanzos-A Coruña",
+      "country": "España"
+    },
+    "AIE": {
+      "fiscal_name": "AIE",
+      "nif": "",
+      "address": "",
+      "postal_code": "",
+      "city": "",
+      "country": "España"
+    },
+    "AIV": {
+      "fiscal_name": "AIVA TPA SERVICES S.A.",
+      "nif": "RUT: 21 505740 0017",
+      "address": "RUTA 8KM 17,500,ZONAMERICA ED. BETA 3, OFI.10",
+      "postal_code": "null",
+      "city": "Montevideo",
+      "country": "Uruguay"
+    },
+    "AND": {
+      "fiscal_name": "ANDBANK ESPAÑA BANCA PRIVADA S.A.U.",
+      "nif": "A58891672",
+      "address": "Paseo de la Castellana 55, 3ª planta",
+      "postal_code": "28046",
+      "city": "Madrid",
+      "country": "España"
+    },
+    "BKT": {
+      "fiscal_name": "BANKINTER GLOBAL SERVICES, S.A",
+      "nif": "A8598241",
+      "address": "C/ Pico de San Pedro, 2",
+      "postal_code": "28760",
+      "city": "Tres Cantos, Madrid",
+      "country": "España"
+    },
+    "CAS": {
+      "fiscal_name": "CASER VALORES E INVERSIONES, A.V. S.A.U.",
+      "nif": "A87997706",
+      "address": "c/ Plaza Lealtad, 4 - 4ª PL, ",
+      "postal_code": "28014",
+      "city": "Madrid",
+      "country": "España"
+    },
+    "CJM": {
+      "fiscal_name": "Banco de Crédito Social Cooperativo S.A",
+      "nif": "A86853140",
+      "address": "Paseo Castellana, 87",
+      "postal_code": "28046",
+      "city": "Madrid",
+      "country": "España"
+    },
+    "CKB": {
+      "fiscal_name": "CECABANK SA",
+      "nif": "A86436011",
+      "address": "Calle Alcalá núm. 27",
+      "postal_code": "28014",
+      "city": "Madrid",
+      "country": "España"
+    },
+    "FDP": {
+      "fiscal_name": "PRIMER DECIL CONSULTORES Y EDITORES, S.L.",
+      "nif": "B-85430718",
+      "address": "Paseo de la Castellana 91, planta 2",
+      "postal_code": "28046",
+      "city": "Madrid",
+      "country": "España"
+    },
+    "INDXA": {
+      "fiscal_name": "Indexa Capital AV, SA",
+      "nif": "A87409728",
+      "address": "Calle Serrano 213, planta 1, B1",
+      "postal_code": "28016",
+      "city": "Madrid",
+      "country": "España"
+    },
+    "JDS": {
+      "fiscal_name": "JDS",
+      "nif": "",
+      "address": "",
+      "postal_code": "",
+      "city": "",
+      "country": "España"
+    },
+    "MTUA": {
+      "fiscal_name": "MTUA",
+      "nif": "",
+      "address": "",
+      "postal_code": "",
+      "city": "",
+      "country": "España"
+    },
+    "MY": {
+      "fiscal_name": "MYINVESTOR BANCO, S.A.",
+      "nif": "A86701711",
+      "address": "C/ Columela nº8",
+      "postal_code": "28001",
+      "city": "Madrid",
+      "country": "España"
+    },
+    "PRV": {
+      "fiscal_name": "PORVENIR, S.A.",
+      "nif": "8001443313",
+      "address": "Carrera 13 # 26 A-65",
+      "postal_code": "null",
+      "city": "BOGOTÁ, D.C.",
+      "country": "Colombia"
+    },
+    "SAM": {
+      "fiscal_name": "SANTANDER ASSET MANAGEMENT, SA, SGIIC",
+      "nif": "A28269983",
+      "address": "Paseo de la Castellana 24",
+      "postal_code": "28046",
+      "city": "Madrid",
+      "country": "España"
+    },
+    "SKA": {
+      "fiscal_name": "Skandia Pensiones y Cesantías – ACCAI S.A.",
+      "nif": "830.053.800-1",
+      "address": "Av. 19 # 109 A – 30,",
+      "postal_code": "null",
+      "city": "Bogota",
+      "country": "Colombia"
+    },
+    "SaaS": {
+      "fiscal_name": "SaaS",
+      "nif": "",
+      "address": "",
+      "postal_code": "",
+      "city": "",
+      "country": "España"
+    }
+  }
+}

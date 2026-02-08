@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { Invoice, MonthlyMetric, MRRMetric, KPIData, ChartDataPoint, Contract, ContractEvent, Expense, CashBalance, BankInflow } from '@/types';
+import { Invoice, MonthlyMetric, MRRMetric, KPIData, ChartDataPoint, Contract, ContractEvent, Expense, CashBalance, BankInflow, BillingClient } from '@/types';
 import { DateRange } from '@/contexts/DateRangeContext';
 import { normalizeExpenseSubcategory } from './expense-normalizer';
 
@@ -333,4 +333,14 @@ export function generateMonthlyChartData(invoices: Invoice[]): ChartDataPoint[] 
       total: data.recurring + data.non_recurring,
     };
   });
+}
+
+// ============================================
+// Datos de facturación de clientes
+// ============================================
+
+export async function getBillingClients(): Promise<Record<string, BillingClient>> {
+  const response = await fetch(`${BASE_URL}/data/billing_clients.json`);
+  const data = await response.json();
+  return data.clients;
 }

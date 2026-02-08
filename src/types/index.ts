@@ -285,3 +285,16 @@ export interface BankInflow {
   amount: number;             // Positivo
   description: string;
 }
+
+// ============================================
+// Tipos para Facturación (datos de cliente)
+// ============================================
+
+export interface BillingClient {
+  fiscal_name: string;
+  nif: string;
+  address: string;
+  postal_code: string;
+  city: string;
+  country: string;
+}

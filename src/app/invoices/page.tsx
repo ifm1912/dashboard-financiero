@@ -67,6 +67,9 @@ export default function InvoicesPage() {
   const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
 
+  // PDF generation state
+  const [generatingPDFId, setGeneratingPDFId] = useState<string | null>(null);
+
   // Filters
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -120,6 +123,18 @@ export default function InvoicesPage() {
   const handleModalSuccess = () => {
     // Recargar datos después de crear/editar
     loadData();
+  };
+
+  const handleDownloadPDF = async (invoice: Invoice) => {
+    setGeneratingPDFId(invoice.invoice_id);
+    try {
+      const { generateInvoicePDF } = await import('@/lib/invoice-pdf');
+      await generateInvoicePDF(invoice);
+    } catch (error) {
+      console.error('Error generating invoice PDF:', error);
+    } finally {
+      setGeneratingPDFId(null);
+    }
   };
 
   // Filtrar por rango de fechas global primero
@@ -486,12 +501,33 @@ export default function InvoicesPage() {
                     }
                   </td>
                   <td className="px-5 py-3 text-center">
-                    <button
-                      onClick={() => handleEditClick(invoice)}
-                      className="rounded-md px-2.5 py-1 text-xs font-medium text-accent hover:bg-accent/10 transition-colors"
-                    >
-                      Editar
-                    </button>
+                    <div className="flex items-center justify-center gap-1">
+                      <button
+                        onClick={() => handleEditClick(invoice)}
+                        className="rounded-md px-2.5 py-1 text-xs font-medium text-accent hover:bg-accent/10 transition-colors"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDownloadPDF(invoice)}
+                        disabled={generatingPDFId === invoice.invoice_id}
+                        className="rounded-md px-2.5 py-1 text-xs font-medium text-text-muted hover:bg-bg-hover hover:text-text-primary transition-colors disabled:opacity-50"
+                      >
+                        {generatingPDFId === invoice.invoice_id ? (
+                          <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                        ) : (
+                          <span className="flex items-center gap-1">
+                            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                            </svg>
+                            PDF
+                          </span>
+                        )}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
