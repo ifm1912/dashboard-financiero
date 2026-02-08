@@ -35,8 +35,6 @@ const C = {
   headerBg: [241, 245, 249] as RGB,  // #f1f5f9 (slate-100)
   footerBg: [30, 41, 59] as RGB,     // #1e293b (slate-800)
   white: [255, 255, 255] as RGB,
-  logoPurple: [139, 92, 246] as RGB, // #8b5cf6
-  logoOrange: [251, 146, 60] as RGB, // #fb923c
 };
 
 // Datos fijos de la empresa
@@ -84,37 +82,41 @@ function setDrawColor(doc: jsPDF, rgb: RGB) {
   doc.setDrawColor(rgb[0], rgb[1], rgb[2]);
 }
 
-// ── Logo dibujado ────────────────────────────────────────────────
+// ── Logo ─────────────────────────────────────────────────────────
 
-function drawLogo(doc: jsPDF, x: number, y: number) {
-  // Dibujar el icono del logo (4 círculos 2x2)
-  const r = 4.5; // radio de cada círculo
-  const gap = 1.5; // espacio entre círculos
+/** Carga la imagen del logo como base64 data URL */
+async function loadLogoImage(): Promise<string | null> {
+  try {
+    const response = await fetch('/logo-gptadvisor.png');
+    const blob = await response.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(blob);
+    });
+  } catch {
+    return null;
+  }
+}
 
-  // Fila superior
-  setFillColor(doc, C.logoPurple);
-  doc.circle(x + r, y + r, r, 'F');
-  setFillColor(doc, C.logoOrange);
-  doc.circle(x + r * 2 + gap + r, y + r, r, 'F');
-
-  // Fila inferior
-  setFillColor(doc, C.logoOrange);
-  doc.circle(x + r, y + r * 2 + gap + r, r, 'F');
-  setFillColor(doc, C.logoPurple);
-  doc.circle(x + r * 2 + gap + r, y + r * 2 + gap + r, r, 'F');
-
-  // Texto "GPTadvisor" al lado
-  const textX = x + (r * 2 + gap) * 2 + 6;
-  const textY = y + r * 2 + gap / 2 + 2;
-
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(22);
-  setColor(doc, C.black);
-  doc.text('GPT', textX, textY);
-
-  const gptWidth = doc.getTextWidth('GPT');
-  doc.setFont('helvetica', 'normal');
-  doc.text('advisor', textX + gptWidth, textY);
+function drawLogo(doc: jsPDF, x: number, y: number, logoData: string | null) {
+  if (logoData) {
+    // Imagen real: 586×252px → ratio 2.33:1
+    // Tamaño en PDF: ~70mm ancho × ~30mm alto
+    const logoW = 70;
+    const logoH = logoW / (586 / 252); // ≈ 30mm
+    doc.addImage(logoData, 'PNG', x, y, logoW, logoH);
+  } else {
+    // Fallback texto si no se puede cargar la imagen
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    setColor(doc, C.black);
+    doc.text('GPT', x, y + 12);
+    const gptWidth = doc.getTextWidth('GPT');
+    doc.setFont('helvetica', 'normal');
+    doc.text('advisor', x + gptWidth, y + 12);
+  }
 }
 
 // ── Secciones del PDF ────────────────────────────────────────────
@@ -430,13 +432,19 @@ function drawFooter(doc: jsPDF) {
 // ── Función principal ────────────────────────────────────────────
 
 export async function generateInvoicePDF(invoice: Invoice): Promise<void> {
-  // Cargar datos de facturación del cliente
+  // Cargar datos de facturación del cliente y logo en paralelo
   let billingClients: Record<string, BillingClient> = {};
+  let logoData: string | null = null;
+
   try {
-    billingClients = await getBillingClients();
+    const [clients, logo] = await Promise.all([
+      getBillingClients().catch(() => ({} as Record<string, BillingClient>)),
+      loadLogoImage(),
+    ]);
+    billingClients = clients;
+    logoData = logo;
   } catch {
-    // Si falla la carga, continuamos sin datos de facturación
-    console.warn('No se pudieron cargar los datos de facturación de clientes');
+    console.warn('Error cargando recursos para la factura');
   }
 
   // Buscar cliente (intentar con nombre exacto y trimmed)
@@ -449,8 +457,8 @@ export async function generateInvoicePDF(invoice: Invoice): Promise<void> {
   // ── Renderizar secciones ──
   let y = 18;
 
-  // 1. Logo
-  drawLogo(doc, ML, y);
+  // 1. Logo (imagen real PNG)
+  drawLogo(doc, ML, y, logoData);
   y += 35;
 
   // 2. Datos empresa (izquierda) + meta factura (derecha)
