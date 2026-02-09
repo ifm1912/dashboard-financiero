@@ -43,6 +43,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
  * Edita una factura (todos los campos editables)
  */
 export async function PUT(request: NextRequest, { params }: RouteParams) {
+  // Bloquear ediciones en Vercel (producción)
+  if (process.env.VERCEL) {
+    return NextResponse.json(
+      { error: 'Las ediciones solo están disponibles en el entorno local. Edita en desarrollo y despliega a Vercel.' },
+      { status: 403 }
+    );
+  }
+
   try {
     const { id } = await params;
     const input: InvoiceEditInput = await request.json();

@@ -38,6 +38,14 @@ export async function GET() {
  * Crea una nueva factura
  */
 export async function POST(request: NextRequest) {
+  // Bloquear creación en Vercel (producción)
+  if (process.env.VERCEL) {
+    return NextResponse.json(
+      { error: 'La creación de facturas solo está disponible en el entorno local. Crea en desarrollo y despliega a Vercel.' },
+      { status: 403 }
+    );
+  }
+
   try {
     const input: InvoiceCreateInput = await request.json();
 

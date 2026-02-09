@@ -70,6 +70,9 @@ export default function InvoicesPage() {
   // PDF generation state
   const [generatingPDFId, setGeneratingPDFId] = useState<string | null>(null);
 
+  // Modo solo lectura en producción (Vercel)
+  const isReadOnly = process.env.NEXT_PUBLIC_IS_VERCEL === '1';
+
   // Filters
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -286,7 +289,13 @@ export default function InvoicesPage() {
           </button>
           <button
             onClick={handleCreateClick}
-            className="flex items-center gap-1 sm:gap-2 rounded-lg bg-accent px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white hover:bg-accent/90 transition-colors"
+            disabled={isReadOnly}
+            title={isReadOnly ? 'Solo disponible en entorno local' : undefined}
+            className={`flex items-center gap-1 sm:gap-2 rounded-lg px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors ${
+              isReadOnly
+                ? 'bg-accent/40 text-white/60 cursor-not-allowed'
+                : 'bg-accent text-white hover:bg-accent/90'
+            }`}
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -504,7 +513,13 @@ export default function InvoicesPage() {
                     <div className="flex items-center justify-center gap-1">
                       <button
                         onClick={() => handleEditClick(invoice)}
-                        className="rounded-md px-2.5 py-1 text-xs font-medium text-accent hover:bg-accent/10 transition-colors"
+                        disabled={isReadOnly}
+                        title={isReadOnly ? 'Solo disponible en entorno local' : undefined}
+                        className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                          isReadOnly
+                            ? 'text-text-dimmed cursor-not-allowed'
+                            : 'text-accent hover:bg-accent/10'
+                        }`}
                       >
                         Editar
                       </button>
