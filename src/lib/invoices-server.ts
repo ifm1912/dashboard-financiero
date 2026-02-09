@@ -17,10 +17,13 @@ import {
   REVENUE_TYPES,
 } from '@/types';
 
-// Ruta al CSV de facturas
-const DATA_DIR = path.join(process.cwd(), 'public', 'data');
-const CSV_FILE = path.join(DATA_DIR, 'facturas_historicas_enriquecido.csv');
-const BACKUP_DIR = path.join(DATA_DIR, 'backups');
+// Rutas al CSV de facturas
+// En Vercel, public/ es read-only → escribimos en /tmp/ con fallback de lectura a public/
+const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public', 'data');
+const PUBLIC_CSV = path.join(PUBLIC_DATA_DIR, 'facturas_historicas_enriquecido.csv');
+const TMP_DIR = '/tmp';
+const TMP_CSV = path.join(TMP_DIR, 'facturas_historicas_enriquecido.csv');
+const BACKUP_DIR = path.join(TMP_DIR, 'backups');
 
 // Header exacto del CSV (orden de columnas)
 const CSV_HEADERS = [
@@ -339,9 +342,17 @@ export function updateInvoice(invoice: Invoice, input: InvoiceEditInput): Invoic
 
 /**
  * Lee todas las facturas del CSV
+ * Intenta leer de /tmp/ primero (datos editados), fallback a public/data/ (original del deploy)
  */
 export async function readInvoicesFromCSV(): Promise<Invoice[]> {
-  const content = await fs.readFile(CSV_FILE, 'utf-8');
+  let content: string;
+  try {
+    // Intentar leer de /tmp/ (contiene ediciones recientes)
+    content = await fs.readFile(TMP_CSV, 'utf-8');
+  } catch {
+    // Fallback a public/data/ (CSV original del deploy)
+    content = await fs.readFile(PUBLIC_CSV, 'utf-8');
+  }
 
   const result = Papa.parse<Invoice>(content, {
     header: true,
@@ -402,7 +413,7 @@ function invoicesToCSV(invoices: Invoice[]): string {
 }
 
 /**
- * Crea backup del CSV actual
+ * Crea backup del CSV actual en /tmp/backups/
  */
 async function createBackup(): Promise<string> {
   // Crear directorio de backups si no existe
@@ -412,14 +423,19 @@ async function createBackup(): Promise<string> {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const backupFile = path.join(BACKUP_DIR, `facturas_${timestamp}.csv`);
 
-  // Copiar archivo actual
-  await fs.copyFile(CSV_FILE, backupFile);
+  // Copiar desde /tmp/ si existe, sino desde public/
+  try {
+    await fs.copyFile(TMP_CSV, backupFile);
+  } catch {
+    await fs.copyFile(PUBLIC_CSV, backupFile);
+  }
 
   return backupFile;
 }
 
 /**
  * Escribe facturas al CSV de forma segura (atomic write con backup)
+ * Escribe siempre en /tmp/ (escribible en Vercel serverless)
  */
 export async function writeInvoicesToCSV(invoices: Invoice[]): Promise<void> {
   // Lock simple para evitar escrituras concurrentes
@@ -433,13 +449,13 @@ export async function writeInvoicesToCSV(invoices: Invoice[]): Promise<void> {
     // 1. Crear backup
     await createBackup();
 
-    // 2. Escribir a archivo temporal
-    const tempFile = path.join(DATA_DIR, `facturas_temp_${Date.now()}.csv`);
+    // 2. Escribir a archivo temporal en /tmp/
+    const tempFile = path.join(TMP_DIR, `facturas_temp_${Date.now()}.csv`);
     const csvContent = invoicesToCSV(invoices);
     await fs.writeFile(tempFile, csvContent, 'utf-8');
 
-    // 3. Rename atómico (reemplazar original)
-    await fs.rename(tempFile, CSV_FILE);
+    // 3. Rename atómico (reemplazar en /tmp/)
+    await fs.rename(tempFile, TMP_CSV);
   } finally {
     writeLock = false;
   }
