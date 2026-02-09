@@ -1,7 +1,11 @@
 {
-  "current_balance": 411541.63,
-  "last_updated": "2025-12-31",
+  "current_balance": 638662.72,
+  "last_updated": "2026-01-31",
   "history": [
+    {
+      "month": "2026-01",
+      "balance": 638662.72
+    },
     {
       "month": "2025-12",
       "balance": 411541.63
