@@ -4,6 +4,7 @@ import {
   writeInvoicesToCSV,
   validateEditInput,
   updateInvoice,
+  syncInvoicesToGit,
 } from '@/lib/invoices-server';
 import { InvoiceEditInput } from '@/types';
 
@@ -81,6 +82,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     // 4. Guardar (con backup + atomic write)
     await writeInvoicesToCSV(invoices);
+
+    // 5. Auto-sync a git+Vercel (fire-and-forget, solo en local)
+    syncInvoicesToGit(`editar ${id}`).catch(() => {});
 
     return NextResponse.json({
       success: true,

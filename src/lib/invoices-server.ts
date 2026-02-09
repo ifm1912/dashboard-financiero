@@ -6,8 +6,12 @@
  */
 
 import { promises as fs } from 'fs';
+import { exec } from 'child_process';
+import { promisify } from 'util';
 import path from 'path';
 import Papa from 'papaparse';
+
+const execAsync = promisify(exec);
 import {
   Invoice,
   InvoiceCreateInput,
@@ -476,4 +480,47 @@ export async function getUniqueCustomers(): Promise<string[]> {
   const invoices = await readInvoicesFromCSV();
   const customers = new Set(invoices.map((inv) => inv.customer_name.trim()));
   return Array.from(customers).sort();
+}
+
+/**
+ * Sincroniza el CSV de facturas con git y push a Vercel (solo en local).
+ * Copia /tmp/facturas → public/data/facturas, luego git add + commit + push.
+ * Se ejecuta en background (fire-and-forget) para no bloquear la respuesta al usuario.
+ * En Vercel no hace nada (el guard 403 ya bloquea antes).
+ */
+export async function syncInvoicesToGit(action: string): Promise<void> {
+  // Solo en local (en Vercel no debería llegar aquí, pero por seguridad)
+  if (process.env.VERCEL) return;
+
+  try {
+    // 1. Copiar de /tmp/ al CSV del repo
+    await fs.copyFile(TMP_CSV, PUBLIC_CSV);
+
+    // 2. Git add + commit + push
+    const repoDir = process.cwd();
+    const csvRelPath = 'public/data/facturas_historicas_enriquecido.csv';
+
+    await execAsync(`git add "${csvRelPath}"`, { cwd: repoDir });
+
+    // Verificar si hay cambios staged (evitar commits vacíos)
+    try {
+      await execAsync('git diff --cached --quiet', { cwd: repoDir });
+      // Si no lanza error, no hay cambios → no commit
+      console.log('[sync] No hay cambios en el CSV, skip commit');
+      return;
+    } catch {
+      // Hay cambios staged → continuar con commit
+    }
+
+    const commitMsg = `Auto-sync facturas: ${action}`;
+    await execAsync(
+      `git commit -m "${commitMsg}" && git push`,
+      { cwd: repoDir }
+    );
+
+    console.log(`[sync] CSV sincronizado con git: ${action}`);
+  } catch (error) {
+    // No lanzar error — el sync es best-effort, no debe afectar la edición
+    console.error('[sync] Error sincronizando con git:', error);
+  }
 }

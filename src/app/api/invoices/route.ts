@@ -6,6 +6,7 @@ import {
   enrichInvoice,
   invoiceIdExists,
   getUniqueCustomers,
+  syncInvoicesToGit,
 } from '@/lib/invoices-server';
 import { InvoiceCreateInput } from '@/types';
 
@@ -79,6 +80,9 @@ export async function POST(request: NextRequest) {
 
     // 5. Guardar (con backup + atomic write)
     await writeInvoicesToCSV(invoices);
+
+    // 6. Auto-sync a git+Vercel (fire-and-forget, solo en local)
+    syncInvoicesToGit(`crear ${input.invoice_id}`).catch(() => {});
 
     return NextResponse.json({
       success: true,
