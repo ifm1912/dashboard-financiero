@@ -50,5 +50,18 @@
     "reason": "Nuevos módulos",
     "effective_from": "2026-01-01",
     "notes": "Expansion nuevos módulos"
+  },
+  {
+    "event_id": "EVT-005",
+    "contract_id": "c007",
+    "client_name": "BKT",
+    "event_date": "2026-04-01",
+    "event_type": "EXPANSION",
+    "arr_delta": 2400.0,
+    "mrr_delta": 200.0,
+    "currency": "eur",
+    "reason": "Datos fondos externos",
+    "effective_from": "2026-04-01",
+    "notes": "Ampliación contrato: datos fondos externos"
   }
 ]
