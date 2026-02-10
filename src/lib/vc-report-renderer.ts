@@ -244,7 +244,7 @@ function renderPage2(doc: jsPDF, data: VCReportData) {
       {
         label: 'Préstamo ENISA',
         value: formatCurrency(data.financiacion[1]?.amount ?? 0),
-        subtitle: 'Dic 2025 — Préstamo participativo',
+        subtitle: 'Concedido en diciembre 2025',
       },
     ],
     3
