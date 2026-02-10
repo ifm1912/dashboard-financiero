@@ -135,6 +135,14 @@
       "postal_code": "",
       "city": "",
       "country": "España"
+    },
+    "SAB": {
+      "fiscal_name": "Banco de Sabadell, S.A.",
+      "nif": "A08000143",
+      "address": "Avenida Óscar Esplá, 37",
+      "postal_code": "03007",
+      "city": "Alicante",
+      "country": "España"
     }
   }
 }

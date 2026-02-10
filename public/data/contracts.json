@@ -366,5 +366,28 @@
     "current_price_annual": 1234800.0,
     "current_mrr": 102900.0,
     "account_owner": "Nacho"
+  },
+  {
+    "client_id": "SAB",
+    "client_name": "Banco Sabadell",
+    "contract_id": "c017",
+    "status": "negociación",
+    "product": "GPTadvisor®",
+    "start_date": null,
+    "end_date": null,
+    "billing_frequency": "mensual",
+    "currency": "eur",
+    "set_up": 59000.0,
+    "base_contract_value_annual": 49000.0,
+    "base_mrr_eur": 4083.3333333333335,
+    "base_arr_eur": 49000.0,
+    "renewal_type": "anual",
+    "notice_days": 30.0,
+    "ipc_applicable": true,
+    "ipc_frequency": "anual",
+    "ipc_application_month": "enero",
+    "current_price_annual": 49000.0,
+    "current_mrr": 4083.3333333333335,
+    "account_owner": "Jorge"
   }
 ]

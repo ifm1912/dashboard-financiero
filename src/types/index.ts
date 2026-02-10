@@ -298,3 +298,15 @@ export interface BillingClient {
   city: string;
   country: string;
 }
+
+// ============================================
+// Tipos para Informe VC
+// ============================================
+
+export type VCPeriodType = 'year' | 'quarter';
+
+export interface VCPeriod {
+  type: VCPeriodType;
+  year: number;
+  quarter?: 1 | 2 | 3 | 4;
+}

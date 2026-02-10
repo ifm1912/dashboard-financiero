@@ -15,7 +15,8 @@ import {
 import { calculateForecast } from '@/lib/forecast';
 import { calculateCashflowMetrics } from '@/lib/cashflow';
 import { generateExecutiveReport } from '@/lib/report-pdf';
-import { Invoice, Contract, CashBalance, Expense, BankInflow, MRRMetric } from '@/types';
+import { Invoice, Contract, CashBalance, Expense, BankInflow, MRRMetric, VCPeriod } from '@/types';
+import { VCReportModal } from '@/components/VCReportModal';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const CONCENTRATION_COLORS = [
@@ -38,6 +39,8 @@ export default function Overview() {
   const [mrrData, setMrrData] = useState<MRRMetric[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatingPDF, setGeneratingPDF] = useState(false);
+  const [showVCModal, setShowVCModal] = useState(false);
+  const [generatingVC, setGeneratingVC] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -175,6 +178,48 @@ export default function Overview() {
     }
   };
 
+  const handleGenerateVCReport = async (period: VCPeriod, customText: string, manualMRR: number, manualARR: number) => {
+    setShowVCModal(false);
+    setGeneratingVC(true);
+    try {
+      const { generateVCReport } = await import('@/lib/vc-report-pdf');
+      await generateVCReport(period, customText, manualMRR, manualARR);
+    } catch (error) {
+      console.error('Error generating VC report:', error);
+    } finally {
+      setGeneratingVC(false);
+    }
+  };
+
+  // Derive available years and quarters from invoices for the VC modal
+  const availableYears = useMemo(() => {
+    const years = [...new Set(invoices.map((inv) => inv.invoice_year))];
+    return years.sort((a, b) => b - a);
+  }, [invoices]);
+
+  const availableQuarters = useMemo(() => {
+    const quarters = [...new Set(invoices.map((inv) => inv.invoice_quarter))];
+    const quarterNames: Record<string, string> = { '1': 'Jan–Mar', '2': 'Apr–Jun', '3': 'Jul–Sep', '4': 'Oct–Dec' };
+    return quarters
+      .sort()
+      .reverse()
+      .map((q) => {
+        const [year, qNum] = q.split('Q');
+        return { year: Number(year), quarter: Number(qNum), label: `Q${qNum} ${year} (${quarterNames[qNum]})` };
+      });
+  }, [invoices]);
+
+  // Default MRR/ARR from latest data point (used as pre-fill in VC modal)
+  const mrrDefault = useMemo(() => {
+    if (mrrData.length === 0) return 0;
+    return mrrData[mrrData.length - 1].mrr_approx;
+  }, [mrrData]);
+
+  const arrDefault = useMemo(() => {
+    if (mrrData.length === 0) return 0;
+    return mrrData[mrrData.length - 1].arr_approx;
+  }, [mrrData]);
+
   if (loading) {
     return (
       <div className="flex h-[60vh] items-center justify-center">
@@ -190,21 +235,38 @@ export default function Overview() {
           <h1 className="text-2xl font-bold text-text-primary">Executive Dashboard</h1>
           <p className="text-sm text-text-muted mt-1">Vista consolidada de métricas críticas</p>
         </div>
-        <button
-          onClick={handleGeneratePDF}
-          disabled={generatingPDF || loading}
-          className="flex items-center gap-1 sm:gap-2 rounded-lg border border-border-subtle px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-text-secondary hover:bg-bg-hover hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-        >
-          {generatingPDF ? (
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-accent border-t-transparent" />
-          ) : (
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          )}
-          <span className="hidden sm:inline">Informe PDF</span>
-          <span className="sm:hidden">PDF</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleGeneratePDF}
+            disabled={generatingPDF || loading}
+            className="flex items-center gap-1 sm:gap-2 rounded-lg border border-border-subtle px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-text-secondary hover:bg-bg-hover hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            {generatingPDF ? (
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+            ) : (
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            )}
+            <span className="hidden sm:inline">Informe PDF</span>
+            <span className="sm:hidden">PDF</span>
+          </button>
+          <button
+            onClick={() => setShowVCModal(true)}
+            disabled={generatingVC || loading}
+            className="flex items-center gap-1 sm:gap-2 rounded-lg border border-accent/30 bg-accent/5 px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-accent hover:bg-accent/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            {generatingVC ? (
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+            ) : (
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            )}
+            <span className="hidden sm:inline">Informe VC</span>
+            <span className="sm:hidden">VC</span>
+          </button>
+        </div>
       </div>
 
       {/* SECCIÓN 1: SALUD FINANCIERA GENERAL */}
@@ -408,6 +470,16 @@ export default function Overview() {
           <strong className="ml-1 sm:ml-3">ARR en Riesgo:</strong> Contratos expirando en &lt;90 días.
         </p>
       </div>
+
+      <VCReportModal
+        isOpen={showVCModal}
+        onClose={() => setShowVCModal(false)}
+        onGenerate={handleGenerateVCReport}
+        availableYears={availableYears}
+        availableQuarters={availableQuarters}
+        mrrDefault={mrrDefault}
+        arrDefault={arrDefault}
+      />
     </div>
   );
 }

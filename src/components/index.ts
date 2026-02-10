@@ -7,3 +7,4 @@ export { RevenueBarChart, MRRAreaChart, RevenueLineChart, ARRByClientChart, ARRB
 export { InvoiceModal } from './InvoiceModal';
 export { CategoryDetailPanel } from './CategoryDetailPanel';
 export { BurnAnalysisCard } from './BurnAnalysisCard';
+export { VCReportModal } from './VCReportModal';

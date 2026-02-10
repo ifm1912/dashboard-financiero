@@ -2,10 +2,10 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { ExecutiveReportData, formatCurrency, formatPercent, formatShortMonth } from './report-data';
 
-type RGB = [number, number, number];
+export type RGB = [number, number, number];
 
 // Design system colors (RGB tuples)
-const C = {
+export const C = {
   accent:      [79, 70, 229]   as RGB,
   accentLight: [99, 102, 241]  as RGB,
   textPrimary: [15, 23, 42]    as RGB,
@@ -21,22 +21,22 @@ const C = {
 };
 
 // Category colors for expense chart
-const CATEGORY_COLORS: RGB[] = [
+export const CATEGORY_COLORS: RGB[] = [
   C.accent, C.success, C.warning, C.danger,
   [124, 58, 237],  // violet
   [8, 145, 178],   // cyan
   [219, 39, 119],  // pink
 ];
 
-const M = { left: 15, right: 15, top: 20, bottom: 15 };
-const PW = 210; // A4 width mm
-const CW = PW - M.left - M.right; // content width
+export const M = { left: 15, right: 15, top: 20, bottom: 15 };
+export const PW = 210; // A4 width mm
+export const CW = PW - M.left - M.right; // content width
 
 // ===========================
 // Shared helpers
 // ===========================
 
-function tableDefaults(startY: number) {
+export function tableDefaults(startY: number) {
   return {
     startY,
     margin: { left: M.left, right: M.right },
@@ -70,33 +70,37 @@ function tableDefaults(startY: number) {
   };
 }
 
-function drawHeader(doc: jsPDF, title: string, data: ExecutiveReportData) {
+export function drawHeader(
+  doc: jsPDF,
+  sectionTitle: string,
+  opts: { reportTitle: string; reportDate: string; subtitle: string }
+) {
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(...C.accent);
-  doc.text('Informe Ejecutivo Mensual', M.left, M.top);
+  doc.text(opts.reportTitle, M.left, M.top);
 
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(...C.textMuted);
-  doc.text(`Generado: ${data.reportDate}`, PW - M.right, M.top, { align: 'right' });
+  doc.text(`Generado: ${opts.reportDate}`, PW - M.right, M.top, { align: 'right' });
 
   doc.setFontSize(10);
   doc.setTextColor(...C.textPrimary);
-  const capitalizedMonth = data.reportMonth.charAt(0).toUpperCase() + data.reportMonth.slice(1);
-  doc.text(capitalizedMonth, M.left, M.top + 6);
+  const capitalizedSubtitle = opts.subtitle.charAt(0).toUpperCase() + opts.subtitle.slice(1);
+  doc.text(capitalizedSubtitle, M.left, M.top + 6);
 
   doc.setFontSize(8);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(...C.textDimmed);
-  doc.text(title.toUpperCase(), M.left, M.top + 13);
+  doc.text(sectionTitle.toUpperCase(), M.left, M.top + 13);
 
   doc.setDrawColor(...C.accent);
   doc.setLineWidth(0.5);
   doc.line(M.left, M.top + 15, PW - M.right, M.top + 15);
 }
 
-function drawSectionTitle(doc: jsPDF, title: string, y: number): number {
+export function drawSectionTitle(doc: jsPDF, title: string, y: number): number {
   doc.setFontSize(7.5);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(...C.textDimmed);
@@ -104,7 +108,7 @@ function drawSectionTitle(doc: jsPDF, title: string, y: number): number {
   return y + 5;
 }
 
-function drawKPI(
+export function drawKPI(
   doc: jsPDF,
   x: number, y: number, w: number, h: number,
   label: string, value: string, subtitle?: string, subtitleColor?: RGB
@@ -132,7 +136,7 @@ function drawKPI(
   }
 }
 
-function drawKPIRow(
+export function drawKPIRow(
   doc: jsPDF, y: number,
   kpis: { label: string; value: string; subtitle?: string; subtitleColor?: RGB }[],
   count: number = 4
@@ -146,12 +150,12 @@ function drawKPIRow(
   return y + kpiH + 4;
 }
 
-function getTableEndY(doc: jsPDF): number {
+export function getTableEndY(doc: jsPDF): number {
   return (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable?.finalY || 0;
 }
 
 // Format large numbers compactly for axis labels (e.g. 150K, 1.2M)
-function shortCurrency(v: number): string {
+export function shortCurrency(v: number): string {
   if (Math.abs(v) >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}M`;
   if (Math.abs(v) >= 1_000) return `${Math.round(v / 1_000)}K`;
   return String(Math.round(v));
@@ -434,7 +438,7 @@ function drawHorizontalBarChart(
 // ===========================
 
 function renderPage1(doc: jsPDF, data: ExecutiveReportData) {
-  drawHeader(doc, 'Resumen Ejecutivo', data);
+  drawHeader(doc, 'Resumen Ejecutivo', { reportTitle: 'Informe Ejecutivo Mensual', reportDate: data.reportDate, subtitle: data.reportMonth });
   let y = M.top + 20;
 
   // Financial Health KPIs
@@ -537,7 +541,7 @@ function renderPage1(doc: jsPDF, data: ExecutiveReportData) {
 // ===========================
 
 function renderPage2(doc: jsPDF, data: ExecutiveReportData) {
-  drawHeader(doc, 'Ingresos y Crecimiento', data);
+  drawHeader(doc, 'Ingresos y Crecimiento', { reportTitle: 'Informe Ejecutivo Mensual', reportDate: data.reportDate, subtitle: data.reportMonth });
   let y = M.top + 20;
 
   // --- CHART: Stacked Bar — Monthly Revenue ---
@@ -613,7 +617,7 @@ function renderPage2(doc: jsPDF, data: ExecutiveReportData) {
 // ===========================
 
 function renderPage3(doc: jsPDF, data: ExecutiveReportData) {
-  drawHeader(doc, 'Tesorería y Cash Flow', data);
+  drawHeader(doc, 'Tesorería y Cash Flow', { reportTitle: 'Informe Ejecutivo Mensual', reportDate: data.reportDate, subtitle: data.reportMonth });
   let y = M.top + 20;
 
   // Burn KPIs
@@ -672,7 +676,7 @@ function renderPage3(doc: jsPDF, data: ExecutiveReportData) {
 // ===========================
 
 function renderPage4(doc: jsPDF, data: ExecutiveReportData) {
-  drawHeader(doc, 'Contratos y Clientes', data);
+  drawHeader(doc, 'Contratos y Clientes', { reportTitle: 'Informe Ejecutivo Mensual', reportDate: data.reportDate, subtitle: data.reportMonth });
   let y = M.top + 20;
 
   // Contract KPIs
@@ -750,7 +754,7 @@ function renderPage4(doc: jsPDF, data: ExecutiveReportData) {
 // Page numbers footer
 // ===========================
 
-function addPageNumbers(doc: jsPDF) {
+export function addPageNumbers(doc: jsPDF) {
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
