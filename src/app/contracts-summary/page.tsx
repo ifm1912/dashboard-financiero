@@ -18,7 +18,7 @@ const CLIENT_LOGO_MAP: Record<string, string> = {
   SAM: '/logos/sam.png',
   AIV: '/logos/aiv.png',
   CKB: '/logos/ckb.png',
-  AND: '/logos/and.png',
+  AND: '/logos/and.jpg',
   MY: '/logos/my.png',
   CAS: '/logos/cas.jpg',
   BKT: '/logos/bkt.png',
