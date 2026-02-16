@@ -1,5 +1,5 @@
 import * as XLSX from 'xlsx';
-import { Invoice } from '@/types';
+import { Invoice, Contract } from '@/types';
 
 /**
  * Definición de columnas para exportación Excel.
@@ -148,5 +148,117 @@ export function exportInvoicesToExcel(
   const finalFilename = filename || `facturas_${date}.xlsx`;
 
   // Disparar descarga
+  XLSX.writeFile(workbook, finalFilename);
+}
+
+// ─── Contratos ────────────────────────────────────────────────
+
+const CONTRACT_COLUMNS: { key: keyof Contract; header: string }[] = [
+  { key: 'contract_id', header: 'ID Contrato' },
+  { key: 'client_id', header: 'ID Cliente' },
+  { key: 'client_name', header: 'Cliente' },
+  { key: 'status', header: 'Estado' },
+  { key: 'product', header: 'Producto' },
+  { key: 'start_date', header: 'Fecha Inicio' },
+  { key: 'end_date', header: 'Fecha Fin' },
+  { key: 'billing_frequency', header: 'Frecuencia Facturación' },
+  { key: 'currency', header: 'Moneda' },
+  { key: 'set_up', header: 'SetUp' },
+  { key: 'base_contract_value_annual', header: 'Valor Anual Base' },
+  { key: 'base_mrr_eur', header: 'MRR Base (EUR)' },
+  { key: 'base_arr_eur', header: 'ARR Base (EUR)' },
+  { key: 'renewal_type', header: 'Tipo Renovación' },
+  { key: 'notice_days', header: 'Días Preaviso' },
+  { key: 'ipc_applicable', header: 'IPC Aplicable' },
+  { key: 'ipc_frequency', header: 'Frecuencia IPC' },
+  { key: 'ipc_application_month', header: 'Mes Aplicación IPC' },
+  { key: 'current_price_annual', header: 'Precio Anual Actual' },
+  { key: 'current_mrr', header: 'MRR Actual' },
+  { key: 'account_owner', header: 'Account Owner' },
+];
+
+const CONTRACT_DATE_FIELDS: Set<keyof Contract> = new Set([
+  'start_date',
+  'end_date',
+]);
+
+const CONTRACT_STATUS_LABELS: Record<string, string> = {
+  activo: 'Activo',
+  inactivo: 'Inactivo',
+  'negociación': 'Negociación',
+};
+
+function formatContractCellValue(
+  key: keyof Contract,
+  value: Contract[keyof Contract]
+): string | number {
+  if (value === null || value === undefined) return '';
+
+  // Fechas
+  if (CONTRACT_DATE_FIELDS.has(key) && typeof value === 'string') {
+    const d = new Date(value);
+    if (!isNaN(d.getTime())) {
+      return d.toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      });
+    }
+    return String(value);
+  }
+
+  // Booleano (ipc_applicable)
+  if (key === 'ipc_applicable') {
+    return value ? 'Sí' : 'No';
+  }
+
+  // Estado
+  if (key === 'status') {
+    const normalized = String(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    return CONTRACT_STATUS_LABELS[String(value)] || CONTRACT_STATUS_LABELS[normalized] || String(value);
+  }
+
+  // Moneda
+  if (key === 'currency') {
+    return String(value) === 'us dollar' ? 'USD' : 'EUR';
+  }
+
+  // Números
+  if (typeof value === 'number') {
+    return value;
+  }
+
+  return String(value);
+}
+
+/**
+ * Exporta un array de contratos a un archivo .xlsx y dispara la descarga.
+ */
+export function exportContractsToExcel(
+  contracts: Contract[],
+  filename?: string
+): void {
+  const headers = CONTRACT_COLUMNS.map((col) => col.header);
+
+  const rows = contracts.map((contract) =>
+    CONTRACT_COLUMNS.map((col) => formatContractCellValue(col.key, contract[col.key]))
+  );
+
+  const worksheet = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+
+  worksheet['!cols'] = CONTRACT_COLUMNS.map((col) => {
+    if (col.key === 'client_name' || col.key === 'product') return { wch: 25 };
+    if (CONTRACT_DATE_FIELDS.has(col.key)) return { wch: 14 };
+    if (col.key.includes('price') || col.key.includes('arr') || col.key.includes('mrr') || col.key === 'set_up' || col.key === 'base_contract_value_annual')
+      return { wch: 18 };
+    return { wch: 16 };
+  });
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Contratos');
+
+  const date = new Date().toISOString().slice(0, 10);
+  const finalFilename = filename || `contratos_${date}.xlsx`;
+
   XLSX.writeFile(workbook, finalFilename);
 }

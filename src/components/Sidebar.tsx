@@ -30,6 +30,10 @@ const navigation: NavigationItem[] = [
     href: '/contracts-forecast',
   },
   {
+    name: 'Contratos',
+    href: '/contracts-summary',
+  },
+  {
     name: 'Cash Flow',
     href: '/cashflow',
   },

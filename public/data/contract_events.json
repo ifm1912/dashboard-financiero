@@ -63,5 +63,31 @@
     "reason": "Datos fondos externos",
     "effective_from": "2026-04-01",
     "notes": "Ampliación contrato: datos fondos externos"
+  },
+  {
+    "event_id": "EVT-006",
+    "contract_id": "c018",
+    "client_name": "SAM",
+    "event_date": "2026-02-16",
+    "event_type": "NEW_BUSINESS",
+    "arr_delta": 0,
+    "mrr_delta": 0,
+    "currency": "eur",
+    "reason": "Contrato proyectos: Comparativa de productos + Agenda Comercial",
+    "effective_from": "2026-03-01",
+    "notes": "Contrato no recurrente 6 meses. 45.000 EUR total (7.500 EUR/mes). Facturación marzo-agosto 2026."
+  },
+  {
+    "event_id": "EVT-007",
+    "contract_id": "c001",
+    "client_name": "SAM",
+    "event_date": "2026-02-16",
+    "event_type": "EXPANSION",
+    "arr_delta": 46800.0,
+    "mrr_delta": 3900.0,
+    "currency": "eur",
+    "reason": "Ampliación mantenimiento/evolutivos SAMi hasta 2028",
+    "effective_from": "2026-02-16",
+    "notes": "Formalización mantenimiento SAMi: 46.800 EUR/año (3.900 EUR/mes). Extensión hasta 2028."
   }
 ]

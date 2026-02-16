@@ -18,8 +18,8 @@
     "ipc_applicable": false,
     "ipc_frequency": null,
     "ipc_application_month": null,
-    "current_price_annual": 25000.0,
-    "current_mrr": 2083.3333333333335,
+    "current_price_annual": 71800.0,
+    "current_mrr": 5983.3333333333335,
     "account_owner": "Isa"
   },
   {
@@ -389,5 +389,28 @@
     "current_price_annual": 49000.0,
     "current_mrr": 4083.3333333333335,
     "account_owner": "Jorge"
+  },
+  {
+    "client_id": "SAM",
+    "client_name": "Santander Asset Mgt",
+    "contract_id": "c018",
+    "status": "activo",
+    "product": "Comparativa + Agenda",
+    "start_date": "2026-02-16",
+    "end_date": "2026-08-31",
+    "billing_frequency": "mensual",
+    "currency": "eur",
+    "set_up": 45000.0,
+    "base_contract_value_annual": 0,
+    "base_mrr_eur": 0,
+    "base_arr_eur": 0,
+    "renewal_type": null,
+    "notice_days": null,
+    "ipc_applicable": false,
+    "ipc_frequency": null,
+    "ipc_application_month": null,
+    "current_price_annual": 0.0,
+    "current_mrr": 0.0,
+    "account_owner": "Isa"
   }
 ]
