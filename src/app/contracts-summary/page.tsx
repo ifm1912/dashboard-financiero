@@ -16,7 +16,7 @@ type Density = 'compact' | 'comfortable';
 
 const CLIENT_LOGO_MAP: Record<string, string> = {
   SAM: '/logos/sam.png',
-  AIV: '/logos/aiv.png',
+  AIV: '/logos/aiv.jpg',
   CKB: '/logos/ckb.png',
   AND: '/logos/and.jpg',
   MY: '/logos/my.png',
@@ -83,7 +83,7 @@ function ClientAvatar({ clientId, clientName }: { clientId: string; clientName: 
         src={logoSrc}
         alt={clientName}
         title={clientName}
-        className="h-8 max-w-[100px] object-contain flex-shrink-0"
+        className="h-8 max-w-[100px] object-contain flex-shrink-0 rounded-md"
         onError={() => setImgError(true)}
       />
     );
