@@ -83,7 +83,7 @@ function ClientAvatar({ clientId, clientName }: { clientId: string; clientName: 
         src={logoSrc}
         alt={clientName}
         title={clientName}
-        className="w-9 h-9 rounded-full object-contain bg-white border border-border-subtle flex-shrink-0"
+        className="h-8 max-w-[100px] object-contain flex-shrink-0"
         onError={() => setImgError(true)}
       />
     );
@@ -91,7 +91,7 @@ function ClientAvatar({ clientId, clientName }: { clientId: string; clientName: 
 
   const initials = clientId.slice(0, 2).toUpperCase();
   return (
-    <div title={clientName} className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${getAvatarColor(clientId)}`}>
+    <div title={clientName} className={`w-9 h-9 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 ${getAvatarColor(clientId)}`}>
       {initials}
     </div>
   );
@@ -137,7 +137,7 @@ const QUICK_CHIPS: QuickChip[] = [
   },
   {
     id: 'negociacion',
-    label: 'En negociaci\u00f3n',
+    label: 'En negociación',
     predicate: (c) => normalizeStatus(c.status) === 'negociacion',
   },
 ];
@@ -314,8 +314,8 @@ export default function ContractsSummaryPage() {
   };
 
   const SortIcon = ({ field }: { field: SortField }) => {
-    if (sortField !== field) return <span className="text-text-muted ml-1 opacity-50">\u2195</span>;
-    return <span className="text-accent-light ml-1">{sortDirection === 'asc' ? '\u2191' : '\u2193'}</span>;
+    if (sortField !== field) return <span className="text-text-muted ml-1 opacity-50">↕</span>;
+    return <span className="text-accent-light ml-1">{sortDirection === 'asc' ? '↑' : '↓'}</span>;
   };
 
   const clearAllFilters = useCallback(() => {
@@ -428,7 +428,7 @@ export default function ContractsSummaryPage() {
               className={`px-2.5 py-1.5 text-xs font-medium transition-colors ${
                 density === 'comfortable' ? 'bg-accent text-white' : 'text-text-muted hover:bg-bg-hover'
               }`}
-              title="C\u00f3modo"
+              title="Cómodo"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5h16M4 12h16M4 19h16" />
@@ -471,7 +471,7 @@ export default function ContractsSummaryPage() {
             <KPICard
               label="Total Contratos"
               value={String(kpis.total)}
-              subtitle={`${kpis.activeCount} activos, ${kpis.negotiationCount} en negociaci\u00f3n`}
+              subtitle={`${kpis.activeCount} activos, ${kpis.negotiationCount} en negociación`}
               onClick={() => handleKPIClick('total')}
               active={activeKPIFilter === 'total'}
             />
@@ -485,7 +485,7 @@ export default function ContractsSummaryPage() {
             <KPICard
               label="Pipeline"
               value={formatCurrency(kpis.pipeline)}
-              subtitle={`${kpis.negotiationCount} en negociaci\u00f3n`}
+              subtitle={`${kpis.negotiationCount} en negociación`}
               onClick={() => handleKPIClick('pipeline')}
               active={activeKPIFilter === 'pipeline'}
             />
@@ -497,7 +497,7 @@ export default function ContractsSummaryPage() {
               active={activeKPIFilter === 'setup'}
             />
             <KPICard
-              label="Clientes \u00danicos"
+              label="Clientes Únicos"
               value={String(kpis.uniqueClients)}
               subtitle="Todos los estados"
               onClick={() => handleKPIClick('clients')}
@@ -557,7 +557,7 @@ export default function ContractsSummaryPage() {
                   <option value="all">Todos</option>
                   <option value="activo">Activo</option>
                   <option value="inactivo">Inactivo</option>
-                  <option value="negociacion">Negociaci\u00f3n</option>
+                  <option value="negociacion">Negociación</option>
                 </select>
               </div>
               {/* Owner */}
@@ -662,7 +662,7 @@ export default function ContractsSummaryPage() {
                   className={`${headerPad} text-left ${headerText} font-medium text-text-dimmed uppercase tracking-wider cursor-pointer hover:text-text-secondary transition-colors`}
                   onClick={() => handleSort('end_date')}
                 >
-                  Renovaci\u00f3n <SortIcon field="end_date" />
+                  Renovación <SortIcon field="end_date" />
                 </th>
                 <th
                   className={`${headerPad} text-center ${headerText} font-medium text-text-dimmed uppercase tracking-wider cursor-pointer hover:text-text-secondary transition-colors`}
@@ -703,7 +703,7 @@ export default function ContractsSummaryPage() {
                             : 'bg-warning-muted text-warning'
                         }`}
                       >
-                        {status === 'activo' ? 'Activo' : status === 'inactivo' ? 'Inactivo' : 'Negociaci\u00f3n'}
+                        {status === 'activo' ? 'Activo' : status === 'inactivo' ? 'Inactivo' : 'Negociación'}
                       </span>
                     </td>
                     {/* Producto */}
@@ -716,7 +716,7 @@ export default function ContractsSummaryPage() {
                     <td className={`${cellPad} ${cellText} text-right font-mono text-text-secondary`}>
                       {contract.current_mrr > 0 ? formatCurrency(contract.current_mrr) : <span className="text-text-dimmed">--</span>}
                     </td>
-                    {/* Renovaci\u00f3n */}
+                    {/* Renovación */}
                     <td className={`${cellPad} ${cellText} ${renewal.className}`}>{renewal.text}</td>
                     {/* Owner */}
                     <td className={`${cellPad}`}>
