@@ -1,0 +1,22 @@
+{
+  "last_updated": "2026-02-10",
+  "latest": {
+    "date": "2026-02-10",
+    "total_users": 67404,
+    "active_users": 46107,
+    "conversations": 86230,
+    "registered_users": 8055,
+    "organizations": 8,
+    "multi_day_active_users_pct": 23.8,
+    "avg_daily_conversations": 2103.2
+  },
+  "history": [
+    {
+      "date": "2026-02-10",
+      "total_users": 67404,
+      "active_users": 46107,
+      "conversations": 86230,
+      "avg_daily_conversations": 2103.2
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { Invoice, MonthlyMetric, MRRMetric, KPIData, ChartDataPoint, Contract, ContractEvent, Expense, CashBalance, BankInflow, BillingClient } from '@/types';
+import { Invoice, MonthlyMetric, MRRMetric, KPIData, ChartDataPoint, Contract, ContractEvent, Expense, CashBalance, BankInflow, BillingClient, FinancingData, UsageMetrics } from '@/types';
 import { DateRange } from '@/contexts/DateRangeContext';
 import { normalizeExpenseSubcategory } from './expense-normalizer';
 
@@ -153,6 +153,25 @@ export async function getCashBalance(): Promise<CashBalance> {
 
 export async function getInflows(): Promise<BankInflow[]> {
   return fetchCSV<BankInflow>('inflows.csv');
+}
+
+// ============================================
+// Financiación (Equity, Debt, Grants)
+// ============================================
+
+export async function getFinancing(): Promise<FinancingData> {
+  const response = await fetch(`${BASE_URL}/data/financing.json`);
+  return response.json();
+}
+
+export async function getUsageMetrics(): Promise<UsageMetrics | null> {
+  try {
+    const response = await fetch(`${BASE_URL}/data/usage_metrics.json`);
+    if (!response.ok) return null;
+    return response.json();
+  } catch {
+    return null;
+  }
 }
 
 export function formatCurrency(amount: number): string {

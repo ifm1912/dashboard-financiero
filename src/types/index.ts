@@ -287,6 +287,62 @@ export interface BankInflow {
 }
 
 // ============================================
+// Tipos para Financiación (Equity, Debt, Grants)
+// ============================================
+
+export interface EquityRound {
+  investor: string;
+  amount: number;
+  round: string;
+  instrument: string;
+  date: string;            // YYYY-MM-DD
+}
+
+export interface DebtInstrument {
+  instrument: string;
+  institution: string;
+  amount: number;
+  date: string;            // YYYY-MM-DD
+}
+
+export interface Grant {
+  name: string;
+  institution: string;
+  amount: number;
+  date: string;            // YYYY-MM-DD
+}
+
+export interface FinancingData {
+  equity_rounds: EquityRound[];
+  debt: DebtInstrument[];
+  grants: Grant[];
+}
+
+// Usage Metrics (from GPTadvisor screenshots via OCR)
+export interface UsageMetricsLatest {
+  date: string;
+  total_users: number | null;
+  active_users: number | null;
+  conversations: number | null;
+  registered_users: number | null;
+  organizations: number | null;
+  multi_day_active_users_pct: number | null;
+  avg_daily_conversations: number | null;
+}
+
+export interface UsageMetrics {
+  last_updated: string;
+  latest: UsageMetricsLatest;
+  history: {
+    date: string;
+    total_users: number | null;
+    active_users: number | null;
+    conversations: number | null;
+    avg_daily_conversations: number | null;
+  }[];
+}
+
+// ============================================
 // Tipos para Facturación (datos de cliente)
 // ============================================
 

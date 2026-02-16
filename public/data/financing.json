@@ -1,0 +1,61 @@
+{
+  "equity_rounds": [
+    {
+      "investor": "K-Fund",
+      "amount": 300000,
+      "round": "Seed Round",
+      "instrument": "CLA - Convertible loan agreement",
+      "date": "2024-02-01"
+    },
+    {
+      "investor": "JME",
+      "amount": 300000,
+      "round": "Seed Round",
+      "instrument": "CLA - Convertible loan agreement",
+      "date": "2024-02-01"
+    },
+    {
+      "investor": "Actyus",
+      "amount": 300000,
+      "round": "Seed Round",
+      "instrument": "CLA - Convertible loan agreement",
+      "date": "2024-02-01"
+    },
+    {
+      "investor": "Calafia",
+      "amount": 40000,
+      "round": "Seed Round",
+      "instrument": "CLA - Convertible loan agreement",
+      "date": "2024-02-01"
+    },
+    {
+      "investor": "Mark Randsfor",
+      "amount": 40000,
+      "round": "Seed Round",
+      "instrument": "CLA - Convertible loan agreement",
+      "date": "2024-02-01"
+    }
+  ],
+  "debt": [
+    {
+      "instrument": "Préstamo ENISA",
+      "institution": "ENISA",
+      "amount": 225000,
+      "date": "2025-12-01"
+    }
+  ],
+  "grants": [
+    {
+      "name": "Neotec",
+      "institution": "CDTI",
+      "amount": 323978.40,
+      "date": "2026-01-01"
+    },
+    {
+      "name": "SeedStartUp Valencia",
+      "institution": "Valencia Innovation Capital",
+      "amount": 25000,
+      "date": "2025-01-01"
+    }
+  ]
+}
