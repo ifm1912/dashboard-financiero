@@ -159,7 +159,7 @@ export default function ContractsSummaryPage() {
   const [activeChip, setActiveChip] = useState<string | null>(null);
 
   // Sort
-  const [sortField, setSortField] = useState<SortField>('client_name');
+  const [sortField, setSortField] = useState<SortField>('status');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
   // UI
@@ -253,6 +253,7 @@ export default function ContractsSummaryPage() {
 
   // Sort
   const sortedContracts = useMemo(() => {
+    const STATUS_ORDER: Record<string, number> = { activo: 1, negociacion: 2, inactivo: 3 };
     const result = [...filteredContracts];
     result.sort((a, b) => {
       // Special sort for end_date: use renewal days
@@ -260,6 +261,14 @@ export default function ContractsSummaryPage() {
         const aVal = getRenewalInfo(a.end_date).sortValue;
         const bVal = getRenewalInfo(b.end_date).sortValue;
         return sortDirection === 'asc' ? aVal - bVal : bVal - aVal;
+      }
+
+      // Special sort for status: activo → negociación → inactivo
+      if (sortField === 'status') {
+        const aOrder = STATUS_ORDER[normalizeStatus(a.status)] ?? 99;
+        const bOrder = STATUS_ORDER[normalizeStatus(b.status)] ?? 99;
+        if (aOrder !== bOrder) return sortDirection === 'asc' ? aOrder - bOrder : bOrder - aOrder;
+        return a.client_name.localeCompare(b.client_name, 'es');
       }
 
       let aVal: string | number | boolean | null = a[sortField];
