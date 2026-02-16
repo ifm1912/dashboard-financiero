@@ -82,7 +82,8 @@ function ClientAvatar({ clientId, clientName }: { clientId: string; clientName: 
       <img
         src={logoSrc}
         alt={clientName}
-        className="w-7 h-7 rounded-full object-contain bg-white border border-border-subtle flex-shrink-0"
+        title={clientName}
+        className="w-9 h-9 rounded-full object-contain bg-white border border-border-subtle flex-shrink-0"
         onError={() => setImgError(true)}
       />
     );
@@ -90,7 +91,7 @@ function ClientAvatar({ clientId, clientName }: { clientId: string; clientName: 
 
   const initials = clientId.slice(0, 2).toUpperCase();
   return (
-    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${getAvatarColor(clientId)}`}>
+    <div title={clientName} className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${getAvatarColor(clientId)}`}>
       {initials}
     </div>
   );
@@ -689,10 +690,7 @@ export default function ContractsSummaryPage() {
                   >
                     {/* Cliente */}
                     <td className={`${cellPad} ${cellText}`}>
-                      <div className="flex items-center gap-2.5">
-                        <ClientAvatar clientId={contract.client_id} clientName={contract.client_name} />
-                        <span className="font-medium text-text-primary truncate">{contract.client_name}</span>
-                      </div>
+                      <ClientAvatar clientId={contract.client_id} clientName={contract.client_name} />
                     </td>
                     {/* Estado */}
                     <td className={`${cellPad} text-center`}>
