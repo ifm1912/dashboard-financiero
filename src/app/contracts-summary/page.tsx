@@ -298,8 +298,6 @@ export default function ContractsSummaryPage() {
       negotiationCount: negotiation.length,
       arrActivo: active.filter((c) => c.base_arr_eur > 0).reduce((s, c) => s + c.current_price_annual, 0),
       pipeline: negotiation.reduce((s, c) => s + c.current_price_annual, 0),
-      setupTotal: contracts.reduce((s, c) => s + c.set_up, 0),
-      uniqueClients: new Set(contracts.map((c) => c.client_id)).size,
     };
   }, [contracts]);
 
@@ -350,7 +348,6 @@ export default function ContractsSummaryPage() {
 
       switch (kpiId) {
         case 'total':
-        case 'clients':
           setStatusFilter('all');
           setOwnerFilter('all');
           setTypeFilter('all');
@@ -364,11 +361,6 @@ export default function ContractsSummaryPage() {
           setStatusFilter('negociacion');
           setOwnerFilter('all');
           setTypeFilter('all');
-          break;
-        case 'setup':
-          setStatusFilter('all');
-          setOwnerFilter('all');
-          setTypeFilter('non_recurring');
           break;
       }
     },
@@ -476,7 +468,7 @@ export default function ContractsSummaryPage() {
           Resumen
         </button>
         {!kpiCollapsed && (
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
             <KPICard
               label="Total Contratos"
               value={String(kpis.total)}
@@ -497,20 +489,6 @@ export default function ContractsSummaryPage() {
               subtitle={`${kpis.negotiationCount} en negociación`}
               onClick={() => handleKPIClick('pipeline')}
               active={activeKPIFilter === 'pipeline'}
-            />
-            <KPICard
-              label="SetUp Total"
-              value={formatCurrency(kpis.setupTotal)}
-              subtitle="Fees acumulados"
-              onClick={() => handleKPIClick('setup')}
-              active={activeKPIFilter === 'setup'}
-            />
-            <KPICard
-              label="Clientes Únicos"
-              value={String(kpis.uniqueClients)}
-              subtitle="Todos los estados"
-              onClick={() => handleKPIClick('clients')}
-              active={activeKPIFilter === 'clients'}
             />
           </div>
         )}
