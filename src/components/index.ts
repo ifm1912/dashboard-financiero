@@ -6,5 +6,8 @@ export { ChartContainer } from './ChartContainer';
 export { RevenueBarChart, MRRAreaChart, RevenueLineChart, ARRByClientChart, ARRByProductChart, ExpansionByClientChart, EventImpactChart, ARRByOwnerChart } from './Charts';
 export { InvoiceModal } from './InvoiceModal';
 export { CategoryDetailPanel } from './CategoryDetailPanel';
+export { ContractDetailDrawer } from './ContractDetailDrawer';
 export { BurnAnalysisCard } from './BurnAnalysisCard';
 export { VCReportModal } from './VCReportModal';
+export { ExportReportModal } from './ExportReportModal';
+export type { ReportPreset, ReportOptions } from './ExportReportModal';

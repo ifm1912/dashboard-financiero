@@ -1,5 +1,7 @@
 'use client';
 
+import { KeyboardEvent } from 'react';
+
 interface KPICardProps {
   label: string;
   value: string;
@@ -8,19 +10,40 @@ interface KPICardProps {
     label: string;
   };
   subtitle?: string;
+  onClick?: () => void;
+  active?: boolean;
 }
 
-export function KPICard({ label, value, trend, subtitle }: KPICardProps) {
+export function KPICard({ label, value, trend, subtitle, onClick, active }: KPICardProps) {
   const isPositive = trend ? trend.value >= 0 : true;
+  const isClickable = !!onClick;
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (onClick && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      onClick();
+    }
+  };
 
   return (
-    <div className="group rounded-xl border border-border-subtle bg-bg-surface/50 p-3 sm:p-4 md:p-5 transition-all duration-200 hover:bg-bg-surface hover:border-border-default">
-      {/* Label - pequeño y muted */}
+    <div
+      className={`group rounded-xl border p-3 sm:p-4 md:p-5 transition-all duration-200 hover:bg-bg-surface hover:border-border-default ${
+        active
+          ? 'border-accent ring-2 ring-accent/30 bg-bg-surface'
+          : 'border-border-subtle bg-bg-surface/50'
+      } ${isClickable ? 'cursor-pointer' : ''}`}
+      onClick={onClick}
+      onKeyDown={isClickable ? handleKeyDown : undefined}
+      role={isClickable ? 'button' : undefined}
+      tabIndex={isClickable ? 0 : undefined}
+      aria-pressed={isClickable ? active : undefined}
+    >
+      {/* Label */}
       <p className="text-xs font-medium uppercase tracking-wider text-text-muted">
         {label}
       </p>
 
-      {/* Value - grande y bold */}
+      {/* Value */}
       <p className="mt-3 text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-text-primary">
         {value}
       </p>
