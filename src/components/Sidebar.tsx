@@ -26,7 +26,7 @@ const navigation: NavigationItem[] = [
     href: '/revenue-analytics',
   },
   {
-    name: 'Contracts & Forecast',
+    name: 'Recurring Revenue',
     href: '/contracts-forecast',
   },
   {
