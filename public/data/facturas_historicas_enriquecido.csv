@@ -137,3 +137,4 @@ FACT092026,2026-01-31,INDXA,INDX Licencia ene-26,Licencia,1715,2075.15,paid,2026
 FACT102026,2026-02-11,MY,MY Evolutivo Agentes,SetUp,750,907.5,pending,,2026,2,2026-02-01,2026Q1,,,,,setup,non_recurring,False,157.5,0.21
 FACT112026,2026-02-27,SAM,SAMi Licencia feb-26,Licencia,2083.33,2520.83,pending,,2026,2,2026-02-01,2026Q1,,,,,licencia,recurring,True,437.5,0.2100003360005376
 FACT122026,2026-02-27,SAM,SAM Mantenimiento feb26,Licencia,3900,4719,pending,,2026,2,2026-02-01,2026Q1,,,,,licencia,recurring,True,819,0.21
+FACT132026,2026-02-27,AND,AND Licencia feb-26,Licencia,7630.5,9232.9,pending,,2026,2,2026-02-01,2026Q1,,,,,licencia,recurring,True,1602.3999999999996,0.20999934473494525
