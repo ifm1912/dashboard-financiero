@@ -21,6 +21,11 @@ export interface Invoice {
   is_recurring: boolean;
   amount_tax: number;
   tax_rate_implied: number;
+  // Multi-moneda
+  currency: string;
+  exchange_rate: number;
+  amount_net_original: number;
+  amount_total_original: number;
 }
 
 export interface MonthlyMetric {
@@ -119,6 +124,10 @@ export interface InvoiceCreateInput {
   amount_total: number;
   status: InvoiceStatus;
   payment_date: string | null; // YYYY-MM-DD o null
+  currency?: string;
+  exchange_rate?: number;
+  amount_net_original?: number;
+  amount_total_original?: number;
 }
 
 // Input para editar factura (todos los campos editables)
@@ -132,6 +141,10 @@ export interface InvoiceEditInput {
   amount_total?: number;
   status: InvoiceStatus;
   payment_date: string | null;
+  currency?: string;
+  exchange_rate?: number;
+  amount_net_original?: number;
+  amount_total_original?: number;
 }
 
 // Errores de validación
@@ -145,6 +158,7 @@ export interface InvoiceValidationErrors {
   amount_total?: string;
   status?: string;
   payment_date?: string;
+  exchange_rate?: string;
 }
 
 // ============================================

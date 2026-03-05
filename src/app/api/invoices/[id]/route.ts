@@ -106,3 +106,50 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     );
   }
 }
+
+/**
+ * DELETE /api/invoices/[id]
+ * Elimina una factura
+ */
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
+  if (process.env.VERCEL) {
+    return NextResponse.json(
+      { error: 'Las eliminaciones solo están disponibles en el entorno local.' },
+      { status: 403 }
+    );
+  }
+
+  try {
+    const { id } = await params;
+    const invoices = await readInvoicesFromCSV();
+    const index = invoices.findIndex((inv) => inv.invoice_id === id);
+
+    if (index === -1) {
+      return NextResponse.json(
+        { error: 'Factura no encontrada' },
+        { status: 404 }
+      );
+    }
+
+    const filtered = invoices.filter((inv) => inv.invoice_id !== id);
+    await writeInvoicesToCSV(filtered);
+
+    syncInvoicesToGit(`eliminar ${id}`).catch(() => {});
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting invoice:', error);
+
+    if (error instanceof Error && error.message.includes('escritura')) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 423 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: 'Error al eliminar factura' },
+      { status: 500 }
+    );
+  }
+}

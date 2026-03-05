@@ -4,6 +4,8 @@ import { useEffect, useState, useMemo } from 'react';
 import {
   BarChart,
   Bar,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -14,8 +16,17 @@ import {
   Line,
 } from 'recharts';
 import { KPICard } from '@/components';
-import { getInvoices, formatCurrency, formatPercent, formatMonth, filterInvoicesByDevengo, filterInvoicesByCobro } from '@/lib/data';
-import { Invoice } from '@/types';
+import {
+  getInvoices,
+  getMRRMetrics,
+  formatCurrency,
+  formatPercent,
+  formatMonth,
+  filterInvoicesByDevengo,
+  filterInvoicesByCobro,
+  filterMRRByDate,
+} from '@/lib/data';
+import { Invoice, MRRMetric } from '@/types';
 import { useDateRange } from '@/contexts';
 
 type ViewMode = 'devengo' | 'cobros';
@@ -53,6 +64,7 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
 
 export default function RevenuePage() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [mrrData, setMrrData] = useState<MRRMetric[]>([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>('devengo');
   const { dateRange } = useDateRange();
@@ -60,10 +72,14 @@ export default function RevenuePage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const data = await getInvoices();
-        setInvoices(data);
+        const [invoicesData, mrrMetrics] = await Promise.all([
+          getInvoices(),
+          getMRRMetrics(),
+        ]);
+        setInvoices(invoicesData);
+        setMrrData(mrrMetrics);
       } catch (error) {
-        console.error('Error loading invoices:', error);
+        console.error('Error loading data:', error);
       } finally {
         setLoading(false);
       }
@@ -71,7 +87,6 @@ export default function RevenuePage() {
     loadData();
   }, []);
 
-  // Filtrar facturas según el modo de vista y el rango de fechas global
   const filteredByDevengo = useMemo(() => {
     return filterInvoicesByDevengo(invoices, dateRange);
   }, [invoices, dateRange]);
@@ -79,6 +94,10 @@ export default function RevenuePage() {
   const filteredByCobro = useMemo(() => {
     return filterInvoicesByCobro(invoices, dateRange);
   }, [invoices, dateRange]);
+
+  const filteredMRR = useMemo(() => {
+    return filterMRRByDate(mrrData, dateRange);
+  }, [mrrData, dateRange]);
 
   const devengoKpis = useMemo(() => {
     const totalDevengado = filteredByDevengo.reduce((sum, inv) => sum + inv.amount_net, 0);
@@ -109,7 +128,6 @@ export default function RevenuePage() {
   const monthlyData = useMemo(() => {
     const monthMap = new Map<string, { devengado: number; cobrado: number }>();
 
-    // Devengado - usar facturas filtradas por invoice_date
     filteredByDevengo.forEach(inv => {
       const month = inv.invoice_month_start;
       if (!monthMap.has(month)) {
@@ -118,7 +136,6 @@ export default function RevenuePage() {
       monthMap.get(month)!.devengado += inv.amount_net;
     });
 
-    // Cobrado - usar facturas filtradas por payment_date
     filteredByCobro.forEach(inv => {
       const month = inv.payment_month_start!;
       if (!monthMap.has(month)) {
@@ -139,6 +156,15 @@ export default function RevenuePage() {
     return result;
   }, [filteredByDevengo, filteredByCobro]);
 
+  const mrrChartData = useMemo(() => {
+    return filteredMRR.map(d => ({
+      month: d.month,
+      monthLabel: formatMonth(d.month),
+      mrr: d.mrr_approx,
+      arr: d.arr_approx,
+    }));
+  }, [filteredMRR]);
+
   if (loading) {
     return (
       <div className="flex h-[60vh] items-center justify-center">
@@ -149,7 +175,14 @@ export default function RevenuePage() {
 
   return (
     <div className="space-y-8">
-      {/* Mode Toggle - inline with page */}
+      {/* MRR Note */}
+      <div className="rounded-lg border border-border-subtle bg-bg-surface/30 px-4 py-2.5">
+        <p className="text-[11px] text-text-dimmed">
+          MRR aproximado basado en fecha de emisión. Solo facturas con revenue_category = recurring.
+        </p>
+      </div>
+
+      {/* Mode Toggle */}
       <div className="flex items-center gap-3">
         <div className="flex rounded-lg border border-border-subtle bg-bg-surface/50 p-0.5">
           <button
@@ -180,16 +213,16 @@ export default function RevenuePage() {
 
       {/* KPIs - Devengo */}
       {viewMode === 'devengo' && (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3">
           <KPICard
             label="Total Devengado"
             value={formatCurrency(devengoKpis.totalDevengado)}
-            subtitle="Facturación emitida"
+            subtitle={`${devengoKpis.numFacturas} facturas`}
           />
           <KPICard
             label="Ticket Medio"
             value={formatCurrency(devengoKpis.ticketMedio)}
-            subtitle={`${devengoKpis.numFacturas} facturas`}
+            subtitle="Por factura"
           />
           <KPICard
             label="Pendiente de Cobro"
@@ -201,7 +234,7 @@ export default function RevenuePage() {
 
       {/* KPIs - Cobros */}
       {viewMode === 'cobros' && (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3">
           <KPICard
             label="Total Cobrado"
             value={formatCurrency(cobrosKpis.totalCobrado)}
@@ -220,7 +253,53 @@ export default function RevenuePage() {
         </div>
       )}
 
-      {/* Main Chart */}
+      {/* MRR Evolution Chart */}
+      <div className="rounded-xl border border-border-subtle bg-bg-surface/50 p-5">
+        <div className="mb-6">
+          <h3 className="text-sm font-medium text-text-secondary">Evolución del MRR</h3>
+          <p className="mt-0.5 text-xs text-text-dimmed">Monthly Recurring Revenue histórico</p>
+        </div>
+
+        <div className="h-56 sm:h-64 lg:h-80 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={mrrChartData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
+              <defs>
+                <linearGradient id="mrrGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={CHART_COLORS.primary} stopOpacity={0.15} />
+                  <stop offset="100%" stopColor={CHART_COLORS.primary} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />
+              <XAxis
+                dataKey="monthLabel"
+                stroke={CHART_COLORS.text}
+                fontSize={10}
+                tickLine={false}
+                axisLine={false}
+                dy={8}
+              />
+              <YAxis
+                stroke={CHART_COLORS.text}
+                fontSize={10}
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Area
+                type="monotone"
+                dataKey="mrr"
+                name="MRR"
+                stroke={CHART_COLORS.primary}
+                strokeWidth={1.5}
+                fill="url(#mrrGradient)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Monthly Revenue Chart */}
       <div className="rounded-xl border border-border-subtle bg-bg-surface/50 p-5">
         <div className="mb-6">
           <h3 className="text-sm font-medium text-text-secondary">
@@ -234,7 +313,7 @@ export default function RevenuePage() {
           </p>
         </div>
 
-        <div className="h-80 w-full">
+        <div className="h-56 sm:h-64 lg:h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={monthlyData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
               <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />
@@ -271,7 +350,7 @@ export default function RevenuePage() {
           <p className="mt-0.5 text-xs text-text-dimmed">Evolución mensual del cash gap</p>
         </div>
 
-        <div className="h-80 w-full">
+        <div className="h-56 sm:h-64 lg:h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={monthlyData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
               <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} vertical={false} />

@@ -36,6 +36,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# nóminas individuales (datos sensibles, solo local)
+/public/data/nominas/
+
+# OCR data
+eng.traineddata
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

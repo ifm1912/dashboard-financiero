@@ -12,7 +12,9 @@ import {
   formatCurrency,
   formatPercent,
   getMRRMetrics,
+  getPayrollData,
 } from '@/lib/data';
+import type { PayrollData } from '@/lib/data';
 import { calculateCashflowMetrics, getExpensesByCategoryFiltered } from '@/lib/cashflow';
 import { Invoice, Contract, CashBalance, Expense, BankInflow, MRRMetric, FinancingData, EquityRound, DebtInstrument, Grant, UsageMetrics } from '@/types';
 import { ExportReportModal } from '@/components/ExportReportModal';
@@ -41,6 +43,7 @@ export default function Overview() {
   const [mrrData, setMrrData] = useState<MRRMetric[]>([]);
   const [financing, setFinancing] = useState<FinancingData | null>(null);
   const [usageMetrics, setUsageMetrics] = useState<UsageMetrics | null>(null);
+  const [payrollData, setPayrollData] = useState<PayrollData | null>(null);
   const [loading, setLoading] = useState(true);
   const [showExportModal, setShowExportModal] = useState(false);
   const [generatingPDF, setGeneratingPDF] = useState(false);
@@ -48,7 +51,7 @@ export default function Overview() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [invoicesData, contractsData, cashData, expensesData, inflowsData, mrrMetrics, financingData, usageData] = await Promise.all([
+        const [invoicesData, contractsData, cashData, expensesData, inflowsData, mrrMetrics, financingData, usageData, payroll] = await Promise.all([
           getInvoices(),
           getContracts(),
           getCashBalance(),
@@ -57,6 +60,7 @@ export default function Overview() {
           getMRRMetrics(),
           getFinancing(),
           getUsageMetrics(),
+          getPayrollData(),
         ]);
         setInvoices(invoicesData);
         setContracts(contractsData);
@@ -66,6 +70,7 @@ export default function Overview() {
         setMrrData(mrrMetrics);
         setFinancing(financingData);
         setUsageMetrics(usageData);
+        setPayrollData(payroll);
       } catch (error) {
         console.error('Error loading data:', error);
       } finally {
@@ -198,6 +203,21 @@ export default function Overview() {
     const usageAvgDailyChats = usageMetrics?.latest?.avg_daily_conversations ?? null;
     const usageReportDate = usageMetrics?.latest?.date ?? null;
 
+    // === SECTION 8: EQUIPO ===
+    const sortedMonths = payrollData?.months
+      ?.slice()
+      .sort((a, b) => a.month.localeCompare(b.month)) ?? [];
+    const latestPayroll = sortedMonths.length > 0 ? sortedMonths[sortedMonths.length - 1] : null;
+    const prevPayroll = sortedMonths.length > 1 ? sortedMonths[sortedMonths.length - 2] : null;
+    const headcount = latestPayroll?.headcount ?? 0;
+    const headcountDelta = prevPayroll ? headcount - prevPayroll.headcount : null;
+    const costeMensual = latestPayroll?.total_cost ?? 0;
+    const revenuePerEmployee = headcount > 0 ? revenueYTD / headcount : 0;
+    // Coste personal acumulado YTD vs revenue YTD
+    const payrollMonthsYTD = sortedMonths.filter(m => m.month.startsWith(`${currentYear}-`));
+    const costePersonalYTD = payrollMonthsYTD.reduce((sum, m) => sum + m.total_cost, 0);
+    const pctCostePersonal = revenueYTD > 0 ? (costePersonalYTD / revenueYTD) * 100 : 0;
+
     return {
       // Revenue
       revenuePriorFY, revenueYTD, revenueLastQuarter, revenueLastMonth,
@@ -218,8 +238,10 @@ export default function Overview() {
       dso, collectionRate, porcentajeRecurrente,
       // Expenses
       expensesByCategory,
+      // Team
+      headcount, headcountDelta, costeMensual, revenuePerEmployee, pctCostePersonal,
     };
-  }, [invoices, contracts, cashBalance, expenses, inflows, mrrData, financing, usageMetrics]);
+  }, [invoices, contracts, cashBalance, expenses, inflows, mrrData, financing, usageMetrics, payrollData]);
 
   const handleGenerateReport = async (preset: ReportPreset, options: ReportOptions) => {
     setShowExportModal(false);
@@ -740,6 +762,50 @@ export default function Overview() {
           </div>
         </div>
       </div>
+
+      {/* === SECCIÓN 8: EQUIPO === */}
+      {metrics.headcount > 0 && (
+        <div>
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-text-dimmed mb-4">
+            Team
+          </h2>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-4">
+            <div className="rounded-xl border border-border-subtle bg-bg-surface p-4">
+              <p className="text-[10px] font-medium uppercase tracking-wider text-text-dimmed">Headcount</p>
+              <p className="mt-1 text-2xl font-bold text-accent">{metrics.headcount}</p>
+              <p className="mt-1 text-xs text-text-muted">
+                {metrics.headcountDelta !== null && metrics.headcountDelta !== 0 ? (
+                  <span className={metrics.headcountDelta > 0 ? 'text-success' : 'text-danger'}>
+                    {metrics.headcountDelta > 0 ? '+' : ''}{metrics.headcountDelta} vs mes anterior
+                  </span>
+                ) : (
+                  'Empleados actuales'
+                )}
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-border-subtle bg-bg-surface p-4">
+              <p className="text-[10px] font-medium uppercase tracking-wider text-text-dimmed">Coste Personal</p>
+              <p className="mt-1 text-2xl font-bold text-text-secondary">{formatCurrency(metrics.costeMensual)}</p>
+              <p className="mt-1 text-xs text-text-muted">Coste mensual empresa</p>
+            </div>
+
+            <div className="rounded-xl border border-border-subtle bg-bg-surface p-4">
+              <p className="text-[10px] font-medium uppercase tracking-wider text-text-dimmed">Revenue / Employee</p>
+              <p className="mt-1 text-2xl font-bold text-text-primary">{formatCurrency(metrics.revenuePerEmployee)}</p>
+              <p className="mt-1 text-xs text-text-muted">Revenue YTD / headcount</p>
+            </div>
+
+            <div className="rounded-xl border border-border-subtle bg-bg-surface p-4">
+              <p className="text-[10px] font-medium uppercase tracking-wider text-text-dimmed">% Coste / Revenue</p>
+              <p className={`mt-1 text-2xl font-bold ${metrics.pctCostePersonal > 80 ? 'text-danger' : metrics.pctCostePersonal > 50 ? 'text-warning' : 'text-success'}`}>
+                {formatPercent(metrics.pctCostePersonal)}
+              </p>
+              <p className="mt-1 text-xs text-text-muted">Coste personal YTD / Revenue YTD</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* === SECCIÓN 7: DISTRIBUCIÓN DE GASTOS === */}
       <div>

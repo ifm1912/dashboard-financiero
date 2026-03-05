@@ -46,9 +46,30 @@ export function InvoiceModal({
   // Estado para el toggle de IVA
   const [sinIva, setSinIva] = useState(false);
 
+  // Multi-moneda
+  const [clientCurrencyMap, setClientCurrencyMap] = useState<Record<string, string>>({});
+  const [detectedCurrency, setDetectedCurrency] = useState<string>('EUR');
+  const [exchangeRate, setExchangeRate] = useState<number>(1);
+
   const [errors, setErrors] = useState<InvoiceValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+
+  // Cargar contratos para detectar moneda por cliente
+  useEffect(() => {
+    fetch('/data/contracts.json')
+      .then((res) => res.json())
+      .then((contracts: { client_id: string; currency: string }[]) => {
+        const map: Record<string, string> = {};
+        for (const c of contracts) {
+          if (c.currency && c.currency !== 'eur') {
+            map[c.client_id] = c.currency;
+          }
+        }
+        setClientCurrencyMap(map);
+      })
+      .catch(() => {});
+  }, []);
 
   // Función para normalizar revenue_type al formato esperado
   const normalizeRevenueType = (type: string): typeof REVENUE_TYPES[number] => {
@@ -67,17 +88,21 @@ export function InvoiceModal({
   // Inicializar formulario cuando cambia el modo o la factura
   useEffect(() => {
     if (mode === 'edit' && invoice) {
+      // En edit, amount_net/total son EUR; si es USD, mostrar los originales en el form
+      const isUSD = invoice.currency === 'USD';
       setFormData({
         invoice_id: invoice.invoice_id,
         invoice_date: invoice.invoice_date,
         customer_name: invoice.customer_name,
         invoice_concept: invoice.invoice_concept,
         revenue_type: normalizeRevenueType(invoice.revenue_type),
-        amount_net: invoice.amount_net,
-        amount_total: invoice.amount_total,
+        amount_net: isUSD ? invoice.amount_net_original : invoice.amount_net,
+        amount_total: isUSD ? invoice.amount_total_original : invoice.amount_total,
         status: normalizeStatus(invoice.status),
         payment_date: invoice.payment_date,
       });
+      setDetectedCurrency(invoice.currency || 'EUR');
+      setExchangeRate(invoice.exchange_rate || 1);
     } else if (mode === 'create') {
       // Generar ID sugerido
       const year = new Date().getFullYear();
@@ -93,8 +118,10 @@ export function InvoiceModal({
         status: 'pending',
         payment_date: null,
       });
-      // Resetear toggle de IVA al abrir modal en modo crear
+      // Resetear toggle de IVA y moneda al abrir modal en modo crear
       setSinIva(false);
+      setDetectedCurrency('EUR');
+      setExchangeRate(1);
     }
     setErrors({});
     setApiError(null);
@@ -129,6 +156,14 @@ export function InvoiceModal({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
+
+    // Detectar moneda cuando cambia el cliente
+    if (name === 'customer_name') {
+      const clientCurrency = clientCurrencyMap[value];
+      const isUSD = clientCurrency === 'us dollar';
+      setDetectedCurrency(isUSD ? 'USD' : 'EUR');
+      if (!isUSD) setExchangeRate(1);
+    }
 
     if (name === 'amount_net' && mode === 'create') {
       // Cuando cambia el importe neto, recalcular el total automáticamente
@@ -165,11 +200,31 @@ export function InvoiceModal({
     setApiError(null);
 
     try {
+      // Preparar datos multi-moneda
+      const isNonEUR = detectedCurrency !== 'EUR';
+      const amountNetEur = isNonEUR
+        ? Math.round(formData.amount_net * exchangeRate * 100) / 100
+        : formData.amount_net;
+      const amountTotalEur = isNonEUR
+        ? Math.round(formData.amount_total * exchangeRate * 100) / 100
+        : formData.amount_total;
+
       if (mode === 'create') {
+        const submitData = {
+          ...formData,
+          // amount_net/total siempre en EUR para el servidor
+          amount_net: amountNetEur,
+          amount_total: amountTotalEur,
+          currency: detectedCurrency,
+          exchange_rate: exchangeRate,
+          amount_net_original: formData.amount_net,
+          amount_total_original: formData.amount_total,
+        };
+
         const response = await fetch('/api/invoices', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(submitData),
         });
 
         const data = await response.json();
@@ -189,10 +244,14 @@ export function InvoiceModal({
           customer_name: formData.customer_name,
           invoice_concept: formData.invoice_concept,
           revenue_type: formData.revenue_type,
-          amount_net: formData.amount_net,
-          amount_total: formData.amount_total,
+          amount_net: amountNetEur,
+          amount_total: amountTotalEur,
           status: formData.status,
           payment_date: formData.payment_date,
+          currency: detectedCurrency,
+          exchange_rate: exchangeRate,
+          amount_net_original: formData.amount_net,
+          amount_total_original: formData.amount_total,
         };
 
         const response = await fetch(`/api/invoices/${invoice?.invoice_id}`, {
@@ -332,6 +391,45 @@ export function InvoiceModal({
             )}
           </div>
 
+          {/* Moneda detectada + tipo de cambio */}
+          {detectedCurrency !== 'EUR' && (
+            <div className="rounded-lg border border-accent/30 bg-accent/5 px-4 py-3 space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-accent">$ USD</span>
+                <span className="text-xs text-text-dimmed">
+                  Los importes se introducen en USD. Se convertirán a EUR para contabilidad.
+                </span>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-medium text-text-muted">
+                  Tipo de cambio (EUR por 1 USD) *
+                </label>
+                <input
+                  type="number"
+                  value={exchangeRate || ''}
+                  onChange={(e) => {
+                    setExchangeRate(parseFloat(e.target.value) || 0);
+                    if (errors.exchange_rate) {
+                      setErrors((prev) => ({ ...prev, exchange_rate: undefined }));
+                    }
+                  }}
+                  step="0.0001"
+                  min="0.01"
+                  className={`w-full rounded-lg border bg-bg-surface px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent ${
+                    errors.exchange_rate ? 'border-danger' : 'border-border-subtle'
+                  }`}
+                  placeholder="0.9200"
+                />
+                {errors.exchange_rate && (
+                  <p className="mt-1 text-xs text-danger">{errors.exchange_rate}</p>
+                )}
+                <p className="mt-1 text-xs text-text-dimmed">
+                  Ej: si 1 USD = 0.92 EUR, introducir 0.92
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Concepto */}
           <div>
             <label className="mb-1.5 block text-xs font-medium text-text-muted">
@@ -411,7 +509,7 @@ export function InvoiceModal({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="mb-1.5 block text-xs font-medium text-text-muted">
-                Importe Neto *
+                Importe Neto{detectedCurrency !== 'EUR' ? ` (${detectedCurrency})` : ''} *
               </label>
               <input
                 type="number"
@@ -419,6 +517,7 @@ export function InvoiceModal({
                 value={formData.amount_net || ''}
                 onChange={handleChange}
                 min="0"
+                max="9999999"
                 step="0.01"
                 className={`w-full rounded-lg border bg-bg-surface px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent ${
                   errors.amount_net ? 'border-danger' : 'border-border-subtle'
@@ -428,10 +527,15 @@ export function InvoiceModal({
               {errors.amount_net && (
                 <p className="mt-1 text-xs text-danger">{errors.amount_net}</p>
               )}
+              {detectedCurrency !== 'EUR' && formData.amount_net > 0 && exchangeRate > 0 && (
+                <p className="mt-1 text-xs text-text-dimmed">
+                  ≈ {(formData.amount_net * exchangeRate).toFixed(2)} EUR
+                </p>
+              )}
             </div>
             <div>
               <label className="mb-1.5 block text-xs font-medium text-text-muted">
-                Importe Total {mode === 'create' && !sinIva ? '(+21% IVA)' : ''} *
+                Importe Total{detectedCurrency !== 'EUR' ? ` (${detectedCurrency})` : ''} {mode === 'create' && !sinIva ? '(+21% IVA)' : ''} *
               </label>
               <input
                 type="number"
@@ -439,6 +543,7 @@ export function InvoiceModal({
                 value={formData.amount_total || ''}
                 onChange={handleChange}
                 min="0"
+                max="9999999"
                 step="0.01"
                 readOnly={mode === 'create'}
                 className={`w-full rounded-lg border bg-bg-surface px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent ${
@@ -452,6 +557,11 @@ export function InvoiceModal({
               {mode === 'create' && (
                 <p className="mt-1 text-xs text-text-dimmed">
                   {sinIva ? 'Igual al neto (sin IVA)' : 'Calculado automáticamente'}
+                </p>
+              )}
+              {detectedCurrency !== 'EUR' && formData.amount_total > 0 && exchangeRate > 0 && (
+                <p className="mt-1 text-xs text-text-dimmed">
+                  ≈ {(formData.amount_total * exchangeRate).toFixed(2)} EUR
                 </p>
               )}
             </div>

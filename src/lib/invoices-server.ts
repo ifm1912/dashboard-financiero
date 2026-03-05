@@ -6,12 +6,12 @@
  */
 
 import { promises as fs } from 'fs';
-import { exec } from 'child_process';
+import { execFile } from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
 import Papa from 'papaparse';
 
-const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 import {
   Invoice,
   InvoiceCreateInput,
@@ -53,6 +53,10 @@ const CSV_HEADERS = [
   'is_recurring',
   'amount_tax',
   'tax_rate_implied',
+  'currency',
+  'exchange_rate',
+  'amount_net_original',
+  'amount_total_original',
 ];
 
 // Lock simple para evitar escrituras concurrentes
@@ -62,6 +66,14 @@ let writeLock = false;
 // Validación
 // ============================================
 
+/** Valida que una fecha YYYY-MM-DD es realmente válida (no acepta 2026-02-30) */
+function isValidDate(dateStr: string): boolean {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  if (m < 1 || m > 12 || d < 1 || d > 31) return false;
+  const date = new Date(Date.UTC(y, m - 1, d));
+  return date.getUTCFullYear() === y && date.getUTCMonth() === m - 1 && date.getUTCDate() === d;
+}
+
 export function validateCreateInput(input: InvoiceCreateInput): InvoiceValidationErrors {
   const errors: InvoiceValidationErrors = {};
 
@@ -70,11 +82,13 @@ export function validateCreateInput(input: InvoiceCreateInput): InvoiceValidatio
     errors.invoice_id = 'El ID de factura es obligatorio';
   }
 
-  // invoice_date obligatorio y formato YYYY-MM-DD
+  // invoice_date obligatorio y formato YYYY-MM-DD con validación de rango
   if (!input.invoice_date) {
     errors.invoice_date = 'La fecha es obligatoria';
   } else if (!/^\d{4}-\d{2}-\d{2}$/.test(input.invoice_date)) {
     errors.invoice_date = 'Formato de fecha inválido (usar YYYY-MM-DD)';
+  } else if (!isValidDate(input.invoice_date)) {
+    errors.invoice_date = 'Fecha inválida (verificar mes y día)';
   }
 
   // customer_name obligatorio
@@ -113,6 +127,15 @@ export function validateCreateInput(input: InvoiceCreateInput): InvoiceValidatio
       errors.payment_date = 'La fecha de pago es obligatoria para facturas pagadas';
     } else if (!/^\d{4}-\d{2}-\d{2}$/.test(input.payment_date)) {
       errors.payment_date = 'Formato de fecha inválido (usar YYYY-MM-DD)';
+    } else if (!isValidDate(input.payment_date)) {
+      errors.payment_date = 'Fecha de pago inválida (verificar mes y día)';
+    }
+  }
+
+  // Tipo de cambio obligatorio para monedas no EUR
+  if (input.currency && input.currency !== 'EUR') {
+    if (!input.exchange_rate || input.exchange_rate <= 0) {
+      errors.exchange_rate = 'El tipo de cambio es obligatorio para monedas no EUR';
     }
   }
 
@@ -126,6 +149,8 @@ export function validateEditInput(input: InvoiceEditInput): InvoiceValidationErr
   if (input.invoice_date !== undefined && input.invoice_date !== '') {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(input.invoice_date)) {
       errors.invoice_date = 'Formato de fecha inválido (usar YYYY-MM-DD)';
+    } else if (!isValidDate(input.invoice_date)) {
+      errors.invoice_date = 'Fecha inválida (verificar mes y día)';
     }
   }
 
@@ -177,6 +202,8 @@ export function validateEditInput(input: InvoiceEditInput): InvoiceValidationErr
       errors.payment_date = 'La fecha de pago es obligatoria para facturas pagadas';
     } else if (!/^\d{4}-\d{2}-\d{2}$/.test(input.payment_date)) {
       errors.payment_date = 'Formato de fecha inválido (usar YYYY-MM-DD)';
+    } else if (!isValidDate(input.payment_date)) {
+      errors.payment_date = 'Fecha de pago inválida (verificar mes y día)';
     }
   }
 
@@ -230,9 +257,17 @@ export function enrichInvoice(input: InvoiceCreateInput): Invoice {
     input.revenue_type === 'Licencia' ? 'recurring' : 'non_recurring';
   const is_recurring = revenue_category === 'recurring';
 
-  // Campos derivados de importes
-  const amount_tax = input.amount_total - input.amount_net;
-  const tax_rate_implied = input.amount_net > 0 ? amount_tax / input.amount_net : 0;
+  // Campos derivados de importes (redondeo a 2 decimales para evitar floating point)
+  const amount_tax = Math.round((input.amount_total - input.amount_net) * 100) / 100;
+  const tax_rate_implied = input.amount_net > 0
+    ? Math.round((amount_tax / input.amount_net) * 10000) / 10000
+    : 0;
+
+  // Multi-moneda: amount_net/amount_total ya vienen en EUR desde el form
+  const currency = input.currency || 'EUR';
+  const exchange_rate = input.exchange_rate ?? 1;
+  const amount_net_original = input.amount_net_original ?? input.amount_net;
+  const amount_total_original = input.amount_total_original ?? input.amount_total;
 
   return {
     invoice_id: input.invoice_id.trim(),
@@ -257,6 +292,10 @@ export function enrichInvoice(input: InvoiceCreateInput): Invoice {
     is_recurring,
     amount_tax,
     tax_rate_implied,
+    currency,
+    exchange_rate,
+    amount_net_original,
+    amount_total_original,
   };
 }
 
@@ -310,9 +349,17 @@ export function updateInvoice(invoice: Invoice, input: InvoiceEditInput): Invoic
     revenue_type === 'Licencia' ? 'recurring' : 'non_recurring';
   const is_recurring = revenue_category === 'recurring';
 
-  // Recalcular campos derivados de importes
-  const amount_tax = amount_total - amount_net;
-  const tax_rate_implied = amount_net > 0 ? amount_tax / amount_net : 0;
+  // Recalcular campos derivados de importes (redondeo a 2 decimales)
+  const amount_tax = Math.round((amount_total - amount_net) * 100) / 100;
+  const tax_rate_implied = amount_net > 0
+    ? Math.round((amount_tax / amount_net) * 10000) / 10000
+    : 0;
+
+  // Multi-moneda
+  const currency = input.currency ?? invoice.currency ?? 'EUR';
+  const exchange_rate = input.exchange_rate ?? invoice.exchange_rate ?? 1;
+  const amount_net_original = input.amount_net_original ?? invoice.amount_net_original ?? amount_net;
+  const amount_total_original = input.amount_total_original ?? invoice.amount_total_original ?? amount_total;
 
   return {
     invoice_id: invoice.invoice_id, // ID no cambia
@@ -337,6 +384,10 @@ export function updateInvoice(invoice: Invoice, input: InvoiceEditInput): Invoic
     is_recurring,
     amount_tax,
     tax_rate_implied,
+    currency,
+    exchange_rate,
+    amount_net_original,
+    amount_total_original,
   };
 }
 
@@ -365,11 +416,20 @@ export async function readInvoicesFromCSV(): Promise<Invoice[]> {
     transformHeader: (header) => header.trim(),
   });
 
-  // Normalizar is_recurring (puede venir como string)
+  // Validar errores de parseo
+  if (result.errors && result.errors.length > 0) {
+    console.warn('[invoices] Errores de parseo CSV:', result.errors.slice(0, 5));
+  }
+
+  // Normalizar is_recurring (puede venir como string) y defaults multi-moneda
   return result.data.map((inv) => ({
     ...inv,
     is_recurring: inv.is_recurring === true || (inv.is_recurring as unknown) === 'True',
     payment_date: inv.payment_date || null,
+    currency: inv.currency || 'EUR',
+    exchange_rate: inv.exchange_rate ?? 1,
+    amount_net_original: inv.amount_net_original ?? inv.amount_net,
+    amount_total_original: inv.amount_total_original ?? inv.amount_total,
   }));
 }
 
@@ -496,16 +556,44 @@ export async function syncInvoicesToGit(action: string): Promise<void> {
     // 1. Copiar de /tmp/ al CSV del repo
     await fs.copyFile(TMP_CSV, PUBLIC_CSV);
 
-    // 2. Git add + commit + push
+    // 2. Sync al CSV fuente (facturas_historicas.csv en la raíz del proyecto)
+    const sourceCSV = path.resolve(process.cwd(), '..', 'facturas_historicas.csv');
+    try {
+      // Leer el enriched CSV y extraer solo las 9 columnas base
+      const enrichedContent = await fs.readFile(PUBLIC_CSV, 'utf-8');
+      const parsed = Papa.parse<Record<string, string>>(enrichedContent, {
+        header: true,
+        skipEmptyLines: true,
+      });
+      const baseColumns = [
+        'invoice_id', 'invoice_date', 'customer_name', 'invoice_concept',
+        'revenue_type', 'amount_net', 'amount_total', 'status', 'payment_date',
+      ];
+      const baseRows = parsed.data.map(row =>
+        baseColumns.map(col => {
+          const val = row[col] ?? '';
+          if (typeof val === 'string' && (val.includes(',') || val.includes('"'))) {
+            return `"${val.replace(/"/g, '""')}"`;
+          }
+          return val;
+        }).join(',')
+      );
+      const baseCSV = [baseColumns.join(','), ...baseRows].join('\n');
+      await fs.writeFile(sourceCSV, baseCSV, 'utf-8');
+      console.log('[sync] facturas_historicas.csv fuente actualizado');
+    } catch (err) {
+      console.warn('[sync] No se pudo actualizar CSV fuente:', err);
+    }
+
+    // 3. Git add + commit + push (safe: no shell interpolation)
     const repoDir = process.cwd();
     const csvRelPath = 'public/data/facturas_historicas_enriquecido.csv';
 
-    await execAsync(`git add "${csvRelPath}"`, { cwd: repoDir });
+    await execFileAsync('git', ['add', csvRelPath], { cwd: repoDir });
 
     // Verificar si hay cambios staged (evitar commits vacíos)
     try {
-      await execAsync('git diff --cached --quiet', { cwd: repoDir });
-      // Si no lanza error, no hay cambios → no commit
+      await execFileAsync('git', ['diff', '--cached', '--quiet'], { cwd: repoDir });
       console.log('[sync] No hay cambios en el CSV, skip commit');
       return;
     } catch {
@@ -513,10 +601,8 @@ export async function syncInvoicesToGit(action: string): Promise<void> {
     }
 
     const commitMsg = `Auto-sync facturas: ${action}`;
-    await execAsync(
-      `git commit -m "${commitMsg}" && git push`,
-      { cwd: repoDir }
-    );
+    await execFileAsync('git', ['commit', '-m', commitMsg], { cwd: repoDir });
+    await execFileAsync('git', ['push'], { cwd: repoDir });
 
     console.log(`[sync] CSV sincronizado con git: ${action}`);
   } catch (error) {

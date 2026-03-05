@@ -42,10 +42,9 @@ export const config = {
   matcher: [
     '/',
     '/revenue',
-    '/mrr',
     '/customers',
-    '/contracts',
-    '/forecast',
+    '/contracts-forecast',
+    '/contracts-summary',
     '/cashflow',
     '/invoices',
     '/login',

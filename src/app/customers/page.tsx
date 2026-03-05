@@ -1,6 +1,15 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
 import { KPICard } from '@/components';
 import { getInvoices, formatCurrency, formatPercent, filterInvoicesByDevengo } from '@/lib/data';
 import { Invoice } from '@/types';
@@ -19,6 +28,29 @@ interface CustomerData {
 
 type SortField = keyof CustomerData;
 type SortDirection = 'asc' | 'desc';
+
+const CHART_COLORS = {
+  primary: '#4f46e5',
+  primaryMuted: 'rgba(79, 70, 229, 0.08)',
+  grid: 'rgba(0, 0, 0, 0.06)',
+  text: '#64748b',
+};
+
+const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ name: string; value: number; color: string }>; label?: string }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded-lg border border-border-default bg-chart-tooltip-bg px-3 py-2 shadow-2xl backdrop-blur-sm">
+        <p className="mb-1 text-[10px] font-medium uppercase tracking-wider text-text-dimmed">{label}</p>
+        {payload.map((entry, index) => (
+          <p key={index} className="text-sm font-semibold" style={{ color: entry.color }}>
+            {formatCurrency(entry.value)}
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
 
 export default function CustomersPage() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -41,12 +73,10 @@ export default function CustomersPage() {
     loadData();
   }, []);
 
-  // Filtrar facturas por rango de fechas
   const filteredInvoices = useMemo(() => {
     return filterInvoicesByDevengo(invoices, dateRange);
   }, [invoices, dateRange]);
 
-  // Calculate customer data
   const customers = useMemo(() => {
     const customerMap = new Map<string, {
       invoices: Invoice[];
@@ -54,7 +84,6 @@ export default function CustomersPage() {
       total_amount: number;
     }>();
 
-    // Group invoices by customer
     filteredInvoices.forEach(inv => {
       const name = inv.customer_name.trim();
       if (!customerMap.has(name)) {
@@ -68,12 +97,10 @@ export default function CustomersPage() {
       }
     });
 
-    // Calculate 4 months ago date (consistent with Overview and Revenue Analytics)
     const fourMonthsAgo = new Date();
     fourMonthsAgo.setMonth(fourMonthsAgo.getMonth() - 4);
     const fourMonthsAgoStr = fourMonthsAgo.toISOString().split('T')[0];
 
-    // Build customer data array
     const result: CustomerData[] = [];
     customerMap.forEach((data, name) => {
       const dates = data.invoices.map(inv => inv.invoice_date).sort();
@@ -99,7 +126,6 @@ export default function CustomersPage() {
     return result;
   }, [filteredInvoices]);
 
-  // Sort customers
   const sortedCustomers = useMemo(() => {
     return [...customers].sort((a, b) => {
       const aVal = a[sortField];
@@ -117,7 +143,6 @@ export default function CustomersPage() {
     });
   }, [customers, sortField, sortDirection]);
 
-  // Calculate KPIs
   const kpis = useMemo(() => {
     const totalClientes = customers.length;
     const clientesActivos = customers.filter(c => c.estado_cliente === 'activo').length;
@@ -126,7 +151,6 @@ export default function CustomersPage() {
       ? (clientesConRecurrente / totalClientes) * 100
       : 0;
 
-    // Top cliente por ingresos (excluir AIE — es tax lease, no cliente real)
     const customersExclAIE = customers.filter(c => c.customer_name !== 'AIE');
     const topCliente = customersExclAIE.reduce((top, c) =>
       c.ingresos_totales > (top?.ingresos_totales || 0) ? c : top,
@@ -141,6 +165,17 @@ export default function CustomersPage() {
     };
   }, [customers]);
 
+  const top10Customers = useMemo(() => {
+    return [...customers]
+      .filter(c => c.customer_name !== 'AIE')
+      .sort((a, b) => b.ingresos_totales - a.ingresos_totales)
+      .slice(0, 10)
+      .map(c => ({
+        name: c.customer_name,
+        value: c.ingresos_totales,
+      }));
+  }, [customers]);
+
   const handleSort = (field: SortField) => {
     if (sortField === field) {
       setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
@@ -152,9 +187,9 @@ export default function CustomersPage() {
 
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortField !== field) {
-      return <span className="text-text-muted ml-1 opacity-50">↕</span>;
+      return <span className="text-text-muted ml-1 opacity-50">&#8597;</span>;
     }
-    return <span className="text-accent-light ml-1">{sortDirection === 'asc' ? '↑' : '↓'}</span>;
+    return <span className="text-accent-light ml-1">{sortDirection === 'asc' ? '\u2191' : '\u2193'}</span>;
   };
 
   if (loading) {
@@ -168,7 +203,7 @@ export default function CustomersPage() {
   return (
     <div className="space-y-8">
       {/* KPIs */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
         <KPICard
           label="Total Clientes"
           value={String(kpis.totalClientes)}
@@ -189,13 +224,48 @@ export default function CustomersPage() {
         />
       </div>
 
-      {/* Table */}
+      {/* Top 10 Customer Concentration Chart */}
+      <div className="rounded-xl border border-border-subtle bg-bg-surface/50 p-5">
+        <div className="mb-6">
+          <h3 className="text-sm font-medium text-text-secondary">Top 10 Clientes por Revenue</h3>
+          <p className="mt-0.5 text-xs text-text-dimmed">Concentración de ingresos</p>
+        </div>
+
+        <div className="h-56 sm:h-64 lg:h-80 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={top10Customers} layout="vertical" margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="4 4" stroke={CHART_COLORS.grid} horizontal={false} />
+              <XAxis
+                type="number"
+                stroke={CHART_COLORS.text}
+                fontSize={10}
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
+              />
+              <YAxis
+                type="category"
+                dataKey="name"
+                stroke={CHART_COLORS.text}
+                fontSize={10}
+                tickLine={false}
+                axisLine={false}
+                width={120}
+              />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: CHART_COLORS.primaryMuted }} />
+              <Bar dataKey="value" fill={CHART_COLORS.primary} radius={[0, 2, 2, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Customer Table */}
       <div className="rounded-xl border border-border-subtle bg-bg-surface/50 overflow-hidden">
         <div className="px-5 py-4">
           <h3 className="text-sm font-medium text-text-secondary">Listado de Clientes</h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[800px]">
             <thead>
               <tr className="border-t border-border-subtle">
                 <th

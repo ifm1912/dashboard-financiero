@@ -52,10 +52,10 @@ const COMPANY = {
 
 // ── Helpers ──────────────────────────────────────────────────────
 
-function formatCurrency2d(amount: number): string {
-  return new Intl.NumberFormat('es-ES', {
+function formatCurrency2d(amount: number, currency: string = 'EUR'): string {
+  return new Intl.NumberFormat(currency === 'USD' ? 'en-US' : 'es-ES', {
     style: 'currency',
-    currency: 'EUR',
+    currency: currency,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);
@@ -244,6 +244,7 @@ function drawBillingTo(doc: jsPDF, y: number, client: BillingClient | null, cust
 }
 
 function drawLineItemsTable(doc: jsPDF, y: number, invoice: Invoice): number {
+  const currency = invoice.currency || 'EUR';
   const startY = y + 4;
   const headerH = 7;
   const rowH = 8;
@@ -291,10 +292,10 @@ function drawLineItemsTable(doc: jsPDF, y: number, invoice: Invoice): number {
 
   doc.text(lines, ML + 3, rowY + 5);
 
-  // Importe
+  // Importe (en moneda original)
   doc.setFont('helvetica', 'normal');
   setColor(doc, C.black);
-  doc.text(formatCurrency2d(invoice.amount_net), ML + descColW + importeColW - 3, rowY + 5, { align: 'right' });
+  doc.text(formatCurrency2d(invoice.amount_net_original, currency), ML + descColW + importeColW - 3, rowY + 5, { align: 'right' });
 
   // Fila vacía extra (como la plantilla)
   const emptyRowY = rowY + actualRowH;
@@ -307,9 +308,9 @@ function drawLineItemsTable(doc: jsPDF, y: number, invoice: Invoice): number {
 }
 
 function drawPaymentAndTotals(doc: jsPDF, y: number, invoice: Invoice): number {
+  const currency = invoice.currency || 'EUR';
   const startY = y + 6;
   const leftColW = CW * 0.5;
-  const rightColW = CW * 0.5;
   const rightX = ML + leftColW;
 
   // ── Lado izquierdo: Instrucciones de pago ──
@@ -336,17 +337,17 @@ function drawPaymentAndTotals(doc: jsPDF, y: number, invoice: Invoice): number {
   payY += 5;
   doc.text(COMPANY.bank, ML + 3, payY);
 
-  // ── Lado derecho: Subtotal, IVA, Total ──
+  // ── Lado derecho: Subtotal, IVA, Total (en moneda original) ──
   const labelX = rightX + 10;
   const valueX = ML + CW - 3;
   let totY = startY;
 
-  // Calcular IVA
-  const subtotal = invoice.amount_net;
+  // Usar importes en moneda original para el PDF
+  const subtotal = invoice.amount_net_original;
   const ivaRate = invoice.tax_rate_implied || 0.21;
   const ivaPercent = Math.round(ivaRate * 100);
-  const ivaAmount = invoice.amount_total - invoice.amount_net;
-  const total = invoice.amount_total;
+  const ivaAmount = invoice.amount_total_original - invoice.amount_net_original;
+  const total = invoice.amount_total_original;
 
   // SUBTOTAL
   setDrawColor(doc, C.border);
@@ -359,7 +360,7 @@ function drawPaymentAndTotals(doc: jsPDF, y: number, invoice: Invoice): number {
   doc.text('SUBTOTAL:', labelX + 2, totY + 4);
   doc.setFont('helvetica', 'normal');
   setColor(doc, C.text);
-  doc.text(formatCurrency2d(subtotal), valueX, totY + 4, { align: 'right' });
+  doc.text(formatCurrency2d(subtotal, currency), valueX, totY + 4, { align: 'right' });
 
   totY += 9;
   doc.line(labelX, totY + 6, valueX + 3, totY + 6);
@@ -377,7 +378,7 @@ function drawPaymentAndTotals(doc: jsPDF, y: number, invoice: Invoice): number {
   doc.text('IVA:', labelX + 2, totY + 4);
   doc.setFont('helvetica', 'normal');
   setColor(doc, C.text);
-  doc.text(formatCurrency2d(ivaAmount), valueX, totY + 4, { align: 'right' });
+  doc.text(formatCurrency2d(ivaAmount, currency), valueX, totY + 4, { align: 'right' });
 
   totY += 9;
   doc.line(labelX, totY + 6, valueX + 3, totY + 6);
@@ -389,7 +390,19 @@ function drawPaymentAndTotals(doc: jsPDF, y: number, invoice: Invoice): number {
   // Total grande
   doc.setFontSize(16);
   setColor(doc, C.black);
-  doc.text(formatCurrency2d(total), valueX, totY + 5.5, { align: 'right' });
+  doc.text(formatCurrency2d(total, currency), valueX, totY + 5.5, { align: 'right' });
+
+  // Equivalente EUR para facturas no-EUR
+  if (currency !== 'EUR') {
+    doc.setFontSize(7.5);
+    setColor(doc, C.textLight);
+    totY += 10;
+    doc.text(
+      `Equivalente: ${formatCurrency2d(invoice.amount_total, 'EUR')} (TC: ${invoice.exchange_rate})`,
+      valueX, totY + 4, { align: 'right' }
+    );
+    totY += 4;
+  }
 
   return Math.max(payY + 5, totY + 14);
 }

@@ -21,6 +21,11 @@ const INVOICE_COLUMNS: { key: keyof Invoice; header: string }[] = [
   { key: 'amount_tax', header: 'Importe IVA' },
   { key: 'amount_total', header: 'Importe Total' },
   { key: 'tax_rate_implied', header: 'Tipo IVA Implícito' },
+  // Multi-moneda
+  { key: 'currency', header: 'Moneda' },
+  { key: 'exchange_rate', header: 'Tipo de Cambio' },
+  { key: 'amount_net_original', header: 'Neto (Moneda Original)' },
+  { key: 'amount_total_original', header: 'Total (Moneda Original)' },
   // Estado y pago
   { key: 'status', header: 'Estado' },
   { key: 'payment_date', header: 'Fecha Pago' },

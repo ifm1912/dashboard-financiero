@@ -1,19 +1,27 @@
 import { cookies } from 'next/headers';
+import { randomBytes, createHmac } from 'crypto';
 
-// Credenciales (configurable via .env.local)
+// Credenciales (REQUIERE .env.local — no hay fallback inseguro)
 const VALID_CREDENTIALS = {
-  email: process.env.AUTH_EMAIL || 'admin@gptfinance.com',
-  password: process.env.AUTH_PASSWORD || 'admin123',
+  email: process.env.AUTH_EMAIL,
+  password: process.env.AUTH_PASSWORD,
 };
 
+const SESSION_SECRET = process.env.SESSION_SECRET || randomBytes(32).toString('hex');
 const SESSION_COOKIE_NAME = 'gpt-finance-session';
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 días
 
 function generateSessionToken(): string {
-  return `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+  const payload = randomBytes(32).toString('hex');
+  const signature = createHmac('sha256', SESSION_SECRET).update(payload).digest('hex');
+  return `${payload}.${signature}`;
 }
 
 export async function validateCredentials(email: string, password: string): Promise<boolean> {
+  if (!VALID_CREDENTIALS.email || !VALID_CREDENTIALS.password) {
+    console.error('[auth] AUTH_EMAIL y AUTH_PASSWORD deben estar definidos en .env.local');
+    return false;
+  }
   return email === VALID_CREDENTIALS.email && password === VALID_CREDENTIALS.password;
 }
 
@@ -43,5 +51,16 @@ export async function destroySession(): Promise<void> {
 }
 
 export function isAuthenticated(sessionToken: string | null): boolean {
-  return sessionToken !== null && sessionToken.startsWith('session_');
+  if (!sessionToken) return false;
+  const parts = sessionToken.split('.');
+  if (parts.length !== 2) return false;
+  const [payload, signature] = parts;
+  const expectedSignature = createHmac('sha256', SESSION_SECRET).update(payload).digest('hex');
+  // Constant-time comparison to prevent timing attacks
+  if (signature.length !== expectedSignature.length) return false;
+  let mismatch = 0;
+  for (let i = 0; i < signature.length; i++) {
+    mismatch |= signature.charCodeAt(i) ^ expectedSignature.charCodeAt(i);
+  }
+  return mismatch === 0;
 }

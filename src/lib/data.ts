@@ -363,3 +363,64 @@ export async function getBillingClients(): Promise<Record<string, BillingClient>
   const data = await response.json();
   return data.clients;
 }
+
+// ============================================
+// Data Freshness
+// ============================================
+
+export interface DataFreshness {
+  last_update: string;
+  month_closed: string;
+  datasets: Record<string, { last_modified: string; rows?: number }>;
+}
+
+export async function getDataFreshness(): Promise<DataFreshness | null> {
+  try {
+    const response = await fetch(`${BASE_URL}/data/data_freshness.json`);
+    if (!response.ok) return null;
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
+// ============================================
+// Payroll / RRHH
+// ============================================
+
+export interface PayrollEmployee {
+  code: number;
+  initials: string;
+  gross: number;
+  irpf: number;
+  ss_employee: number;
+  net: number;
+  ss_employer: number;
+  total_cost: number;
+  pdf_available?: boolean;
+}
+
+export interface PayrollMonth {
+  month: string;
+  headcount: number;
+  total_gross: number;
+  total_deductions: number;
+  total_net: number;
+  total_employer_ss: number;
+  total_cost: number;
+  employees: PayrollEmployee[];
+}
+
+export interface PayrollData {
+  months: PayrollMonth[];
+}
+
+export async function getPayrollData(): Promise<PayrollData | null> {
+  try {
+    const response = await fetch(`${BASE_URL}/data/payroll.json`);
+    if (!response.ok) return null;
+    return response.json();
+  } catch {
+    return null;
+  }
+}

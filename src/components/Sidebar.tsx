@@ -2,50 +2,24 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-
 type NavItem = {
   name: string;
   href: string;
 };
 
-type NavGroup = {
-  name: string;
-  children: NavItem[];
-};
-
-type NavigationItem = NavItem | NavGroup;
-
-const navigation: NavigationItem[] = [
-  {
-    name: 'Overview',
-    href: '/',
-  },
-  {
-    name: 'Revenue Analytics',
-    href: '/revenue-analytics',
-  },
-  {
-    name: 'Recurring Revenue',
-    href: '/contracts-forecast',
-  },
-  {
-    name: 'Contratos',
-    href: '/contracts-summary',
-  },
-  {
-    name: 'Cash Flow',
-    href: '/cashflow',
-  },
-  {
-    name: 'Facturas',
-    href: '/invoices',
-  },
+const analyticsNav: NavItem[] = [
+  { name: 'Overview', href: '/' },
+  { name: 'Revenue', href: '/revenue' },
+  { name: 'Recurring Revenue', href: '/contracts-forecast' },
+  { name: 'Clients', href: '/customers' },
+  { name: 'Cash Flow', href: '/cashflow' },
 ];
 
-function isNavGroup(item: NavigationItem): item is NavGroup {
-  return 'children' in item;
-}
+const operationsNav: NavItem[] = [
+  { name: 'Contratos', href: '/contracts-summary' },
+  { name: 'Facturas', href: '/invoices' },
+  { name: 'RRHH', href: '/rrhh' },
+];
 
 interface SidebarProps {
   isOpen: boolean;
@@ -54,19 +28,6 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
-  const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
-
-  const toggleGroup = (groupName: string) => {
-    setExpandedGroups(prev =>
-      prev.includes(groupName)
-        ? prev.filter(name => name !== groupName)
-        : [...prev, groupName]
-    );
-  };
-
-  const isGroupActive = (group: NavGroup) => {
-    return group.children.some(child => pathname === child.href);
-  };
 
   const sidebarContent = (
     <div className="flex h-full flex-col">
@@ -85,60 +46,31 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Navigation */}
       <nav className="flex-1 px-3 py-6">
         <div className="space-y-1">
-          {navigation.map((item) => {
-            if (isNavGroup(item)) {
-              const isExpanded = expandedGroups.includes(item.name);
-              const groupActive = isGroupActive(item);
-
-              return (
-                <div key={item.name}>
-                  <button
-                    onClick={() => toggleGroup(item.name)}
-                    className={`w-full flex items-center justify-between rounded-lg px-3 py-2 text-[13px] font-medium transition-all ${
-                      groupActive
-                        ? 'text-text-primary'
-                        : 'text-text-muted hover:text-text-secondary hover:bg-bg-surface'
-                    }`}
-                  >
-                    <span>{item.name}</span>
-                    <svg
-                      className={`w-3.5 h-3.5 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  {isExpanded && (
-                    <div className="mt-1 ml-3 space-y-1 border-l border-border-subtle pl-3">
-                      {item.children.map((child) => {
-                        const isActive = pathname === child.href;
-                        return (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            onClick={onClose}
-                            className={`block rounded-lg px-3 py-1.5 text-[12px] font-medium transition-all ${
-                              isActive
-                                ? 'bg-bg-elevated text-text-primary'
-                                : 'text-text-muted hover:text-text-secondary hover:bg-bg-surface'
-                            }`}
-                          >
-                            {child.name}
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            }
-
+          {analyticsNav.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
-                key={item.name}
+                key={item.href}
+                href={item.href}
+                onClick={onClose}
+                className={`block rounded-lg px-3 py-2 text-[13px] font-medium transition-all ${
+                  isActive
+                    ? 'bg-bg-elevated text-text-primary'
+                    : 'text-text-muted hover:text-text-secondary hover:bg-bg-surface'
+                }`}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
+        </div>
+        <div className="my-3 mx-3 border-t border-border-subtle" />
+        <div className="space-y-1">
+          {operationsNav.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
                 href={item.href}
                 onClick={onClose}
                 className={`block rounded-lg px-3 py-2 text-[13px] font-medium transition-all ${

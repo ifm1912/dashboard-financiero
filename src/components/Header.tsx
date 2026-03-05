@@ -1,7 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDateRange, DateRangePreset } from '@/contexts/DateRangeContext';
+import { DataFreshness } from '@/lib/data';
 
 const dateRangeOptions: { value: DateRangePreset; label: string }[] = [
   { value: '7d', label: '7 días' },
@@ -10,6 +12,46 @@ const dateRangeOptions: { value: DateRangePreset; label: string }[] = [
   { value: '12m', label: '12 meses' },
   { value: 'all', label: 'Todo' },
 ];
+
+const MONTH_NAMES: Record<string, string> = {
+  '01': 'Ene', '02': 'Feb', '03': 'Mar', '04': 'Abr',
+  '05': 'May', '06': 'Jun', '07': 'Jul', '08': 'Ago',
+  '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dic',
+};
+
+function FreshnessBadge() {
+  const [freshness, setFreshness] = useState<DataFreshness | null>(null);
+
+  useEffect(() => {
+    fetch('/data/data_freshness.json')
+      .then(r => r.ok ? r.json() : null)
+      .then(setFreshness)
+      .catch(() => setFreshness(null));
+  }, []);
+
+  if (!freshness) return null;
+
+  const lastUpdate = new Date(freshness.last_update);
+  const daysSince = Math.floor((Date.now() - lastUpdate.getTime()) / (1000 * 60 * 60 * 24));
+
+  const monthParts = freshness.month_closed?.split('-');
+  const monthLabel = monthParts
+    ? `${MONTH_NAMES[monthParts[1]] || monthParts[1]} ${monthParts[0]?.slice(-2)}`
+    : null;
+
+  const color = daysSince <= 35
+    ? 'bg-success/15 text-success border-success/30'
+    : daysSince <= 60
+    ? 'bg-warning/15 text-warning border-warning/30'
+    : 'bg-danger/15 text-danger border-danger/30';
+
+  return (
+    <span className={`hidden sm:inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-medium ${color}`}>
+      <span className={`h-1.5 w-1.5 rounded-full ${daysSince <= 35 ? 'bg-success' : daysSince <= 60 ? 'bg-warning' : 'bg-danger'}`} />
+      Datos: {monthLabel}
+    </span>
+  );
+}
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -43,6 +85,7 @@ export function Header({ onToggleSidebar }: HeaderProps) {
             GPT Finance
           </h1>
           <span className="hidden sm:inline text-xs text-text-dimmed">Dashboard</span>
+          <FreshnessBadge />
         </div>
 
         {/* Right - Controls */}

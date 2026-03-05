@@ -1,0 +1,2600 @@
+{
+  "months": [
+    {
+      "month": "2026-02",
+      "headcount": 10,
+      "total_gross": 29740.8,
+      "total_deductions": 7365.68,
+      "total_net": 22375.12,
+      "total_employer_ss": 6880.67,
+      "total_cost": 36621.47,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.59,
+          "net": 2197.41,
+          "ss_employer": 662.37,
+          "total_cost": 3579.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1220.5,
+          "ss_employee": 325.0,
+          "net": 3454.5,
+          "ss_employer": 1135.5,
+          "total_cost": 6135.5,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 2500.0,
+          "irpf": 423.5,
+          "ss_employee": 158.75,
+          "net": 1917.75,
+          "ss_employer": 549.0,
+          "total_cost": 3049.0,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 649.0,
+          "ss_employee": 216.67,
+          "net": 2467.66,
+          "ss_employer": 757.0,
+          "total_cost": 4090.33,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 2500.0,
+          "irpf": 421.75,
+          "ss_employee": 158.75,
+          "net": 1919.5,
+          "ss_employer": 549.0,
+          "total_cost": 3049.0,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 4333.33,
+          "irpf": 541.23,
+          "ss_employee": 281.67,
+          "net": 3510.43,
+          "ss_employer": 984.1,
+          "total_cost": 5317.43,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 2166.67,
+          "irpf": 342.77,
+          "ss_employee": 137.58,
+          "net": 1686.32,
+          "ss_employer": 475.8,
+          "total_cost": 2642.47,
+          "pdf_available": true
+        },
+        {
+          "code": 26,
+          "initials": "I.R.",
+          "gross": 502.67,
+          "irpf": 0,
+          "ss_employee": 1.12,
+          "net": 501.55,
+          "ss_employer": 10.51,
+          "total_cost": 513.18,
+          "pdf_available": true
+        },
+        {
+          "code": 31,
+          "initials": "E.B.C.",
+          "gross": 2916.66,
+          "irpf": 529.67,
+          "ss_employee": 189.58,
+          "net": 2197.41,
+          "ss_employer": 662.37,
+          "total_cost": 3579.03,
+          "pdf_available": true
+        },
+        {
+          "code": 33,
+          "initials": "R.O.B.",
+          "gross": 3571.47,
+          "irpf": 827.51,
+          "ss_employee": 221.37,
+          "net": 2522.59,
+          "ss_employer": 1095.02,
+          "total_cost": 4666.49,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2026-01",
+      "headcount": 8,
+      "total_gross": 23110.0,
+      "total_deductions": 5596.99,
+      "total_net": 17513.01,
+      "total_employer_ss": 5123.29,
+      "total_cost": 28233.29,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.59,
+          "net": 2197.41,
+          "ss_employer": 662.38,
+          "total_cost": 3579.05,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1220.5,
+          "ss_employee": 325.0,
+          "net": 3454.5,
+          "ss_employer": 1135.5,
+          "total_cost": 6135.5,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 2500.0,
+          "irpf": 423.5,
+          "ss_employee": 158.75,
+          "net": 1917.75,
+          "ss_employer": 549.0,
+          "total_cost": 3049.0,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 649.0,
+          "ss_employee": 216.67,
+          "net": 2467.66,
+          "ss_employer": 757.0,
+          "total_cost": 4090.33,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 2500.0,
+          "irpf": 421.75,
+          "ss_employee": 158.75,
+          "net": 1919.5,
+          "ss_employer": 549.0,
+          "total_cost": 3049.0,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 4333.33,
+          "irpf": 541.23,
+          "ss_employee": 281.67,
+          "net": 3510.43,
+          "ss_employer": 984.1,
+          "total_cost": 5317.43,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 2166.67,
+          "irpf": 342.77,
+          "ss_employee": 137.58,
+          "net": 1686.32,
+          "ss_employer": 475.8,
+          "total_cost": 2642.47,
+          "pdf_available": true
+        },
+        {
+          "code": 26,
+          "initials": "I.R.",
+          "gross": 360.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 359.44,
+          "ss_employer": 10.51,
+          "total_cost": 370.51,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-12",
+      "headcount": 8,
+      "total_gross": 23038.0,
+      "total_deductions": 4959.63,
+      "total_net": 18078.37,
+      "total_employer_ss": 5091.02,
+      "total_cost": 28129.02,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 660.04,
+          "total_cost": 3576.71,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1111.71,
+          "total_cost": 6111.71,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 2500.0,
+          "irpf": 280.5,
+          "ss_employee": 158.75,
+          "net": 2060.75,
+          "ss_employer": 549.0,
+          "total_cost": 3049.0,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 605.67,
+          "ss_employee": 216.0,
+          "net": 2511.66,
+          "ss_employer": 754.33,
+          "total_cost": 4087.66,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 2500.0,
+          "irpf": 300.0,
+          "ss_employee": 158.75,
+          "net": 2041.25,
+          "ss_employer": 549.0,
+          "total_cost": 3049.0,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 4333.33,
+          "irpf": 502.23,
+          "ss_employee": 280.8,
+          "net": 3550.3,
+          "ss_employer": 980.63,
+          "total_cost": 5313.96,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 2166.67,
+          "irpf": 43.33,
+          "ss_employee": 137.58,
+          "net": 1985.76,
+          "ss_employer": 475.8,
+          "total_cost": 2642.47,
+          "pdf_available": true
+        },
+        {
+          "code": 26,
+          "initials": "I.R.",
+          "gross": 288.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 287.44,
+          "ss_employer": 10.51,
+          "total_cost": 298.51,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-11",
+      "headcount": 7,
+      "total_gross": 21750.0,
+      "total_deductions": 4632.71,
+      "total_net": 17117.29,
+      "total_employer_ss": 5593.0,
+      "total_cost": 27343.0,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 935.37,
+          "total_cost": 3852.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1575.17,
+          "total_cost": 6575.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 2500.0,
+          "irpf": 280.5,
+          "ss_employee": 158.75,
+          "net": 2060.75,
+          "ss_employer": 549.0,
+          "total_cost": 3049.0,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 605.67,
+          "ss_employee": 216.0,
+          "net": 2511.66,
+          "ss_employer": 754.33,
+          "total_cost": 4087.66,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 2500.0,
+          "irpf": 300.0,
+          "ss_employee": 158.75,
+          "net": 2041.25,
+          "ss_employer": 549.0,
+          "total_cost": 3049.0,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 216.0,
+          "net": 2876.66,
+          "ss_employer": 754.33,
+          "total_cost": 4087.66,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 2166.67,
+          "irpf": 43.33,
+          "ss_employee": 137.58,
+          "net": 1985.76,
+          "ss_employer": 475.8,
+          "total_cost": 2642.47,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-10",
+      "headcount": 7,
+      "total_gross": 21638.92,
+      "total_deductions": 4617.49,
+      "total_net": 17021.43,
+      "total_employer_ss": 5789.06,
+      "total_cost": 27427.98,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 935.37,
+          "total_cost": 3852.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1575.17,
+          "total_cost": 6575.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 2500.0,
+          "irpf": 280.5,
+          "ss_employee": 158.75,
+          "net": 2060.75,
+          "ss_employer": 698.47,
+          "total_cost": 3198.47,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 605.67,
+          "ss_employee": 216.0,
+          "net": 2511.66,
+          "ss_employer": 953.61,
+          "total_cost": 4286.94,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 2500.02,
+          "irpf": 300.0,
+          "ss_employee": 158.75,
+          "net": 2041.27,
+          "ss_employer": 397.57,
+          "total_cost": 2897.59,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3222.23,
+          "irpf": 232.65,
+          "ss_employee": 208.8,
+          "net": 2780.78,
+          "ss_employer": 865.56,
+          "total_cost": 4087.79,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 2166.67,
+          "irpf": 43.33,
+          "ss_employee": 137.58,
+          "net": 1985.76,
+          "ss_employer": 363.31,
+          "total_cost": 2529.98,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-09",
+      "headcount": 6,
+      "total_gross": 19583.33,
+      "total_deductions": 4451.8,
+      "total_net": 15131.53,
+      "total_employer_ss": 5658.04,
+      "total_cost": 25241.37,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 935.37,
+          "total_cost": 3852.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1575.17,
+          "total_cost": 6575.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 2500.0,
+          "irpf": 280.5,
+          "ss_employee": 158.75,
+          "net": 2060.75,
+          "ss_employer": 785.0,
+          "total_cost": 3285.0,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 605.67,
+          "ss_employee": 216.0,
+          "net": 2511.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 2500.0,
+          "irpf": 300.0,
+          "ss_employee": 158.75,
+          "net": 2041.25,
+          "ss_employer": 224.5,
+          "total_cost": 2724.5,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 216.0,
+          "net": 2876.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-08",
+      "headcount": 7,
+      "total_gross": 19598.26,
+      "total_deductions": 4452.36,
+      "total_net": 15145.9,
+      "total_employer_ss": 5668.55,
+      "total_cost": 25266.81,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 935.37,
+          "total_cost": 3852.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1575.17,
+          "total_cost": 6575.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 2500.0,
+          "irpf": 280.5,
+          "ss_employee": 158.75,
+          "net": 2060.75,
+          "ss_employer": 785.0,
+          "total_cost": 3285.0,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 605.67,
+          "ss_employee": 216.0,
+          "net": 2511.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 2500.0,
+          "irpf": 300.0,
+          "ss_employee": 158.75,
+          "net": 2041.25,
+          "ss_employer": 224.5,
+          "total_cost": 2724.5,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 216.0,
+          "net": 2876.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 14.93,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 14.37,
+          "ss_employer": 10.51,
+          "total_cost": 25.44,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-07",
+      "headcount": 8,
+      "total_gross": 20531.33,
+      "total_deductions": 4452.92,
+      "total_net": 16078.41,
+      "total_employer_ss": 5679.06,
+      "total_cost": 26210.39,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 935.37,
+          "total_cost": 3852.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1575.17,
+          "total_cost": 6575.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 2500.0,
+          "irpf": 280.5,
+          "ss_employee": 158.75,
+          "net": 2060.75,
+          "ss_employer": 785.0,
+          "total_cost": 3285.0,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 605.67,
+          "ss_employee": 216.0,
+          "net": 2511.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 2500.0,
+          "irpf": 300.0,
+          "ss_employee": 158.75,
+          "net": 2041.25,
+          "ss_employer": 224.5,
+          "total_cost": 2724.5,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 216.0,
+          "net": 2876.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 448.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 447.44,
+          "ss_employer": 10.51,
+          "total_cost": 458.51,
+          "pdf_available": true
+        },
+        {
+          "code": 25,
+          "initials": "D.G.A.",
+          "gross": 500.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 499.44,
+          "ss_employer": 10.51,
+          "total_cost": 510.51,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-06",
+      "headcount": 8,
+      "total_gross": 20464.65,
+      "total_deductions": 4422.97,
+      "total_net": 16041.68,
+      "total_employer_ss": 5645.41,
+      "total_cost": 26110.06,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 935.37,
+          "total_cost": 3852.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1575.17,
+          "total_cost": 6575.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 2416.66,
+          "irpf": 271.15,
+          "ss_employee": 153.45,
+          "net": 1992.06,
+          "ss_employer": 758.83,
+          "total_cost": 3175.49,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 605.67,
+          "ss_employee": 216.0,
+          "net": 2511.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 2416.66,
+          "irpf": 290.0,
+          "ss_employee": 153.45,
+          "net": 1973.21,
+          "ss_employer": 217.02,
+          "total_cost": 2633.68,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 216.0,
+          "net": 2876.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 448.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 447.44,
+          "ss_employer": 10.51,
+          "total_cost": 458.51,
+          "pdf_available": true
+        },
+        {
+          "code": 25,
+          "initials": "D.G.A.",
+          "gross": 600.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 599.44,
+          "ss_employer": 10.51,
+          "total_cost": 610.51,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-05",
+      "headcount": 11,
+      "total_gross": 23989.33,
+      "total_deductions": 4236.88,
+      "total_net": 19752.45,
+      "total_employer_ss": 4722.11,
+      "total_cost": 28711.44,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 935.37,
+          "total_cost": 3852.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1575.17,
+          "total_cost": 6575.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 2112.0,
+          "irpf": 236.97,
+          "ss_employee": 0.56,
+          "net": 1874.47,
+          "ss_employer": 10.51,
+          "total_cost": 2122.51,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 2992.0,
+          "irpf": 230.08,
+          "ss_employee": 0.56,
+          "net": 2761.36,
+          "ss_employer": 10.51,
+          "total_cost": 3002.51,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 605.67,
+          "ss_employee": 216.0,
+          "net": 2511.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 1254.0,
+          "irpf": 129.16,
+          "ss_employee": 0.56,
+          "net": 1124.28,
+          "ss_employer": 10.51,
+          "total_cost": 1264.51,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 1500.0,
+          "irpf": 82.95,
+          "ss_employee": 0.56,
+          "net": 1416.49,
+          "ss_employer": 10.51,
+          "total_cost": 1510.51,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 216.0,
+          "net": 2876.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 448.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 447.44,
+          "ss_employer": 10.51,
+          "total_cost": 458.51,
+          "pdf_available": true
+        },
+        {
+          "code": 24,
+          "initials": "P.R.F.",
+          "gross": 500.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 499.44,
+          "ss_employer": 10.51,
+          "total_cost": 510.51,
+          "pdf_available": true
+        },
+        {
+          "code": 25,
+          "initials": "D.G.A.",
+          "gross": 600.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 599.44,
+          "ss_employer": 10.51,
+          "total_cost": 610.51,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-04",
+      "headcount": 11,
+      "total_gross": 21485.33,
+      "total_deductions": 4073.75,
+      "total_net": 17411.58,
+      "total_employer_ss": 4722.11,
+      "total_cost": 26207.44,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 935.37,
+          "total_cost": 3852.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1575.17,
+          "total_cost": 6575.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 1826.0,
+          "irpf": 204.88,
+          "ss_employee": 0.56,
+          "net": 1620.56,
+          "ss_employer": 10.51,
+          "total_cost": 1836.51,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 286.0,
+          "irpf": 21.99,
+          "ss_employee": 0.56,
+          "net": 263.45,
+          "ss_employer": 10.51,
+          "total_cost": 296.51,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 605.67,
+          "ss_employee": 216.0,
+          "net": 2511.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 2002.0,
+          "irpf": 206.21,
+          "ss_employee": 0.56,
+          "net": 1795.23,
+          "ss_employer": 10.51,
+          "total_cost": 2012.51,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 1500.0,
+          "irpf": 82.95,
+          "ss_employee": 0.56,
+          "net": 1416.49,
+          "ss_employer": 10.51,
+          "total_cost": 1510.51,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 216.0,
+          "net": 2876.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 448.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 447.44,
+          "ss_employer": 10.51,
+          "total_cost": 458.51,
+          "pdf_available": true
+        },
+        {
+          "code": 24,
+          "initials": "P.R.F.",
+          "gross": 500.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 499.44,
+          "ss_employer": 10.51,
+          "total_cost": 510.51,
+          "pdf_available": true
+        },
+        {
+          "code": 25,
+          "initials": "D.G.A.",
+          "gross": 340.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 339.44,
+          "ss_employer": 10.51,
+          "total_cost": 350.51,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-03",
+      "headcount": 10,
+      "total_gross": 21105.0,
+      "total_deductions": 4093.49,
+      "total_net": 17011.51,
+      "total_employer_ss": 4711.6,
+      "total_cost": 25816.6,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 935.37,
+          "total_cost": 3852.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1575.17,
+          "total_cost": 6575.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 1606.0,
+          "irpf": 180.19,
+          "ss_employee": 0.56,
+          "net": 1425.25,
+          "ss_employer": 10.51,
+          "total_cost": 1616.51,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 1179.0,
+          "irpf": 90.67,
+          "ss_employee": 0.56,
+          "net": 1087.77,
+          "ss_employer": 10.51,
+          "total_cost": 1189.51,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 3333.33,
+          "irpf": 605.67,
+          "ss_employee": 216.0,
+          "net": 2511.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 1772.0,
+          "irpf": 182.52,
+          "ss_employee": 0.56,
+          "net": 1588.92,
+          "ss_employer": 10.51,
+          "total_cost": 1782.51,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 1500.0,
+          "irpf": 82.95,
+          "ss_employee": 0.56,
+          "net": 1416.49,
+          "ss_employer": 10.51,
+          "total_cost": 1510.51,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 216.0,
+          "net": 2876.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 448.0,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 447.44,
+          "ss_employer": 10.51,
+          "total_cost": 458.51,
+          "pdf_available": true
+        },
+        {
+          "code": 24,
+          "initials": "P.R.F.",
+          "gross": 16.67,
+          "irpf": 0,
+          "ss_employee": 0.56,
+          "net": 16.11,
+          "ss_employer": 10.51,
+          "total_cost": 27.18,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-02",
+      "headcount": 9,
+      "total_gross": 20890.46,
+      "total_deductions": 4044.04,
+      "total_net": 16846.42,
+      "total_employer_ss": 4565.21,
+      "total_cost": 25455.67,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 935.37,
+          "total_cost": 3852.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1575.17,
+          "total_cost": 6575.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 1804.0,
+          "irpf": 202.41,
+          "ss_employee": 0.53,
+          "net": 1601.06,
+          "ss_employer": 10.06,
+          "total_cost": 1814.06,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 1635.0,
+          "irpf": 125.73,
+          "ss_employee": 0.53,
+          "net": 1508.74,
+          "ss_employer": 10.06,
+          "total_cost": 1645.06,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 529.96,
+          "ss_employee": 188.99,
+          "net": 2197.71,
+          "ss_employer": 935.37,
+          "total_cost": 3852.03,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 1740.0,
+          "irpf": 179.22,
+          "ss_employee": 0.53,
+          "net": 1560.25,
+          "ss_employer": 10.06,
+          "total_cost": 1750.06,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 1500.0,
+          "irpf": 82.95,
+          "ss_employee": 0.53,
+          "net": 1416.52,
+          "ss_employer": 10.06,
+          "total_cost": 1510.06,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 216.0,
+          "net": 2876.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        },
+        {
+          "code": 23,
+          "initials": "D.G.S.",
+          "gross": 44.8,
+          "irpf": 0,
+          "ss_employee": 0.53,
+          "net": 44.27,
+          "ss_employer": 10.06,
+          "total_cost": 54.86,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2025-01",
+      "headcount": 7,
+      "total_gross": 19016.66,
+      "total_deductions": 3891.0,
+      "total_net": 15125.66,
+      "total_employer_ss": 4724.46,
+      "total_cost": 23741.12,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 529.67,
+          "ss_employee": 189.01,
+          "net": 2197.99,
+          "ss_employer": 935.37,
+          "total_cost": 3852.04,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 5000.0,
+          "irpf": 1238.5,
+          "ss_employee": 318.28,
+          "net": 3443.22,
+          "ss_employer": 1575.17,
+          "total_cost": 6575.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 1760.0,
+          "irpf": 197.47,
+          "ss_employee": 12.41,
+          "net": 1550.12,
+          "ss_employer": 69.85,
+          "total_cost": 1829.85,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 1590.0,
+          "irpf": 122.27,
+          "ss_employee": 12.41,
+          "net": 1455.32,
+          "ss_employer": 69.85,
+          "total_cost": 1659.85,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 529.96,
+          "ss_employee": 188.99,
+          "net": 2197.71,
+          "ss_employer": 935.37,
+          "total_cost": 3852.03,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 1500.0,
+          "irpf": 82.95,
+          "ss_employee": 12.41,
+          "net": 1404.64,
+          "ss_employer": 69.85,
+          "total_cost": 1569.85,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 216.0,
+          "net": 2876.66,
+          "ss_employer": 1069.0,
+          "total_cost": 4402.33,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-12",
+      "headcount": 10,
+      "total_gross": 18379.2,
+      "total_deductions": 3147.5,
+      "total_net": 15231.7,
+      "total_employer_ss": 4675.96,
+      "total_cost": 23055.16,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 926.0,
+          "irpf": 42.97,
+          "ss_employee": 12.28,
+          "net": 870.75,
+          "ss_employer": 68.66,
+          "total_cost": 994.66,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 639.0,
+          "irpf": 12.78,
+          "ss_employee": 12.28,
+          "net": 613.94,
+          "ss_employer": 68.66,
+          "total_cost": 707.66,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 501.08,
+          "ss_employee": 188.7,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.41,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 1233.0,
+          "irpf": 24.66,
+          "ss_employee": 12.28,
+          "net": 1196.06,
+          "ss_employer": 68.66,
+          "total_cost": 1301.66,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 1500.0,
+          "irpf": 0,
+          "ss_employee": 12.28,
+          "net": 1487.72,
+          "ss_employer": 68.66,
+          "total_cost": 1568.66,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 215.67,
+          "net": 2876.99,
+          "ss_employer": 1066.0,
+          "total_cost": 4399.33,
+          "pdf_available": true
+        },
+        {
+          "code": 19,
+          "initials": "M.E.M.O.",
+          "gross": 403.2,
+          "irpf": 0,
+          "ss_employee": 12.28,
+          "net": 390.92,
+          "ss_employer": 68.66,
+          "total_cost": 471.86,
+          "pdf_available": true
+        },
+        {
+          "code": 20,
+          "initials": "A.D.F.L.",
+          "gross": 344.67,
+          "irpf": 0,
+          "ss_employee": 12.28,
+          "net": 332.39,
+          "ss_employer": 68.66,
+          "total_cost": 413.33,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-11",
+      "headcount": 10,
+      "total_gross": 19874.24,
+      "total_deductions": 3175.92,
+      "total_net": 16698.32,
+      "total_employer_ss": 4675.96,
+      "total_cost": 24550.2,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 1034.5,
+          "irpf": 48.0,
+          "ss_employee": 12.28,
+          "net": 974.22,
+          "ss_employer": 68.66,
+          "total_cost": 1103.16,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 1367.3,
+          "irpf": 27.35,
+          "ss_employee": 12.28,
+          "net": 1327.67,
+          "ss_employer": 68.66,
+          "total_cost": 1435.96,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 501.08,
+          "ss_employee": 188.7,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.41,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 1674.11,
+          "irpf": 33.48,
+          "ss_employee": 12.28,
+          "net": 1628.35,
+          "ss_employer": 68.66,
+          "total_cost": 1742.77,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 1500.0,
+          "irpf": 0,
+          "ss_employee": 12.28,
+          "net": 1487.72,
+          "ss_employer": 68.66,
+          "total_cost": 1568.66,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 215.67,
+          "net": 2876.99,
+          "ss_employer": 1066.0,
+          "total_cost": 4399.33,
+          "pdf_available": true
+        },
+        {
+          "code": 19,
+          "initials": "M.E.M.O.",
+          "gross": 448.0,
+          "irpf": 0,
+          "ss_employee": 12.28,
+          "net": 435.72,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 20,
+          "initials": "A.D.F.L.",
+          "gross": 517.0,
+          "irpf": 0,
+          "ss_employee": 12.28,
+          "net": 504.72,
+          "ss_employer": 68.66,
+          "total_cost": 585.66,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-10",
+      "headcount": 10,
+      "total_gross": 25418.33,
+      "total_deductions": 3388.77,
+      "total_net": 22029.56,
+      "total_employer_ss": 4675.96,
+      "total_cost": 30094.29,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 4330.0,
+          "irpf": 200.91,
+          "ss_employee": 12.28,
+          "net": 4116.81,
+          "ss_employer": 68.66,
+          "total_cost": 4398.66,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 3606.0,
+          "irpf": 72.12,
+          "ss_employee": 12.28,
+          "net": 3521.6,
+          "ss_employer": 68.66,
+          "total_cost": 3674.66,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 501.08,
+          "ss_employee": 188.7,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.41,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 1684.0,
+          "irpf": 33.68,
+          "ss_employee": 12.28,
+          "net": 1638.04,
+          "ss_employer": 68.66,
+          "total_cost": 1752.66,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 1500.0,
+          "irpf": 2.69,
+          "ss_employee": 24.56,
+          "net": 1472.75,
+          "ss_employer": 68.66,
+          "total_cost": 1568.66,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 215.67,
+          "net": 2876.99,
+          "ss_employer": 1066.0,
+          "total_cost": 4399.33,
+          "pdf_available": true
+        },
+        {
+          "code": 19,
+          "initials": "M.E.M.O.",
+          "gross": 448.0,
+          "irpf": 0,
+          "ss_employee": 12.28,
+          "net": 435.72,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 20,
+          "initials": "A.D.F.L.",
+          "gross": 517.0,
+          "irpf": 0,
+          "ss_employee": 12.28,
+          "net": 504.72,
+          "ss_employer": 68.66,
+          "total_cost": 585.66,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-09",
+      "headcount": 10,
+      "total_gross": 21677.23,
+      "total_deductions": 3222.25,
+      "total_net": 18454.98,
+      "total_employer_ss": 4675.96,
+      "total_cost": 26353.19,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 3094.0,
+          "irpf": 61.88,
+          "ss_employee": 12.28,
+          "net": 3019.84,
+          "ss_employer": 68.66,
+          "total_cost": 3162.66,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 2584.0,
+          "irpf": 51.68,
+          "ss_employee": 12.28,
+          "net": 2520.04,
+          "ss_employer": 68.66,
+          "total_cost": 2652.66,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 501.08,
+          "ss_employee": 188.7,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.41,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 1632.0,
+          "irpf": 32.64,
+          "ss_employee": 12.28,
+          "net": 1587.08,
+          "ss_employer": 68.66,
+          "total_cost": 1700.66,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 240.67,
+          "ss_employee": 215.67,
+          "net": 2876.99,
+          "ss_employer": 1066.0,
+          "total_cost": 4399.33,
+          "pdf_available": true
+        },
+        {
+          "code": 19,
+          "initials": "M.E.M.O.",
+          "gross": 224.0,
+          "irpf": 0,
+          "ss_employee": 12.28,
+          "net": 211.72,
+          "ss_employer": 68.66,
+          "total_cost": 292.66,
+          "pdf_available": true
+        },
+        {
+          "code": 20,
+          "initials": "A.D.F.L.",
+          "gross": 361.9,
+          "irpf": 0,
+          "ss_employee": 12.28,
+          "net": 349.62,
+          "ss_employer": 68.66,
+          "total_cost": 430.56,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-08",
+      "headcount": 5,
+      "total_gross": 13781.33,
+      "total_deductions": 3307.31,
+      "total_net": 10474.02,
+      "total_employer_ss": 4332.66,
+      "total_cost": 18113.99,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 501.08,
+          "ss_employee": 188.7,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.41,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 3333.33,
+          "irpf": 533.33,
+          "ss_employee": 215.67,
+          "net": 2584.33,
+          "ss_employer": 1066.0,
+          "total_cost": 4399.33,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-07",
+      "headcount": 7,
+      "total_gross": 13121.77,
+      "total_deductions": 2751.37,
+      "total_net": 10370.4,
+      "total_employer_ss": 3972.51,
+      "total_cost": 17094.28,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 501.08,
+          "ss_employee": 188.7,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.41,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 14,
+          "initials": "M.V.C.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 18,
+          "initials": "J.S.M.",
+          "gross": 1777.77,
+          "irpf": 35.56,
+          "ss_employee": 115.02,
+          "net": 1627.19,
+          "ss_employer": 568.53,
+          "total_cost": 2346.3,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-06",
+      "headcount": 7,
+      "total_gross": 13086.99,
+      "total_deductions": 3074.69,
+      "total_net": 10012.3,
+      "total_employer_ss": 4056.89,
+      "total_cost": 17143.88,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 501.08,
+          "ss_employee": 188.7,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.41,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 14,
+          "initials": "M.V.C.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 15,
+          "initials": "J.L.S.",
+          "gross": 149.33,
+          "irpf": 0,
+          "ss_employee": 12.28,
+          "net": 137.05,
+          "ss_employer": 68.66,
+          "total_cost": 217.99,
+          "pdf_available": true
+        },
+        {
+          "code": 16,
+          "initials": "C.S.C.",
+          "gross": 2041.66,
+          "irpf": 350.76,
+          "ss_employee": 132.1,
+          "net": 1558.8,
+          "ss_employer": 652.91,
+          "total_cost": 2694.57,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-05",
+      "headcount": 9,
+      "total_gross": 14016.17,
+      "total_deductions": 3110.87,
+      "total_net": 10905.3,
+      "total_employer_ss": 4305.13,
+      "total_cost": 18321.3,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 343.47,
+          "irpf": 6.87,
+          "ss_employee": 12.28,
+          "net": 324.32,
+          "ss_employer": 68.66,
+          "total_cost": 412.13,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 343.47,
+          "irpf": 6.87,
+          "ss_employee": 12.28,
+          "net": 324.32,
+          "ss_employer": 68.66,
+          "total_cost": 412.13,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 501.08,
+          "ss_employee": 188.7,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.41,
+          "pdf_available": true
+        },
+        {
+          "code": 10,
+          "initials": "P.S.L.",
+          "gross": 2388.43,
+          "irpf": 252.35,
+          "ss_employee": 227.49,
+          "net": 1908.59,
+          "ss_employer": 763.83,
+          "total_cost": 3152.26,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 13,
+          "initials": "C.M.L.",
+          "gross": 44.8,
+          "irpf": 0.9,
+          "ss_employee": 12.28,
+          "net": 31.62,
+          "ss_employer": 68.66,
+          "total_cost": 113.46,
+          "pdf_available": true
+        },
+        {
+          "code": 14,
+          "initials": "M.V.C.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-04",
+      "headcount": 9,
+      "total_gross": 14402.79,
+      "total_deductions": 3123.69,
+      "total_net": 11279.1,
+      "total_employer_ss": 4314.15,
+      "total_cost": 18716.94,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 501.08,
+          "ss_employee": 188.7,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.41,
+          "pdf_available": true
+        },
+        {
+          "code": 10,
+          "initials": "P.S.L.",
+          "gross": 2416.66,
+          "irpf": 329.15,
+          "ss_employee": 156.35,
+          "net": 1931.16,
+          "ss_employer": 772.85,
+          "total_cost": 3189.51,
+          "pdf_available": true
+        },
+        {
+          "code": 12,
+          "initials": "H.L.J.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 12.28,
+          "net": 426.76,
+          "ss_employer": 68.66,
+          "total_cost": 516.66,
+          "pdf_available": true
+        },
+        {
+          "code": 13,
+          "initials": "C.M.L.",
+          "gross": 418.13,
+          "irpf": 8.36,
+          "ss_employee": 12.28,
+          "net": 397.49,
+          "ss_employer": 68.66,
+          "total_cost": 486.79,
+          "pdf_available": true
+        },
+        {
+          "code": 14,
+          "initials": "M.V.C.",
+          "gross": 224.0,
+          "irpf": 4.48,
+          "ss_employee": 12.28,
+          "net": 207.24,
+          "ss_employer": 68.66,
+          "total_cost": 292.66,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-03",
+      "headcount": 6,
+      "total_gross": 13312.66,
+      "total_deductions": 3063.87,
+      "total_net": 10248.79,
+      "total_employer_ss": 4101.65,
+      "total_cost": 17414.31,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 11.69,
+          "net": 427.35,
+          "ss_employer": 65.4,
+          "total_cost": 513.4,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 448.0,
+          "irpf": 8.96,
+          "ss_employee": 11.69,
+          "net": 427.35,
+          "ss_employer": 65.4,
+          "total_cost": 513.4,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 2916.66,
+          "irpf": 501.08,
+          "ss_employee": 188.7,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.41,
+          "pdf_available": true
+        },
+        {
+          "code": 10,
+          "initials": "P.S.L.",
+          "gross": 2416.66,
+          "irpf": 329.15,
+          "ss_employee": 156.35,
+          "net": 1931.16,
+          "ss_employer": 772.85,
+          "total_cost": 3189.51,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-02",
+      "headcount": 6,
+      "total_gross": 10814.66,
+      "total_deductions": 2682.02,
+      "total_net": 8132.64,
+      "total_employer_ss": 3484.24,
+      "total_cost": 14298.9,
+      "employees": [
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 4,
+          "initials": "J.A.P.G.",
+          "gross": 1847.22,
+          "irpf": 317.35,
+          "ss_employee": 119.52,
+          "net": 1410.35,
+          "ss_employer": 590.73,
+          "total_cost": 2437.95,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        },
+        {
+          "code": 7,
+          "initials": "H.G.H.",
+          "gross": 164.27,
+          "irpf": 3.29,
+          "ss_employee": 11.69,
+          "net": 149.29,
+          "ss_employer": 65.4,
+          "total_cost": 229.67,
+          "pdf_available": true
+        },
+        {
+          "code": 8,
+          "initials": "D.A.R.",
+          "gross": 164.27,
+          "irpf": 3.29,
+          "ss_employee": 11.69,
+          "net": 149.29,
+          "ss_employer": 65.4,
+          "total_cost": 229.67,
+          "pdf_available": true
+        },
+        {
+          "code": 9,
+          "initials": "A.G.C.",
+          "gross": 1555.56,
+          "irpf": 267.25,
+          "ss_employee": 100.65,
+          "net": 1187.66,
+          "ss_employer": 497.46,
+          "total_cost": 2053.02,
+          "pdf_available": true
+        }
+      ]
+    },
+    {
+      "month": "2024-01",
+      "headcount": 4,
+      "total_gross": 12500.01,
+      "total_deductions": 3083.08,
+      "total_net": 9416.93,
+      "total_employer_ss": 3997.5,
+      "total_cost": 16497.51,
+      "employees": [
+        {
+          "code": 1,
+          "initials": "I.F.M.",
+          "gross": 2500.0,
+          "irpf": 384.25,
+          "ss_employee": 161.75,
+          "net": 1954.0,
+          "ss_employer": 799.5,
+          "total_cost": 3299.5,
+          "pdf_available": true
+        },
+        {
+          "code": 2,
+          "initials": "J.V.M.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 4,
+          "initials": "J.A.P.G.",
+          "gross": 2916.67,
+          "irpf": 501.08,
+          "ss_employee": 188.71,
+          "net": 2226.88,
+          "ss_employer": 932.75,
+          "total_cost": 3849.42,
+          "pdf_available": true
+        },
+        {
+          "code": 5,
+          "initials": "P.A.M.M.",
+          "gross": 4166.67,
+          "irpf": 887.92,
+          "ss_employee": 269.58,
+          "net": 3009.17,
+          "ss_employer": 1332.5,
+          "total_cost": 5499.17,
+          "pdf_available": true
+        }
+      ]
+    }
+  ]
+}
