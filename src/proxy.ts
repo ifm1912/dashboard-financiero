@@ -18,7 +18,7 @@ export function proxy(request: NextRequest) {
   }
 
   const sessionToken = request.cookies.get(SESSION_COOKIE_NAME)?.value;
-  const isLoggedIn = sessionToken && sessionToken.startsWith('session_');
+  const isLoggedIn = !!sessionToken && sessionToken.includes('.');
   const isPublicPath = PUBLIC_PATHS.includes(pathname);
 
   // Si no está autenticado y no es ruta pública -> login
@@ -45,8 +45,12 @@ export const config = {
     '/customers',
     '/contracts-forecast',
     '/contracts-summary',
+    '/contracts',
     '/cashflow',
     '/invoices',
+    '/rrhh',
+    '/mrr',
+    '/forecast',
     '/login',
   ],
 };
