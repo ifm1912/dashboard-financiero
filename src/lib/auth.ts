@@ -3,11 +3,11 @@ import { randomBytes, createHmac } from 'crypto';
 
 // Credenciales (REQUIERE .env.local — no hay fallback inseguro)
 const VALID_CREDENTIALS = {
-  email: process.env.AUTH_EMAIL,
-  password: process.env.AUTH_PASSWORD,
+  email: process.env.AUTH_EMAIL?.trim(),
+  password: process.env.AUTH_PASSWORD?.trim(),
 };
 
-const SESSION_SECRET = process.env.SESSION_SECRET || randomBytes(32).toString('hex');
+const SESSION_SECRET = (process.env.SESSION_SECRET || randomBytes(32).toString('hex')).trim();
 const SESSION_COOKIE_NAME = 'gpt-finance-session';
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 días
 
