@@ -147,3 +147,4 @@ FACT192026,2026-03-05,AIV,AIV Licencia dic25 - feb26,Licencia,3282.07,3282.07,pe
 FACT202026,2026-03-05,JDS,"JDS Servicios consultoría ene, feb y mar 2026",SetUp,9513,11510.73,paid,2026-03-16,2026,3,2026-03-01,2026Q1,2026,3,2026-03-01,11,setup,non_recurring,False,1997.73,0.21,EUR,1,9513,11510.73
 FACT212026,2026-04-08,SAM,SAMi Licencia mar-26,Licencia,2083,2520.43,pending,,2026,4,2026-04-01,2026Q2,,,,,licencia,recurring,True,437.43,0.21,EUR,1,2083,2520.43
 FACT222026,2026-04-08,SAM,SAM Mantenimiento mar26,Licencia,3900,4719,pending,,2026,4,2026-04-01,2026Q2,,,,,licencia,recurring,True,819,0.21,EUR,1,3900,4719
+FACT232026,2026-04-08,AND,AND Licencia mar-26,Licencia,7631,9233.51,pending,,2026,4,2026-04-01,2026Q2,,,,,licencia,recurring,True,1602.51,0.21,EUR,1,7631,9233.51
